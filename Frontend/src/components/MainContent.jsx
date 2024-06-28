@@ -139,29 +139,17 @@ const MainContent = () => {
         'Develop, improve, and manage the lifecycle of all models in your organization.',
         'Train custom models on our hosted GPUs to save time and money.',
         'Bring your own model, leverage foundation models, or start with any of the 50k pre-trained open source models in Roboflow Universe.',
-        'Distill foundations models, like BLIP, DETIC, CLIP, and more to your custom data and smaller models to improve latency.',
+        'Distill foundations models, like llama2, OpenELM, GPT2, and more to your custom data and smaller models to improve latency.',
       ],
     },
-    // {
-    //   image: './static/img/NLP.png',
-    //   title: 'Coming SOON',
-    //   content: [
-    //     'Process and understand human language through advanced machine learning models.',
-    //     'Sentiment analysis, entity recognition, machine translation, and more.',
-    //     'Leverage pre-trained models from Hugging Face or fine-tune your own.',
-    //     'Implement chatbots, virtual assistants, and other NLP applications.',
-    //   ],
-    // },
-    // {
-    //   image: './static/img/ComputerVision.jpg',
-    //   title: 'Computer Vision',
-    //   content: [
-    //     'Analyze and interpret visual data with cutting-edge computer vision techniques.',
-    //     'Object detection, image classification, and segmentation.',
-    //     'Use pre-trained models or train your own with custom datasets.',
-    //     'Applications in healthcare, automotive, security, and more.',
-    //   ],
-    // },
+    {
+      image: './static/img/ComputerVision.jpg',
+      title: 'Vision',
+      content: [
+        'Something Special Coming Soon',
+        
+      ],
+    },
     // {
     //   image: './static/img/predictive.jpg',
     //   title: 'Regression Modeling',
@@ -177,16 +165,16 @@ const MainContent = () => {
   return (
     <Container maxWidth="lg">
       <Box sx={{
-        py: { xs: 4, sm: 6, md: 8 },
+        py: { xs: 2, sm: 4, md: 6 },
         backgroundColor: '#fff',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
       }}>
-        <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ mb: 2, minHeight: '65vh' }}>
+        <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ mb: 2, minHeight: '40vh' }}>
           <Grid item xs={12} md={6} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
             <Typography variant="h1" sx={{ fontSize: { xs: '42px', sm: '50px', md: '60px', fontFamily: 'Poppins' }, color: 'black', mb: 2 }}>
-              YOGPT
+              Your Own GPT
             </Typography>
             <Box component="ul" sx={{ listStyle: 'none', pl: 0, fontFamily: 'Poppins', fontSize: { xs: '18px', sm: '24px', md: '30px' }, color: 'black', mb: 4, lineHeight: 1.5 }}>
               <GreenTickListItem>
@@ -200,14 +188,9 @@ const MainContent = () => {
               </GreenTickListItem>
             </Box>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent={{ xs: 'center', md: 'flex-start' }} sx={{ fontFamily: 'Poppins' }}>
-              <StyledButton variant="contained" className="learn-more">
-                Learn More
-                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-7-7l7 7-7 7" />
-                </svg>
-              </StyledButton>
+              
               <StyledButton variant="outlined" className="get-started" onClick={handleGetStartedClick}>
-                Get Started
+                Request Access
               </StyledButton>
             </Stack>
           </Grid>
@@ -225,10 +208,14 @@ const MainContent = () => {
             />
           </Grid>
         </Grid>
-
+        <Box sx={{ textAlign: 'center', my: 4, width: '100%' }}>
+          <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#023020', mb: 1, fontFamily: 'Poppins' }}>
+            Services
+          </Typography>
+        </Box>
         <Paper elevation={2} sx={{ padding: 4 }}>
           <Tabs value={selectedTab} onChange={handleTabChange} centered>
-            {['Large Language Models' ].map((tab, index) => (
+            {['Large Language Models','Vision' ].map((tab, index) => (
               <Tab key={tab} label={tab} sx={{ fontFamily: 'Poppins' }} />
             ))}
           </Tabs>
@@ -265,16 +252,8 @@ const MainContent = () => {
           ))}
         </Paper>
 
-        <Box sx={{ textAlign: 'center', my: 4, width: '100%' }}>
-          <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#023020', mb: 1, fontFamily: 'Poppins' }}>
-            Services
-          </Typography>
-          <Typography variant="subtitle2" sx={{ color: '#222121', fontWeight: 'medium', fontFamily: 'Poppins' }}>
-            No Cost For Token Holders (min holding $100)
-          </Typography>
-        </Box>
-
-        <Grid container spacing={3} justifyContent="center">
+        
+        {/* <Grid container spacing={3} justifyContent="center">
   {services.map((service, index) => (
     <Grid item xs={12} sm={6} md={3} key={index}>
       <StyledCard>
@@ -301,7 +280,7 @@ const MainContent = () => {
       </StyledCard>
     </Grid>
   ))}
-</Grid>
+</Grid> */}
 
       </Box>
     </Container>

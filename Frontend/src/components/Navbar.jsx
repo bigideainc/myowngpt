@@ -93,7 +93,20 @@ const Navbar = ({ onProfileClick }) => {
               className={`${location.pathname === '/' ? 'bg-green-500/40 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'} rounded-md px-3 py-2 text-sm font-medium`}
               aria-current={location.pathname === '/' ? 'page' : undefined}
             >
-              YOGPT
+              <svg
+                className="h-6 w-6 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0H8m0 0v6"
+                />
+              </svg>
             </Link>
             <div className="hidden sm:flex sm:items-center sm:justify-end flex-1 space-x-4">
               {authCheckCompleted && !isAuthenticated ? (
@@ -187,7 +200,20 @@ const Navbar = ({ onProfileClick }) => {
               className="bg-green-500/40 text-white block rounded-md px-3 py-2 text-base font_medium"
               aria-current="page"
             >
-              JARVIS
+              <svg
+                className="h-6 w-6 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0H8m0 0v6"
+                />
+              </svg>
             </Link>
             {authCheckCompleted && !isAuthenticated ? (
               <>
