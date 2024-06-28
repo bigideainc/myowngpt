@@ -1,19 +1,60 @@
-# auth/auth.py
-
 import json
 import os
 import sys
 import requests
+import platform
+import psutil
+import GPUtil
 from dotenv import load_dotenv, set_key, find_dotenv
 
 # Load environment variables
 load_dotenv()
 BASE_URL = os.getenv("BASE_URL")
 
+def get_system_details():
+    # Get CPU and memory details
+    memory = psutil.virtual_memory()
+    storage = psutil.disk_usage('/')
+    
+    # Get GPU details using GPUtil
+    gpus = GPUtil.getGPUs()
+    gpu_info = []
+    for gpu in gpus:
+        gpu_info.append({
+            "name": gpu.name,
+            "total_memory": gpu.memoryTotal,
+            "available_memory": gpu.memoryFree,
+            "used_memory": gpu.memoryUsed
+        })
+    
+    system_info = {
+        "os": platform.system(),
+        "os_version": platform.version(),
+        "cpu": platform.processor(),
+        "cpu_count": psutil.cpu_count(logical=True),
+        "total_memory": memory.total,            # Total RAM
+        "available_memory": memory.available,    # Available RAM
+        "used_memory": memory.used,              # Used RAM
+        "total_storage": storage.total,          # Total Storage
+        "available_storage": storage.free,       # Available Storage
+        "used_storage": storage.used,            # Used Storage
+        "gpus": gpu_info                         # GPU Information (list of GPUs)
+    }
+    
+    return system_info
+
 def authenticate(username, password):
     print("Username & password: ", username, " ", password)
     url = f"{BASE_URL}/login"
-    response = requests.post(url, json={'username': username, 'password': password})
+    
+    system_details = get_system_details()
+    
+    response = requests.post(url, json={
+        'username': username,
+        'password': password,
+        'system_details': system_details
+    })
+    
     if response.status_code == 200:
         token = response.json()['token']
         miner_id = response.json()['minerId']

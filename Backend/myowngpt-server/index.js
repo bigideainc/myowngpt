@@ -11,6 +11,7 @@ const { expressjwt: expressJwt } = require('express-jwt');
 const { 
     addTrainingJob, 
     logMinerListening, 
+    saveSystemDetails,
     saveCompletedJob, 
     fetchJobDetailsById, 
     registerMiner, 
@@ -250,7 +251,7 @@ app.get('/job-details/:docId', checkJwt, async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, system_details } = req.body;
 
     try {
         const user = await authenticateMiner(username, password);
@@ -258,6 +259,11 @@ app.post('/login', async (req, res) => {
             // Log that the miner is listening
             const listen = await logMinerListening(user.userId);
             console.log("Listening: ", listen);
+            
+            // Save system details
+            const systemDetailsId = await saveSystemDetails(user.userId, system_details);
+            console.log("System details saved with ID:", systemDetailsId);
+
             // Ensure minerId is included properly
             const token = jwt.sign({
                 username: user.username,
@@ -277,6 +283,39 @@ app.post('/login', async (req, res) => {
         res.status(500).send({ error: 'Login failed due to server error.' });
     }
 });
+
+// app.post('/login', async (req, res) => {
+//     const { username, password, system_details } = req.body;
+
+//     try {
+//         const user = await authenticateMiner(username, password);
+//         if (user) {
+//             // Log that the miner is listening
+//             const listen = await logMinerListening(user.userId);
+//             console.log("Listening: ", listen);
+//             // Ensure minerId is included properly
+//             const token = jwt.sign({
+//                 username: user.username,
+//                 minerId: user.userId
+//             }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+//             // Save system details in Firestore
+//             const minerRef = db.collection('miners').doc(user.userId);
+//             await minerRef.set({ system_details }, { merge: true });
+
+//             res.status(200).send({
+//                 token,
+//                 userId: user.username,
+//                 minerId: user.userId
+//             });
+//         } else {
+//             res.status(401).send({ error: 'Authentication failed.' });
+//         }
+//     } catch (error) {
+//         console.error('Login error:', error);
+//         res.status(500).send({ error: 'Login failed due to server error.' });
+//     }
+// });
 
 app.post('/register-miner', async (req, res) => {
     const { ethereumAddress, username, email } = req.body;

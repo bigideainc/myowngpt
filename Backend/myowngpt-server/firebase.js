@@ -262,29 +262,30 @@ async function registerMiner(minerData) {
   }
 }
 
-// Function to log miner's listening status
-async function logMinerListening(minerId) {
-  const listeningRef = db.collection('listening_miners');
-  try {
-    const docRef = await listeningRef.add({
-      minerId: minerId,
-      startedListening: admin.firestore.FieldValue.serverTimestamp(),
-      status: 'listening'
-    });
-    console.log("Miner listening logged with ID:", docRef.id);
-    return docRef.id;  // Returning the document ID for further reference
-  } catch (error) {
-    console.error("Error logging miner listening:", error);
-    throw error;
-  }
-}
+// // Function to log miner's listening status
+// async function logMinerListening(minerId) {
+//   const listeningRef = db.collection('listening_miners');
+//   try {
+//     const docRef = await listeningRef.add({
+//       minerId: minerId,
+//       startedListening: admin.firestore.FieldValue.serverTimestamp(),
+//       status: 'listening'
+//     });
+//     console.log("Miner listening logged with ID:", docRef.id);
+//     return docRef.id;  // Returning the document ID for further reference
+//   } catch (error) {
+//     console.error("Error logging miner listening:", error);
+//     throw error;
+//   }
+// }
 
 // Call logMinerListening when a miner successfully logs in
+
 async function authenticateMiner(username, password) {
   const minersRef = db.collection('miners');
   const snapshot = await minersRef.where('username', '==', username).limit(1).get();
   if (snapshot.empty) {
-    throw new Error('No matching user');
+      throw new Error('No matching user');
   }
 
   const userDoc = snapshot.docs[0];
@@ -293,14 +294,46 @@ async function authenticateMiner(username, password) {
 
   const passwordMatch = await bcrypt.compare(password, userData.password);
   if (passwordMatch) {
-    console.log("Authenticated miner ID:", userId);
-    return { userId, ...userData };
+      console.log("Authenticated miner ID:", userId);
+      return { userId, ...userData };
   } else {
-    throw new Error('Invalid credentials');
+      throw new Error('Invalid credentials');
+  }
+}
+
+async function logMinerListening(minerId) {
+  const listeningRef = db.collection('listening_miners');
+  try {
+      const docRef = await listeningRef.add({
+          minerId: minerId,
+          startedListening: admin.firestore.FieldValue.serverTimestamp(),
+          status: 'listening'
+      });
+      console.log("Miner listening logged with ID:", docRef.id);
+      return docRef.id;  // Returning the document ID for further reference
+  } catch (error) {
+      console.error("Error logging miner listening:", error);
+      throw error;
+  }
+}
+
+async function saveSystemDetails(minerId, systemDetails) {
+  const systemDetailsRef = db.collection('miner_system_details');
+  try {
+      const docRef = await systemDetailsRef.add({
+          minerId: minerId,
+          systemDetails: systemDetails,
+          loggedAt: admin.firestore.FieldValue.serverTimestamp()
+      });
+      console.log("System details saved with ID:", docRef.id);
+      return docRef.id;  // Returning the document ID for further reference
+  } catch (error) {
+      console.error("Error saving system details:", error);
+      throw error;
   }
 }
 
 
 module.exports = {
-  addTrainingJob, updatestatus, saveCompletedJob, logMinerListening, authenticateMiner, start_training, registerMiner, fetchPendingTrainingJobs, fetchPendingJobDetails, fetchJobDetailsById
+  addTrainingJob, updatestatus, saveCompletedJob, logMinerListening, saveSystemDetails, authenticateMiner, start_training, registerMiner, fetchPendingTrainingJobs, fetchPendingJobDetails, fetchJobDetailsById
 };
