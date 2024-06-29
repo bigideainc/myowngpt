@@ -30,7 +30,7 @@ const Sidebar = ({ user, activeScreen, onMenuClick }) => {
               variant="h3"
               className="text-white font-bold tracking-wide"
             >
-              J.A.R.V.I.S
+              YOGPT
             </Typography>
           </div>
           <nav className="mt-4">

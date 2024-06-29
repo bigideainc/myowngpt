@@ -15,7 +15,7 @@ const Logo = () => {
       fontWeight: 'bold', // make the font bold
       fontFamily: 'Arial, sans-serif' // font styling
     }}>
-      J.A.R.V.I.S
+      YOGPT
     </div>
   );
 }

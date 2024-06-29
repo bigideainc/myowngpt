@@ -1,125 +1,149 @@
+import { faBitcoin, faPaypal } from '@fortawesome/free-brands-svg-icons';
+import { faCreditCard, faUniversity } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+    Button,
     Card,
     CardBody,
-    CardFooter,
+    Checkbox,
     Input,
+    Option,
+    Select,
     Typography
 } from "@material-tailwind/react";
 import React, { useState } from 'react';
-import { FaBitcoin, FaCreditCard } from 'react-icons/fa';
 
 const BillingSection = () => {
-    const [amount, setAmount] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState('card');
-    const [tokens, setTokens] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [depositAmount, setDepositAmount] = useState(300);
+    const [depositCurrency, setDepositCurrency] = useState('EUR');
 
-    const tokenToAmount = {
-        '5': '$25',
-        '10': '$50',
-        '20': '$100'
-    };
-
-    const handleTokenSelect = (tokenValue) => {
-        setTokens(tokenValue);
-        setAmount(tokenToAmount[tokenValue]); // Update the amount based on selected tokens
-    };
-
-    const handleAmountChange = (e) => {
-        setAmount(e.target.value);
-        // You can also set tokens based on amount if needed, e.g., reversing tokenToAmount lookup
-    };
-
-    const handlePaymentSubmit = () => {
-        if (paymentMethod === 'card') {
-            console.log(`Paying $${amount} with card`);
-            // Handle card payment process here
-        } else {
-            console.log(`Paying $${amount} with crypto`);
-            // Handle crypto payment process here
-        }
+    const handlePaymentMethodChange = (event) => {
+        const { id, value } = event.target;
+        setPaymentMethod(value);
+        console.log(`Selected Payment Method: ${id} - ${value}`);
     };
 
     return (
-        <div className="flex flex-col ml-64 bg-white dark:bg-slate-900 p-6 mt-16">
-            <Card className="m-5 mt-16 mb-8">
-                <CardBody>
-                    <Typography variant="h5" color="blue-gray" className="text-xl mb-2">
-                        Token Balance: 0.000 T
+        <div className="flex ml-64 justify-center p-6 mt-16">
+            <Card className="w-full max-w-5xl p-6 flex flex-row bg-green-50">
+                <div className="w-1/2 pr-6">
+                    <Typography variant="h5" color="blue-gray" className="mb-4">
+                        Select Payment Method
                     </Typography>
-                    <Typography>
-                        <p>Spend Limit: $30 / hr</p>
-                        <p>-0 hours left at current spend</p>
-                    </Typography>
-                    <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-                    <Typography variant="h6" className="text-xl mt-5 mb-2">Buy Tokens</Typography>
-                    <div className="flex flex-row justify-start items-center mb-4">
-                        <div className="flex flex border rounded-md">
-                            {Object.entries(tokenToAmount).map(([tokenValue, dollarValue], index, array) => (
-                                <button
-                                    key={tokenValue}
-                                    className={`
-                                        px-4 py-2 text-sm font-bold
-                                        ${tokens === tokenValue ? 'bg-green-500 text-white' : 'bg-green-300 text-white'}
-                                        ${index === 0 ? 'rounded-l-md' : ''}
-                                        ${index === array.length - 1 ? 'rounded-r-md' : ''}
-                                    `}
-                                    onClick={() => handleTokenSelect(tokenValue)}
-                                >
-                                    {tokenValue}
-                                </button>
-                            ))}
+                    <CardBody className="flex flex-col space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <Checkbox
+                                    id="card"
+                                    name="paymentMethod"
+                                    color="blue"
+                                    value="card"
+                                    onChange={handlePaymentMethodChange}
+                                    checked={paymentMethod === 'card'}
+                                />
+                                <label htmlFor="card" className="flex items-center ml-2">
+                                    <FontAwesomeIcon icon={faCreditCard} className="mr-2" />
+                                    Debit or credit card
+                                </label>
+                                <Typography className="ml-2">All major cards accepted</Typography>
+                            </div>
                         </div>
-
-                        <Input
-                            className="border-2 border-gray-200 rounded-lg p-2 ml-4"
-                            type="text"
-                            value={amount}
-                            onChange={handleAmountChange}
-                            placeholder="Amount ($)"
-                            size="sm"
-                        />
-                    </div>
-                </CardBody>
-                <CardFooter className="flex items-center gap-4 pt-0">
-                    <div className="flex flex-col space-y-2">
-                        <div className="flex gap-2">
-                            <button
-                                className={`rounded-full p-2 ${paymentMethod === 'card' ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
-                                onClick={() => setPaymentMethod('card')}
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <Checkbox
+                                    id="paypal"
+                                    name="paymentMethod"
+                                    color="blue"
+                                    value="paypal"
+                                    onChange={handlePaymentMethodChange}
+                                    checked={paymentMethod === 'paypal'}
+                                />
+                                <label htmlFor="paypal" className="flex items-center ml-2">
+                                    <FontAwesomeIcon icon={faPaypal} className="mr-2" />
+                                    PayPal
+                                </label>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <Checkbox
+                                    id="crypto"
+                                    name="paymentMethod"
+                                    color="blue"
+                                    value="crypto"
+                                    onChange={handlePaymentMethodChange}
+                                    checked={paymentMethod === 'crypto'}
+                                />
+                                <label htmlFor="crypto" className="flex items-center ml-2">
+                                    <FontAwesomeIcon icon={faBitcoin} className="mr-2" />
+                                    Cryptocurrency (Coinbase)
+                                </label>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <Checkbox
+                                    id="bank"
+                                    name="paymentMethod"
+                                    color="blue"
+                                    value="bank"
+                                    onChange={handlePaymentMethodChange}
+                                    checked={paymentMethod === 'bank'}
+                                />
+                                <label htmlFor="bank" className="flex items-center ml-2">
+                                    <FontAwesomeIcon icon={faUniversity} className="mr-2" />
+                                    Bank transfer
+                                </label>
+                            </div>
+                        </div>
+                    </CardBody>
+                </div>
+                <div className="w-1/2 pl-6">
+                    <div className="flex flex-col space-y-4">
+                        <div className="flex flex-col space-y-2">
+                            <Typography variant="small" color="blue-gray">Deposit currency</Typography>
+                            <Select
+                                id="depositCurrency"
+                                value={depositCurrency}
+                                onChange={(e) => setDepositCurrency(e)}
+                                className="min-w-[120px]"
                             >
-                                <FaCreditCard className="text-xl" />
-                            </button>
-                            <button
-                                className={`rounded-full p-2 ${paymentMethod === 'crypto' ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
-                                onClick={() => setPaymentMethod('crypto')}
-                            >
-                                <FaBitcoin className="text-xl" />
-                            </button>
+                                <Option value="EUR">EUR</Option>
+                                <Option value="USD">USD</Option>
+                                <Option value="GBP">GBP</Option>
+                            </Select>
                         </div>
-
-                        <button
-                            className="bg-green-500 text-white px-6 py-2 rounded-md text-sm font-bold w-full"
-                            onClick={handlePaymentSubmit}
-                        >
-                            {paymentMethod === 'card' ? 'Pay with Card' : 'Pay with Crypto'}
-                        </button>
-                    </div>
-                </CardFooter>
-            </Card>
-
-            {paymentMethod === 'card' && (
-                <div className="bg-white shadow-md rounded-lg p-6 mt-4">
-                    <Typography variant="h6" className="text-xl mb-2">Configure Card Payments</Typography>
-                    <p>To streamline your purchases, add a credit or debit card to your account. Your card will be charged based on the amount you specify. Transactions are secured and encrypted to protect your information. For convenience, you can set up automatic payments to top up your token balance whenever it runs low.</p>
-                    <div className="flex items-center gap-4 mt-4">
-                        <div className="bg-blue-100 p-4 rounded-lg flex items-center gap-2">
-                            <FaCreditCard className="text-blue-500 text-xl" />
-                            <span>**** **** **** 1234</span>
+                        <div className="flex flex-col space-y-2">
+                            <Typography variant="small" color="blue-gray">Deposit amount</Typography>
+                            <Input
+                                id="depositAmount"
+                                type="number"
+                                value={depositAmount}
+                                onChange={(e) => setDepositAmount(e.target.value)}
+                                className="min-w-[120px]"
+                            />
                         </div>
-                        <button className="bg-gray-200 px-6 py-2 rounded-md text-sm font-bold">Add Card</button>
+                        <div className="flex flex-col space-y-2">
+                            <div className="flex justify-between">
+                                <Typography variant="small" color="blue-gray">Processing fee</Typography>
+                                <Typography variant="small" color="blue-gray">€0.00</Typography>
+                            </div>
+                            <div className="flex justify-between">
+                                <Typography variant="small" color="blue-gray">Total</Typography>
+                                <Typography variant="small" color="blue-gray">€{depositAmount}</Typography>
+                            </div>
+                        </div>
+                        <Button color="red" className="w-full">
+                            Confirm and pay €{depositAmount}
+                        </Button>
+                        <Typography variant="small" color="gray" className="text-center mt-4">
+                            * You agree that your deposit is non-refundable!<br />
+                            * Usually the payment is confirmed in few minutes, but it can take up to 3 hours.
+                        </Typography>
                     </div>
                 </div>
-            )}
+            </Card>
         </div>
     );
 };

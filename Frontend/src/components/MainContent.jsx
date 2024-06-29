@@ -123,7 +123,7 @@ const MainContent = () => {
     <Container className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
         <Typography variant="h3" className={classes.title}>
-          Jarvis
+          YOGPT
         </Typography>
         <Typography variant="subtitle1" className={classes.subtitle}>
           Fine-Tune models for you&apos;re exact use case. Use any dataset from huggingface. No coding required 

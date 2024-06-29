@@ -18,7 +18,7 @@ const MessageInput = ({ onSend }) => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         variant="outlined"
-        placeholder="Message J.A.R.V.I.S"
+        placeholder="Message YOGPT"
         fullWidth
         sx={{ backgroundColor: 'white', borderRadius: '50px', marginRight: 1 }}
       />

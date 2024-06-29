@@ -42,9 +42,9 @@ current_job_id = None  # Global variable to store the current job ID
 
 def display_welcome_message():
     fig = pyfiglet.Figlet(font='slant')
-    welcome_text = fig.renderText('Jarvis Miner')
+    welcome_text = fig.renderText('YOGPT Miner')
     console.print(welcome_text, style="bold blue")
-    console.print(Panel(Text("Welcome to Jarvis Miner System!", justify="center"), style="bold green"))
+    console.print(Panel(Text("Welcome to YOGPT Miner System!", justify="center"), style="bold green"))
 
 async def fetch_jobs():
     timeout = aiohttp.ClientTimeout(total=120)  # Increased timeout to 120 seconds
@@ -238,9 +238,9 @@ if __name__ == "__main__":
 
 # def display_welcome_message():
 #     fig = pyfiglet.Figlet(font='slant')
-#     welcome_text = fig.renderText('Jarvis Miner')
+#     welcome_text = fig.renderText('YOGPT Miner')
 #     console.print(welcome_text, style="bold blue")
-#     console.print(Panel(Text("Welcome to Jarvis Miner System!", justify="center"), style="bold green"))
+#     console.print(Panel(Text("Welcome to YOGPT Miner System!", justify="center"), style="bold green"))
 
 # async def fetch_jobs():
 #     timeout = aiohttp.ClientTimeout(total=120)  # Increased timeout to 120 seconds
@@ -434,9 +434,9 @@ if __name__ == "__main__":
 
 # def display_welcome_message():
 #     fig = pyfiglet.Figlet(font='slant')
-#     welcome_text = fig.renderText('Jarvis Miner')
+#     welcome_text = fig.renderText('YOGPT Miner')
 #     console.print(welcome_text, style="bold blue")
-#     console.print(Panel(Text("Welcome to Jarvis Miner System!", justify="center"), style="bold green"))
+#     console.print(Panel(Text("Welcome to YOGPT Miner System!", justify="center"), style="bold green"))
 
 # async def fetch_jobs():
 #     console.log("Waiting for training jobs")

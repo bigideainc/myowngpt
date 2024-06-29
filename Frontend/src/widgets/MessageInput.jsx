@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Box, TextField, IconButton, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import { Box, CircularProgress, IconButton, TextField } from '@mui/material';
 import axios from 'axios';
+import React, { useState } from 'react';
 
 const MessageInput = ({ model_url, addMessage, updateLastMessage }) => {
   const [message, setMessage] = useState('');
@@ -24,7 +24,7 @@ const MessageInput = ({ model_url, addMessage, updateLastMessage }) => {
     };
 
     try {
-      const response = await axios.post('https://jarvis-server-1.onrender.com/inference', requestData, {
+      const response = await axios.post('https://YOGPT-server-1.onrender.com/inference', requestData, {
         headers: {
           'Content-Type': 'application/json'
         }
