@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { auth } from '../../../auth/config/firebase-config';
 import Navbar from '../../../components/Navbar';
-import BillingSection from '../../../widgets/BillingSection';
+import SubscriptionComponent from '../../../widgets/SubscriptionComponent';
 import Sidebar from '../../../widgets/sidebar';
 import UserInfoPopup from '../../../widgets/userInfo';
 
@@ -122,7 +122,7 @@ const PaymentMenu = () => {
                     </div>
                     {/* Main Content Area */}
                     <div className="content flex-grow min-w-0 overflow-y-auto bg-white dark:bg-slate-900">
-                        <BillingSection />
+                        <SubscriptionComponent />
                     </div>
                 </div>
             </div>

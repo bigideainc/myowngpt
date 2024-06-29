@@ -15,6 +15,8 @@ import SignUp from "./screens/sign-up";
 import { Footer } from "./widgets/Footer";
 import LoadingScreen from "./widgets/LoadingScreen";
 import UserInfoPopup from "./widgets/userInfo";
+import Pricing from './screens/pages/pricing/Pricing'
+import './index.css'
 
 // Function to fetch models from Hugging Face
 const fetchModelDetails = async (modelId) => {
@@ -208,13 +210,14 @@ function App() {
                 onProfileClick={toggleProfileWidget} // Passing the function as a prop
               />
               <div className="flex flex-1 bg-slate-100 dark:bg-slate-900">
-                <div className="flex-1 p-10 px-8  pt-20 pb-0 ">
+                <div className="flex-1 p-10 px-8  pt-20 pb-0 " style={{backgroundColor:'#fff'}}>
                   <MainContent handleExploreClick={handleExploreClick} />
                 </div>
               </div>
               <Footer />
             </>
           } />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/llms" element={<LLMSScreen />} />

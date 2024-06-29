@@ -1,8 +1,9 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Paper, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
+import { FaRobot } from 'react-icons/fa';
 
-const ChatCard = styled(Box)(({ theme }) => ({
+const ChatCard = styled(Paper)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   borderRadius: theme.shape.borderRadius,
   padding: theme.spacing(2),
@@ -13,6 +14,7 @@ const ChatCard = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.grey[100],
   },
   marginBottom: theme.spacing(2),
+  elevation: 3,
 }));
 
 const defaultChats = [
@@ -24,14 +26,28 @@ const defaultChats = [
 
 const DefaultChats = ({ onChatSelect }) => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
-      {defaultChats.map((chat, index) => (
-        <ChatCard key={index} onClick={() => onChatSelect(chat)}>
-          <Typography variant="h6" noWrap>{chat.title}</Typography>
-          <Typography variant="body2" noWrap>{chat.description}</Typography>
-        </ChatCard>
-      ))}
-    </Box>
+    <Paper sx={{ padding: 8 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 4 }}>
+        <Avatar sx={{ bgcolor: 'mediumseagreen', width: 56, height: 56 }}>
+          <FaRobot size={36} />
+        </Avatar>
+        <Typography variant="h5" style={{ fontFamily: 'Poppins', marginTop: '8px' }}>
+          YOGPT
+        </Typography>
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
+        {defaultChats.map((chat, index) => (
+          <ChatCard key={index} onClick={() => onChatSelect(chat)} elevation={3}>
+            <Typography variant="h6" noWrap style={{ fontSize: '12px', fontFamily: 'Poppins' }}>
+              {chat.title}
+            </Typography>
+            <Typography variant="body2" noWrap style={{ fontSize: '12px', fontFamily: 'Poppins' }}>
+              {chat.description}
+            </Typography>
+          </ChatCard>
+        ))}
+      </Box>
+    </Paper>
   );
 };
 
