@@ -8,6 +8,7 @@ import { useAuth } from '../auth/AuthContext';
 import { deleteFineTuningJob, fetchJobs as fetchJobsFromFirebase } from '../auth/config/firebase-config';
 import ChartComponent from './ChartComponent';
 import JobDetails from './JobDetails';
+import { Box,Paper } from '@mui/material';
 
 function DashboardContent({
   filteredJobs,
@@ -81,7 +82,9 @@ function DashboardContent({
 
   const getRowStyle = index => ({
     backgroundColor: expandedRow === index ? '#ccffcc' : 'white',
-    borderBottom: '1px solid #e0e0e0'
+    borderBottom: '1px solid #e0e0e0',
+    fontFamily: 'Poppins',
+    fontSize: '14px'
   });
 
   const handleSelectJob = (jobId) => {
@@ -144,8 +147,10 @@ function DashboardContent({
   const sortedJobs = filteredByStatusJobs.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
 
   return (
-    <div className="flex flex-col ml-64 bg-white dark:bg-slate-900 p-6 mt-16">
+    <div className="flex flex-col ml-64 bg-white dark:bg-slate-900 p-6 mt-16" style={{ fontFamily: 'Poppins', fontSize: '14px' }}>
+      <Paper sx={{padding:2, mb:2}}>
       <div className="flex justify-between items-center">
+        
         <h1 className="text-xl font-bold">Dashboard</h1>
         <button
           className="bg-green-500 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-600"
@@ -153,18 +158,20 @@ function DashboardContent({
         >
           Create New Job
         </button>
+
       </div>
       <div className="w-3/5">
         <p className="text-gray-600 pb-3 font-medium text-base">
-          Manage your training jobs as well as creating new jobs.
+          Manage your training jobs as well as creating new jobs.<br /><br />
           Click <span className='font-semibold'>Create New Job</span> to start a training job.
         </p>
       </div>
-      <div className='mb-5'>
+      </Paper >
+      <Paper elevation={2} sx={{padding:2, mb:4}}>
         <ChartComponent jobs={filteredJobs} models={models} />
-      </div>
-      <h1 className="text-xl mb-2 font-bold">Training Runs</h1>
-      <div className="overflow-x-auto py-6 px-3 bg-slate-100">
+        </Paper>
+      <h1 className="text-xl mb-4 font-bold">Training Runs</h1>
+      <Paper elevation={2} sx={{padding:2, mb:4}}>
         <div className="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
           <div className="flex items-center">
             <button data-dropdown-toggle="dropdownRadio"
@@ -329,7 +336,7 @@ function DashboardContent({
             Next
           </button>
         </div>
-      </div>
+      </Paper>
     </div>
   );
 }

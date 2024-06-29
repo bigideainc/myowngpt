@@ -236,7 +236,7 @@ const ChatUI = ({ model, setActiveScreen }) => {
         <Box sx={{ display: 'flex', flex: 1, height: '100%', overflow: 'hidden', marginTop: '60px', paddingLeft: '280px' }}>
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', paddingRight: '280px' }}>
             <Box sx={{ position: 'fixed', top: '64px', left: '280px', right: '280px', backgroundColor: 'white', zIndex: 10, borderBottom: '1px solid grey' }}>
-              <Typography variant="h6">YOGPT : {model.modelName}</Typography>
+              <Typography variant="h6">J.A.R.V.I.S : {model.modelName}</Typography>
             </Box>
             {conversation.length === 0 && (
               <Box sx={{ textAlign: 'center', marginTop: '5%' }}>
@@ -258,7 +258,7 @@ const ChatUI = ({ model, setActiveScreen }) => {
                       backgroundColor: msg.sender === 'user' ? 'lightblue' : 'lightgrey',
                       padding: 2,
                       borderRadius: 1,
-                      maxWidth: '60%',
+                      maxWidth: '50%',
                     }}
                   >
                     {msg.text}

@@ -9,7 +9,6 @@ const Sidebar = ({ user, activeScreen, onMenuClick }) => {
     { name: "Dashboard", icon: <CustomSliderIcon />, active: activeScreen === 'Dashboard', screen: "Dashboard" },
     { name: "Deployed Models", icon: <FaChartBar />, active: activeScreen === 'Models', screen: "Models" },
     { name: "Billing", icon: <FaWallet />, active: activeScreen === 'Billing', screen: "Billing" },
-    { name: "Settings", icon: <FaCog />, active: activeScreen === 'Settings', screen: "Settings" },
     { name: "Docs", icon: <FaFileAlt />, active: activeScreen === 'Docs', screen: "Docs" },
   ];
 
@@ -22,7 +21,7 @@ const Sidebar = ({ user, activeScreen, onMenuClick }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 h-full w-64 bg-[#0e3517] text-white">
+    <div className="fixed top-0 left-0 h-full w-64 bg-[#0e3517] text-white" style={{ fontFamily: 'Poppins', fontSize: '14px' }}>
       <Card className="bg-transparent shadow-none overflow-hidden w-full h-full">
         <CardBody className="flex flex-col justify-between h-full">
           <div className="flex flex-shrink-0 items-center p-4 pt-0 justify-center">
@@ -39,7 +38,7 @@ const Sidebar = ({ user, activeScreen, onMenuClick }) => {
                 {index !== 0 && <hr className="my-2 border-t border-gray-700" />}
                 <Button
                   color="transparent"
-                  className={`flex items-center gap-4 w-full px-4 py-2 rounded-lg text-left ${item.active ? "bg-green-500 text-white" : "hover:bg-green-600"}`}
+                  className={`flex items-center gap-4 w-full px-4 py-4 rounded-lg text-left ${item.active ? "bg-green-500 text-white" : "hover:bg-green-600"}`}
                   ripple={false}
                   onClick={() => handleMenuClick(item.screen)}
                 >
