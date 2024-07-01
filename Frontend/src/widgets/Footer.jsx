@@ -60,7 +60,7 @@ export function Footer() {
           >
             &copy; {currentYear} <a href="/">J.A.R.V.I.S</a>. All
             Rights Reserved.
-          </Typography>
+          </StyledTypography>
           <div className="flex gap-4 sm:justify-center">
             <StyledTypography as="a" className="opacity-80 text-gray-400 hover:text-white transition-opacity hover:opacity-100">
               <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
