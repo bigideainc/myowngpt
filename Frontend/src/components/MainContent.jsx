@@ -153,7 +153,6 @@ const MainContent = () => {
       title: 'Vision',
       content: [
         'Something Special Coming Soon',
-        
       ],
     },
     // {
@@ -169,12 +168,12 @@ const MainContent = () => {
   ];
 
   return (
-    <Container className={classes.root}>
-      <AppBar position="static" className={classes.appBar}>
-        <Typography variant="h3" className={classes.title}>
+    <Container>
+      <div>
+        <Typography variant="h3">
           Jarvis
         </Typography>
-        <Typography variant="subtitle1" className={classes.subtitle}>
+        <Typography variant="subtitle1">
           Fine-Tune models for you&apos;re exact use case. Use any dataset from huggingface. No coding required 
         </Typography>
         <div className="self-center mt-auto">
@@ -185,44 +184,44 @@ const MainContent = () => {
             </svg>
           </button>
         </div>
-      </AppBar>
-      <div className={classes.tabs}>
-        <Typography variant="body1" className={classes.tab}>Large Language Models</Typography>
-        <Typography variant="body1" className={classes.tab}>Natural Language Processing</Typography>
-        <Typography variant="body1" className={classes.tab}>Computer Vision</Typography>
-        <Typography variant="body1" className={classes.tab}>Regression Modeling</Typography>
       </div>
-      <Typography variant="h5" className={classes.featured}>
+      <div>
+        <Typography variant="body1">Large Language Models</Typography>
+        <Typography variant="body1">Natural Language Processing</Typography>
+        <Typography variant="body1">Computer Vision</Typography>
+        <Typography variant="body1">Regression Modeling</Typography>
+      </div>
+      <Typography variant="h5">
         Services
       </Typography>
-      <Typography variant="subtitle2" className={classes.subtitle2}>
+      <Typography variant="subtitle2">
         No Cost For Token Holders (min holding $100)
       </Typography>
       <Grid container spacing={3} justifyContent="center">
-        <Grid item xs={12} sm={6} className={classes.cardContainer}>
-          <Card className={classes.card}>
-            <CardContent className={classes.cardContent}>
-              <img src="./static/img/llms.png" alt="Math Solver" className={classes.cardImage} />
+        <Grid item xs={12} sm={6}>
+          <Card>
+            <CardContent>
+              <img src="./static/img/llms.png" alt="Math Solver" />
               <div>
                 <Typography variant="h6">Finetune</Typography>
                 <Typography variant="body2" gutterBottom>
                   Personalize Llama and more, with specific data for your use-case
                 </Typography>
-                <Button className={classes.button} variant="text" onClick={handleGetStartedClick}>Get Started</Button>
+                <Button variant="text" onClick={handleGetStartedClick}>Get Started</Button>
               </div>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} className={classes.cardContainer}>
-          <Card className={classes.card}>
-            <CardContent className={classes.cardContent}>
-              <img src="./static/img/voice.png" alt="SQL Expert" className={classes.cardImage} />
+        <Grid item xs={12} sm={6}>
+          <Card>
+            <CardContent>
+              <img src="./static/img/voice.png" alt="SQL Expert" />
               <div>
                 <Typography variant="h6">Provide Compute</Typography>
                 <Typography variant="body2" gutterBottom>
                   Provide compute hardware & software and earn while in your area of comfort
                 </Typography>
-                <Button className={classes.button} variant="text">Coming Soon...</Button>
+                <Button variant="text">Coming Soon...</Button>
               </div>
             </CardContent>
           </Card>
@@ -270,38 +269,7 @@ const MainContent = () => {
             </TabPanel>
           ))}
         </Paper>
-
-        
-        {/* <Grid container spacing={3} justifyContent="center">
-  {services.map((service, index) => (
-    <Grid item xs={12} sm={6} md={3} key={index}>
-      <StyledCard>
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <Box sx={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', alignItems: 'center', flexGrow: 1 }}>
-            <StyledCardImage src={service.image} alt={service.title} sx={{ mb: isMobile ? 0 : 2, mr: isMobile ? 2 : 0 }} />
-            <Box sx={{ textAlign: 'left', flexGrow: 1 }}>
-              <Typography variant="h6" sx={{ fontFamily: 'Poppins' }}>{service.title}</Typography>
-              <Typography variant="body2" sx={{ mb: 2, fontFamily: 'Poppins' }}>{service.description}</Typography>
-            </Box>
-          </Box>
-          <Box sx={{ textAlign: 'center', mt: 'auto' }}>
-            <StyledButton
-              variant="text"
-              onClick={service.action}
-              disabled={service.disabled}
-              className={service.disabled ? 'disabled' : ''}
-              sx={{ fontFamily: 'Poppins' }}
-            >
-              {service.disabled ? 'Coming Soon...' : 'Get Started'}
-            </StyledButton>
-          </Box>
-        </CardContent>
-      </StyledCard>
-    </Grid>
-  ))}
-</Grid> */}
-
-      </Box>
+      </Grid>
     </Container>
   );
 };
