@@ -1,20 +1,21 @@
-import os
-import ssl
-import aiohttp
-import sys
-import json
-import time
-import asyncio
-import signal
 import argparse
+import asyncio
+import json
+import os
+import signal
+import ssl
+import sys
+import time
+
+import aiohttp
 import pyfiglet
-from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich.panel import Panel
-from rich.text import Text
-from rich.live import Live
-from rich.table import Table
 from dotenv import load_dotenv
+from rich.console import Console
+from rich.live import Live
+from rich.panel import Panel
+from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.table import Table
+from rich.text import Text
 
 # Append directories to sys.path for relative imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../', 'finetune')))
@@ -22,14 +23,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'u
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), './', 'auth')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'finetune/runpod')))
 
+from auth import authenticate
 from bert_fine_tune import fine_tune_bert
 from gpt_fine_tune import fine_tune_gpt
-# from open_elm import fine_tune_openELM
+from helpers import (fetch_and_save_job_details, fetch_jobs,
+                     register_completed_job, submit_to_runpod,
+                     update_job_status)
 from llama_fine_tune import fine_tune_llama
-from t5_fine_tune import fine_tune_t5
+from open_elm import fine_tune_openELM
 from pipeline import generate_pipeline_script
-from auth import authenticate
-from helpers import fetch_and_save_job_details, fetch_jobs, update_job_status, submit_to_runpod, register_completed_job
+from t5_fine_tune import fine_tune_t5
 
 load_dotenv()
 BASE_URL = os.getenv("BASE_URL")
@@ -42,9 +45,9 @@ current_job_id = None  # Global variable to store the current job ID
 
 def display_welcome_message():
     fig = pyfiglet.Figlet(font='slant')
-    welcome_text = fig.renderText('Jarvis Miner')
+    welcome_text = fig.renderText('YOGPT Miner')
     console.print(welcome_text, style="bold blue")
-    console.print(Panel(Text("Welcome to Jarvis Miner System!", justify="center"), style="bold green"))
+    console.print(Panel(Text("Welcome to YOGPT Miner System!", justify="center"), style="bold green"))
 
 async def fetch_jobs():
     timeout = aiohttp.ClientTimeout(total=120)  # Increased timeout to 120 seconds
@@ -116,7 +119,17 @@ async def process_job(job_details, run_on_runpod=False, runpod_api_key=None):
             generate_pipeline_script(job_details, script_path)
             submit_to_runpod(script_path, runpod_api_key)
         else:
-            model_repo_url = await fine_tune_llama(model_id, dataset_id, new_model_name, HF_ACCESS_TOKEN, job_id)
+            model_repo_url = None
+            if 'llama' in model_id:
+                model_repo_url = await fine_tune_llama(model_id, dataset_id, new_model_name, HF_ACCESS_TOKEN, job_id)
+            elif 'gpt' in model_id:
+                model_repo_url = await fine_tune_gpt(model_id, dataset_id, new_model_name, HF_ACCESS_TOKEN, job_id)
+            elif 'openelm' in model_id:
+                model_repo_url = await fine_tune_openELM(model_id, dataset_id, new_model_name, HF_ACCESS_TOKEN, job_id)
+            else:
+                console.log(f"Unsupported model ID: {model_id}. Skipping job.")
+                return  # Skip this job and proceed to the next one
+
             console.log(f"Model uploaded to: {model_repo_url}")
 
         await update_job_status(job_id, 'completed')
@@ -238,9 +251,9 @@ if __name__ == "__main__":
 
 # def display_welcome_message():
 #     fig = pyfiglet.Figlet(font='slant')
-#     welcome_text = fig.renderText('Jarvis Miner')
+#     welcome_text = fig.renderText('YOGPT Miner')
 #     console.print(welcome_text, style="bold blue")
-#     console.print(Panel(Text("Welcome to Jarvis Miner System!", justify="center"), style="bold green"))
+#     console.print(Panel(Text("Welcome to YOGPT Miner System!", justify="center"), style="bold green"))
 
 # async def fetch_jobs():
 #     timeout = aiohttp.ClientTimeout(total=120)  # Increased timeout to 120 seconds
@@ -434,9 +447,9 @@ if __name__ == "__main__":
 
 # def display_welcome_message():
 #     fig = pyfiglet.Figlet(font='slant')
-#     welcome_text = fig.renderText('Jarvis Miner')
+#     welcome_text = fig.renderText('YOGPT Miner')
 #     console.print(welcome_text, style="bold blue")
-#     console.print(Panel(Text("Welcome to Jarvis Miner System!", justify="center"), style="bold green"))
+#     console.print(Panel(Text("Welcome to YOGPT Miner System!", justify="center"), style="bold green"))
 
 # async def fetch_jobs():
 #     console.log("Waiting for training jobs")

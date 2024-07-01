@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
-  Box, Button, Card, CardContent, Grid, Stack, Typography,
-  useTheme, useMediaQuery, Container, Tabs, Tab, Paper
+  Box, Button, Card, CardContent,
+  Container,
+  Grid,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { styled } from '@mui/system';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../auth/config/firebase-config';
-import { FaCheckCircle } from 'react-icons/fa';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
@@ -147,7 +153,6 @@ const MainContent = () => {
       title: 'Vision',
       content: [
         'Something Special Coming Soon',
-        
       ],
     },
     // {
@@ -163,50 +168,63 @@ const MainContent = () => {
   ];
 
   return (
-    <Container maxWidth="lg">
-      <Box sx={{
-        py: { xs: 2, sm: 4, md: 6 },
-        backgroundColor: '#fff',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}>
-        <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ mb: 2, minHeight: '40vh' }}>
-          <Grid item xs={12} md={6} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-            <Typography variant="h1" sx={{ fontSize: { xs: '42px', sm: '50px', md: '60px', fontFamily: 'Poppins' }, color: 'black', mb: 2 }}>
-              Your Own GPT
-            </Typography>
-            <Box component="ul" sx={{ listStyle: 'none', pl: 0, fontFamily: 'Poppins', fontSize: { xs: '18px', sm: '24px', md: '30px' }, color: 'black', mb: 4, lineHeight: 1.5 }}>
-              <GreenTickListItem>
-                Fine-Tune Model for your exact use case.
-              </GreenTickListItem>
-              <GreenTickListItem>
-                Use any dataset from huggingface.
-              </GreenTickListItem>
-              <GreenTickListItem>
-                No coding required.
-              </GreenTickListItem>
-            </Box>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent={{ xs: 'center', md: 'flex-start' }} sx={{ fontFamily: 'Poppins' }}>
-              
-              <StyledButton variant="outlined" className="get-started" onClick={handleGetStartedClick}>
-                Request Access
-              </StyledButton>
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Box
-              component="img"
-              src="./static/img/jarvis.png"
-              alt="Jarvis"
-              sx={{
-                width: '100%',
-                maxWidth: '400px',
-                height: 'auto',
-                borderRadius: theme.shape.borderRadius,
-              }}
-            />
-          </Grid>
+    <Container>
+      <div>
+        <Typography variant="h3">
+          Jarvis
+        </Typography>
+        <Typography variant="subtitle1">
+          Fine-Tune models for you&apos;re exact use case. Use any dataset from huggingface. No coding required 
+        </Typography>
+        <div className="self-center mt-auto">
+          <button className="inline-flex items-center justify-center px-8 py-2 bg-green-900 hover:bg-green-850 focus:outline-none focus:ring-4 focus:ring-green-850 focus:ring-opacity-50 text-white text-sm font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out group">
+            Learn More
+            <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-7-7l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div>
+        <Typography variant="body1">Large Language Models</Typography>
+        <Typography variant="body1">Natural Language Processing</Typography>
+        <Typography variant="body1">Computer Vision</Typography>
+        <Typography variant="body1">Regression Modeling</Typography>
+      </div>
+      <Typography variant="h5">
+        Services
+      </Typography>
+      <Typography variant="subtitle2">
+        No Cost For Token Holders (min holding $100)
+      </Typography>
+      <Grid container spacing={3} justifyContent="center">
+        <Grid item xs={12} sm={6}>
+          <Card>
+            <CardContent>
+              <img src="./static/img/llms.png" alt="Math Solver" />
+              <div>
+                <Typography variant="h6">Finetune</Typography>
+                <Typography variant="body2" gutterBottom>
+                  Personalize Llama and more, with specific data for your use-case
+                </Typography>
+                <Button variant="text" onClick={handleGetStartedClick}>Get Started</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Card>
+            <CardContent>
+              <img src="./static/img/voice.png" alt="SQL Expert" />
+              <div>
+                <Typography variant="h6">Provide Compute</Typography>
+                <Typography variant="body2" gutterBottom>
+                  Provide compute hardware & software and earn while in your area of comfort
+                </Typography>
+                <Button variant="text">Coming Soon...</Button>
+              </div>
+            </CardContent>
+          </Card>
         </Grid>
         <Box sx={{ textAlign: 'center', my: 4, width: '100%' }}>
           <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#023020', mb: 1, fontFamily: 'Poppins' }}>
@@ -251,38 +269,7 @@ const MainContent = () => {
             </TabPanel>
           ))}
         </Paper>
-
-        
-        {/* <Grid container spacing={3} justifyContent="center">
-  {services.map((service, index) => (
-    <Grid item xs={12} sm={6} md={3} key={index}>
-      <StyledCard>
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <Box sx={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', alignItems: 'center', flexGrow: 1 }}>
-            <StyledCardImage src={service.image} alt={service.title} sx={{ mb: isMobile ? 0 : 2, mr: isMobile ? 2 : 0 }} />
-            <Box sx={{ textAlign: 'left', flexGrow: 1 }}>
-              <Typography variant="h6" sx={{ fontFamily: 'Poppins' }}>{service.title}</Typography>
-              <Typography variant="body2" sx={{ mb: 2, fontFamily: 'Poppins' }}>{service.description}</Typography>
-            </Box>
-          </Box>
-          <Box sx={{ textAlign: 'center', mt: 'auto' }}>
-            <StyledButton
-              variant="text"
-              onClick={service.action}
-              disabled={service.disabled}
-              className={service.disabled ? 'disabled' : ''}
-              sx={{ fontFamily: 'Poppins' }}
-            >
-              {service.disabled ? 'Coming Soon...' : 'Get Started'}
-            </StyledButton>
-          </Box>
-        </CardContent>
-      </StyledCard>
-    </Grid>
-  ))}
-</Grid> */}
-
-      </Box>
+      </Grid>
     </Container>
   );
 };

@@ -1,15 +1,19 @@
+import {
+  Box, Button,
+  Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box, Button, Typography, useTheme, useMediaQuery, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
-} from '@mui/material';
 import { auth } from '../auth/config/firebase-config';
 
 const PricingContent = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));//
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(setUser);

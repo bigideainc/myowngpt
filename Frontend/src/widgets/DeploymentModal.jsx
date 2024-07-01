@@ -32,7 +32,7 @@ const DeploymentModal = ({ job, complete_job, onClose, setActiveScreen }) => {
     setLoading(true);
 
     try {
-      const response = await axios.post('https://jarvis-server-1.onrender.com/deploy-model', modelData, {
+      const response = await axios.post('https://YOGPT-server-1.onrender.com/deploy-model', modelData, {
         headers: {
           'Content-Type': 'application/json'
         }
