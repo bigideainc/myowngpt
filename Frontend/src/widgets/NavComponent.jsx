@@ -24,7 +24,7 @@ const Navigator = ({ onProfileClick }) => {
     }, []);
 
     const handleSignOut = () => {
-        signOut(auth).then(() => navigate('/sign-in')).catch((error) => console.error('Sign out error', error));
+        signOut(auth).then(() => navigate('/')).catch((error) => console.error('Sign out error', error));
     };
 
     return (

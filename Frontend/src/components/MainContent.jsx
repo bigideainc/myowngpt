@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
-  Box, Button, Stack, Typography, Container, useMediaQuery,
+  Box, Button,
+  Container,
+  Stack, Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-import { auth } from '../auth/config/firebase-config';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../auth/config/firebase-config';
+import PopUp from '../widgets/LoginPopUp';
 const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
   '&.learn-more': {
@@ -69,6 +73,7 @@ const MainContent = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
@@ -77,11 +82,19 @@ const MainContent = () => {
   }, []);
 
   const handleGetStartedClick = () => {
-    navigate(user ? '/jobs' : '/sign-in');
+    if (user) {
+      navigate('/jobs');
+    } else {
+      setOpen(true);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
-    <Container maxWidth="lg" sx={{ backgroundColor: '#ffd433', minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+    <Container maxWidth="lg" sx={{ backgroundColor: '#ffd433', minHeight: '82vh', display: 'flex', alignItems: 'center' }}>
       <Box sx={{
         py: { xs: 2, sm: 4, md: 6 },
         display: 'flex',
@@ -120,6 +133,7 @@ const MainContent = () => {
                 Get Started <ArrowForwardIcon sx={{ ml: 1 }} />
               </StyledButton>
             </Stack>
+            <PopUp open={open} onClose={handleClose} />
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center', flex: 1, mt: { xs: 4, md: 0 }, px: { xs: 2, md: 4 } }}>
            <Box
