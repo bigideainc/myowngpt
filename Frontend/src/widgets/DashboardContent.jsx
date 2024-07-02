@@ -153,6 +153,7 @@ function DashboardContent({
         
         <h1 className="text-xl font-bold">Dashboard</h1>
         <button
+        style={{color:'#ffd433'}}
           className="bg-green-500 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-600"
           onClick={() => navigate('/jobs')}
         >

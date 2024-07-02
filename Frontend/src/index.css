@@ -3,5 +3,7 @@
 @tailwind utilities;
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Popins', sans-serif;
+    width: '100%';
+    margin:'auto';
   }

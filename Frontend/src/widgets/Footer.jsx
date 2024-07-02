@@ -28,9 +28,9 @@ export function Footer() {
     <footer className="relative py-10 bg-green-900 w-full">
       <div className="mx-auto w-full max-w-7xl px-8">
         <div className="grid grid-cols-1 justify-between gap-4 md:grid-cols-2">
-          <Typography className="mb-6 text-3xl font-bold text-white">
-            J.A.R.V.I.S
-          </Typography>
+          <StyledTypography className="mb-6 text-3xl font-bold text-white">
+            yoGPT
+          </StyledTypography>
           <div className="grid grid-cols-3 justify-between gap-4">
             {LINKS.map(({ title, items }) => (
               <ul key={title}>
@@ -58,8 +58,7 @@ export function Footer() {
           <StyledTypography
             className="mb-4 text-center font-semibold text-gray-400 hover:text-white md:mb-0"
           >
-            &copy; {currentYear} <a href="/">J.A.R.V.I.S</a>. All
-            Rights Reserved.
+            &copy; {currentYear} <a href="/">yoGPT</a>. All Rights Reserved.
           </StyledTypography>
           <div className="flex gap-4 sm:justify-center">
             <StyledTypography as="a" className="opacity-80 text-gray-400 hover:text-white transition-opacity hover:opacity-100">

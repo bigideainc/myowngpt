@@ -7,11 +7,13 @@ import MainContent from "./components/MainContent";
 import Navbar from "./components/Navbar";
 import ChatLayout from "./screens/pages/chat/ChatLayout";
 import LLMSScreen from "./screens/pages/llms/LLMSScreen";
-import ModelsScreen from "./screens/pages/llms/models";
+import ModelsScreen from "./screens/pages/llms/ModelScreen";
 import PaymentMenu from "./screens/pages/payment/menu";
 import TrainingJobs from "./screens/pages/trainer/jobs";
+import BillingScreen from "./screens/pages/llms/BillingScreen";
 import SignIn from "./screens/sign-in";
 import SignUp from "./screens/sign-up";
+import ChatUI from "./screens/pages/llms/InferenceScreen";
 import { Footer } from "./widgets/Footer";
 import LoadingScreen from "./widgets/LoadingScreen";
 import UserInfoPopup from "./widgets/userInfo";
@@ -210,7 +212,7 @@ function App() {
                 onProfileClick={toggleProfileWidget} // Passing the function as a prop
               />
               <div className="flex flex-1 bg-slate-100 dark:bg-slate-900">
-                <div className="flex-1 p-10 px-8  pt-20 pb-0 " style={{backgroundColor:'#fff'}}>
+                <div className="flex-1 p-10 px-8  pt-20 pb-0 " style={{backgroundColor: '#ffd433'}}>
                   <MainContent handleExploreClick={handleExploreClick} />
                 </div>
               </div>
@@ -223,6 +225,8 @@ function App() {
           <Route path="/llms" element={<LLMSScreen />} />
           <Route path="/jobs" element={<TrainingJobs />} />
           <Route path="/models" element={<ModelsScreen />} />
+          <Route path="/bill" element={<BillingScreen />} />
+          <Route path="/inference:model" element={<ChatUI />} />
           <Route path="/payment" element={<PaymentMenu />} />
           <Route path="/chat/:url" element={<ChatLayout />} />
         </Routes>
