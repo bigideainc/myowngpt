@@ -1,14 +1,14 @@
-import React from 'react';
-import { Box, Typography, Paper, Avatar } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RobotIcon from '@mui/icons-material/SmartToy';
+import { Avatar, Box, Paper, Typography } from '@mui/material';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
 const ChatWindow = ({ conversation }) => {
   return (
     <Box sx={{ flexGrow: 1, p: 3, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
       <Typography variant="h5" gutterBottom sx={{color:'green'}}>
-        J.A.R.V.I.S
+        YOGPT
       </Typography>
       {conversation.map((msg, index) => {
         const isUserMessage = msg.startsWith('You:');

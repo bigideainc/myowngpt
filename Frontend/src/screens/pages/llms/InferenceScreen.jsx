@@ -69,7 +69,7 @@ const ChatUI = ({ model, setActiveScreen }) => {
 
       console.log("Request data", requestData);
   
-      const response = await axios.post('https://jarvis-server-1.onrender.com/inference', requestData, {
+      const response = await axios.post('https://YOGPT-server-1.onrender.com/inference', requestData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -205,8 +205,8 @@ const ChatUI = ({ model, setActiveScreen }) => {
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
         <Box sx={{ display: 'flex', flex: 1, height: '100%', overflow: 'hidden', marginTop: '60px', paddingLeft: '280px' }}>
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', paddingRight: '280px' }}>
-            <Box sx={{ position: 'fixed', top: '80px', left: '280px', right: '280px', backgroundColor: 'white', zIndex: 10, borderBottom: '1px solid grey' }}>
-              <Typography variant="h6">YOGPT: {model.modelName}</Typography>
+            <Box sx={{ position: 'fixed', top: '64px', left: '280px', right: '280px', backgroundColor: 'white', zIndex: 10, borderBottom: '1px solid grey' }}>
+              <Typography variant="h6">J.A.R.V.I.S : {model.modelName}</Typography>
             </Box>
             {conversation.length === 0 && (
               <Box sx={{ textAlign: 'center', marginTop: '5%' }}>

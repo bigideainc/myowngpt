@@ -1,20 +1,18 @@
 # fine_tune_llama.py
 
+import asyncio
 import os
 import shutil
+
 import torch
-import asyncio
 from datasets import load_dataset
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    BitsAndBytesConfig,
-    TrainingArguments,
-)
-from peft import LoraConfig
-from trl import SFTTrainer
-from huggingface_hub import HfApi, Repository
 from helpers import update_job_status
+from huggingface_hub import HfApi, Repository
+from peft import LoraConfig
+from transformers import (AutoModelForCausalLM, AutoTokenizer,
+                          BitsAndBytesConfig, TrainingArguments)
+from trl import SFTTrainer
+
 
 async def fine_tune_llama(base_model, dataset_id, new_model_name, hf_token, job_id):
     """Train a model with the given parameters and upload it to Hugging Face."""

@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Box, Button, Stack, Typography, Container, useMediaQuery,
 } from '@mui/material';
