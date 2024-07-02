@@ -1,10 +1,11 @@
+import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Stack, Typography, Container, useMediaQuery,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { auth } from '../auth/config/firebase-config';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import { useNavigate } from 'react-router-dom';
 const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
   '&.learn-more': {

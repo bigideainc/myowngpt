@@ -32,10 +32,10 @@ const Sidebar = ({ user, activeScreen, onMenuClick }) => {
                 <NavLink
                   to={item.path}
                   className={({ isActive }) =>
-                    `flex items-center gap-4 w-full px-4 py-4 rounded-lg text-left font-bold ${isActive ? "bg-green-500 text-white" : "hover:bg-[#ffd433] hover:text-black"}`
+                    `flex items-center gap-4 w-full px-4 py-4 rounded-lg text-left font-bold ${isActive ? "bg-[#ffd433] text-white" : "hover:bg-[#ffd433] hover:text-white"}`
                   }
                   onClick={() => onMenuClick(item.screen)}
-                  style={{ color: '#ffd433' }}
+                  style={{ color: 'white' }}
                 >
                   {React.cloneElement(item.icon, { className: "text-[#ffd433]" })}
                   <span>{item.name}</span>

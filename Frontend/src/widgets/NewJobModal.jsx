@@ -10,6 +10,7 @@ import {
   DialogTitle,
   FormControlLabel,
   Slider,
+  Paper,
   TextField,
   Typography
 } from '@mui/material';
@@ -193,6 +194,7 @@ const NewJobModal = () => {
   };
 
   return (
+    
     <Box className="flex flex-col ml-64 bg-white dark:bg-slate-900 p-6 mt-16" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>
       {formError && (
         <Box className="fixed inset-0 flex justify-center items-center z-50" sx={{ backdropFilter: 'blur(8px)' }}>
@@ -251,8 +253,10 @@ const NewJobModal = () => {
       )}
 
       <Box className="flex justify-between items-center mb-4">
-        <Typography variant="h5">New Training Job</Typography>
+        <Typography variant="h5">Fine Tuning Job </Typography>
       </Box>
+
+      <Paper elevation={3}>
       <Box className="bg-white dark:bg-gray-800 p-5 rounded-lg w-full overflow-y-auto">
         <Box className="space-y-6">
           <Box className="space-y-4">
@@ -287,7 +291,7 @@ const NewJobModal = () => {
                     InputProps={{ style: { fontFamily: 'Poppins', fontSize: '14px' } }}
                   />
                   <Button
-                    sx={{ ml: 2, backgroundColor: 'black', color: '#ffd433', fontFamily: 'Poppins', fontSize: '14px' }}
+                    sx={{ ml: 2, backgroundColor: 'MediumSeaGreen', color: '#ffd433', fontFamily: 'Poppins', fontSize: '12px' }}
                     onClick={toggleModelSelectModal}
                   >
                     Select Model
@@ -380,7 +384,7 @@ const NewJobModal = () => {
           <Box>
             <Button
               onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
-              sx={{ backgroundColor: 'black', color: '#ffd433', fontFamily: 'Poppins', fontSize: '14px', mt: 2 }}
+              sx={{ backgroundColor: 'MediumSeaGreen', color: '#ffd433', fontFamily: 'Poppins', fontSize: '14px', mt: 2 }}
             >
               {showAdvancedSettings ? 'Hide' : 'Show'} Advanced Settings
             </Button>
@@ -464,6 +468,7 @@ const NewJobModal = () => {
           </Box>
         </Box>
       </Box>
+      </Paper>
     </Box>
   );
 };
