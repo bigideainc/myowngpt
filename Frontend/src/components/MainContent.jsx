@@ -1,19 +1,15 @@
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
-  Box, Button, Card, CardContent,
+  Box, Button,
   Container,
-  Grid,
-  Paper,
-  Tab,
-  Tabs,
-  Typography,
+  Stack, Typography,
   useMediaQuery,
-  useTheme
 } from '@mui/material';
-import { styled } from '@mui/system';
+import { styled, useTheme } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../auth/config/firebase-config';
-
+import PopUp from '../widgets/LoginPopUp';
 const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
   '&.learn-more': {
@@ -39,24 +35,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
     },
   },
 }));
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  backgroundColor: '#023020',
-  color: '#fff',
-  borderRadius: theme.shape.borderRadius,
-  height: '100%',
-  transition: 'all 0.3s ease-in-out',
-  '&:hover': {
-    transform: 'scale(1.05)',
-  },
-}));
-
-const StyledCardImage = styled('img')({
-  width: '100px',
-  height: '100px',
-  borderRadius: '50%',
-  objectFit: 'cover',
-});
 
 const ListItem = styled('li')(({ theme }) => ({
   position: 'relative',
@@ -91,31 +69,12 @@ const GreenTickListItem = styled(ListItem)({
   },
 });
 
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-};
-
 const MainContent = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(setUser);
@@ -123,153 +82,91 @@ const MainContent = () => {
   }, []);
 
   const handleGetStartedClick = () => {
-    navigate(user ? '/llms' : '/sign-in');
+    if (user) {
+      navigate('/jobs');
+    } else {
+      setOpen(true);
+    }
   };
 
-  const services = [
-    { title: 'Finetune', image: './static/img/llms.png', description: 'Personalize Llama and more, with specific data for your use-case.', action: handleGetStartedClick },
-    { title: 'Provide Compute', image: './static/img/voice.png', description: 'Provide compute hardware & software and earn while in your area of comfort.', disabled: true },
-    { title: 'API Inference', image: './static/img/cv.png', description: 'Deploy and chat with your fine-tuned models.', disabled: true },
-    { title: 'Vision', image: './static/img/multimodal.png', description: 'Something special coming FY25.', disabled: true },
-  ];
-
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
+  const handleClose = () => {
+    setOpen(false);
   };
-
-  const tabContent = [
-    {
-      image: './static/img/LLM.jpg',
-      title: 'Large Language Models',
-      content: [
-        'Develop, improve, and manage the lifecycle of all models in your organization.',
-        'Train custom models on our hosted GPUs to save time and money.',
-        'Bring your own model, leverage foundation models, or start with any of the 50k pre-trained open source models in Roboflow Universe.',
-        'Distill foundations models, like llama2, OpenELM, GPT2, and more to your custom data and smaller models to improve latency.',
-      ],
-    },
-    {
-      image: './static/img/ComputerVision.jpg',
-      title: 'Vision',
-      content: [
-        'Something Special Coming Soon',
-      ],
-    },
-    // {
-    //   image: './static/img/predictive.jpg',
-    //   title: 'Regression Modeling',
-    //   content: [
-    //     'Predict and analyze data trends using advanced regression modeling techniques.',
-    //     'Linear regression, logistic regression, and more.',
-    //     'Model evaluation and validation to ensure accuracy.',
-    //     'Use cases in finance, marketing, healthcare, and more.',
-    //   ],
-    // },
-  ];
 
   return (
-    <Container>
-      <div>
-        <Typography variant="h3">
-          Jarvis
-        </Typography>
-        <Typography variant="subtitle1">
-          Fine-Tune models for you&apos;re exact use case. Use any dataset from huggingface. No coding required 
-        </Typography>
-        <div className="self-center mt-auto">
-          <button className="inline-flex items-center justify-center px-8 py-2 bg-green-900 hover:bg-green-850 focus:outline-none focus:ring-4 focus:ring-green-850 focus:ring-opacity-50 text-white text-sm font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out group">
-            Learn More
-            <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-7-7l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div>
-        <Typography variant="body1">Large Language Models</Typography>
-        <Typography variant="body1">Natural Language Processing</Typography>
-        <Typography variant="body1">Computer Vision</Typography>
-        <Typography variant="body1">Regression Modeling</Typography>
-      </div>
-      <Typography variant="h5">
-        Services
-      </Typography>
-      <Typography variant="subtitle2">
-        No Cost For Token Holders (min holding $100)
-      </Typography>
-      <Grid container spacing={3} justifyContent="center">
-        <Grid item xs={12} sm={6}>
-          <Card>
-            <CardContent>
-              <img src="./static/img/llms.png" alt="Math Solver" />
-              <div>
-                <Typography variant="h6">Finetune</Typography>
-                <Typography variant="body2" gutterBottom>
-                  Personalize Llama and more, with specific data for your use-case
-                </Typography>
-                <Button variant="text" onClick={handleGetStartedClick}>Get Started</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Card>
-            <CardContent>
-              <img src="./static/img/voice.png" alt="SQL Expert" />
-              <div>
-                <Typography variant="h6">Provide Compute</Typography>
-                <Typography variant="body2" gutterBottom>
-                  Provide compute hardware & software and earn while in your area of comfort
-                </Typography>
-                <Button variant="text">Coming Soon...</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Box sx={{ textAlign: 'center', my: 4, width: '100%' }}>
-          <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#023020', mb: 1, fontFamily: 'Poppins' }}>
-            Services
-          </Typography>
+    <Container maxWidth="lg" sx={{ backgroundColor: '#ffd433', minHeight: '82vh', display: 'flex', alignItems: 'center' }}>
+      <Box sx={{
+        py: { xs: 2, sm: 4, md: 6 },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+      }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          mx: 'auto',
+        }}>
+          <Box sx={{ textAlign: { xs: 'center', md: 'left' }, mb: { xs: 4, md: 0 }, flex: 1, px: { xs: 2, md: 4 } }}>
+            <Typography variant="h2" sx={{ fontSize: { xs: '36px', sm: '48px', md: '54px' }, fontFamily: 'Poppins', color: 'black', mb: 2 }}>
+              <b>Your Own GPT</b>
+            </Typography>
+            <Box component="ul" sx={{ listStyle: 'none', pl: 0, fontFamily: 'Poppins', fontSize: { xs: '16px', sm: '20px', md: '24px' }, color: 'black', mb: 4, lineHeight: 1.5 }}>
+              <GreenTickListItem>
+                <b>Fine-Tune</b> Models for your exact need.
+              </GreenTickListItem>
+              <GreenTickListItem>
+                Use any dataset from <b>huggingface</b>.
+              </GreenTickListItem>
+              <GreenTickListItem>
+                Deploy and <b>Chat</b> with your Model.
+              </GreenTickListItem>
+              <GreenTickListItem>
+                <b>No coding</b> required.
+              </GreenTickListItem>
+            </Box>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent={{ xs: 'center', md: 'flex-start' }}>
+              <StyledButton variant="outlined" className="get-started" onClick={handleGetStartedClick} style={{ fontSize: '20px', fontWeight: 'bold', color: 'green' }}>
+                Get Started <ArrowForwardIcon sx={{ ml: 1 }} />
+              </StyledButton>
+            </Stack>
+            <PopUp open={open} onClose={handleClose} />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center', flex: 1, mt: { xs: 4, md: 0 }, px: { xs: 2, md: 4 } }}>
+           <Box
+              sx={{
+                width: '100%',
+                maxWidth: '8000px',
+                height: 'auto',
+                borderRadius: '50%',
+                backgroundColor: 'white',
+                padding: 2,
+                boxShadow: theme.shadows[4],
+                transform: 'rotate(-30deg)', 
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                component="img"
+                src="/static/img/jarvis.png"
+                alt="Jarvis"
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  transform: 'rotate(30deg)',
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
-        <Paper elevation={2} sx={{ padding: 4 }}>
-          <Tabs value={selectedTab} onChange={handleTabChange} centered>
-            {['Large Language Models','Vision' ].map((tab, index) => (
-              <Tab key={tab} label={tab} sx={{ fontFamily: 'Poppins' }} />
-            ))}
-          </Tabs>
-
-          {tabContent.map((tab, index) => (
-            <TabPanel value={selectedTab} index={index} key={index}>
-              <Grid container spacing={4} alignItems="center">
-                <Grid item xs={12} md={6}>
-                  <Box
-                    component="img"
-                    src={tab.image}
-                    alt={tab.title}
-                    sx={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: theme.shape.borderRadius,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Typography variant="h4" sx={{ mb: 2, fontFamily: 'Poppins' }}>
-                    {tab.title}
-                  </Typography>
-                  <Box component="ul" sx={{ listStyle: 'none', pl: 0 }}>
-                    {tab.content.map((point, idx) => (
-                      <GreenTickListItem key={idx}>
-                        <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>{point}</Typography>
-                      </GreenTickListItem>
-                    ))}
-                  </Box>
-                </Grid>
-              </Grid>
-            </TabPanel>
-          ))}
-        </Paper>
-      </Grid>
+      </Box>
     </Container>
   );
 };
