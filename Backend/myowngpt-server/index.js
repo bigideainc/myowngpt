@@ -387,6 +387,10 @@ model.save_pretrained('./final_model-${suffix}')
 `;
 }
 
+app.get('/', (req, res) => {
+    res.send('Hello World')
+  })
+
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
