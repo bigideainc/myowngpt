@@ -45,6 +45,11 @@ const checkJwt = expressJwt({
     requestProperty: 'user' // ensures decoded token is attached to req.user
 });
 
+app.get('/', (req, res) => {
+    console.log("Hello server is live...");
+    res.send('Hello World');
+});
+
 // Completed Jobs
 app.post('/complete-training', async (req, res) => {
     const { jobId, huggingFaceRepoId, minerId } = req.body;
@@ -386,10 +391,6 @@ trainer.train()
 model.save_pretrained('./final_model-${suffix}')
 `;
 }
-
-app.get('/', (req, res) => {
-    res.send('Hello World')
-  })
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
