@@ -5,20 +5,20 @@ import AuthModal from "./auth/AuthModal";
 import { auth } from "./auth/config/firebase-config";
 import MainContent from "./components/MainContent";
 import Navbar from "./components/Navbar";
+import './index.css';
 import ChatLayout from "./screens/pages/chat/ChatLayout";
+import BillingScreen from "./screens/pages/llms/BillingScreen";
+import ChatUI from "./screens/pages/llms/InferenceScreen";
 import LLMSScreen from "./screens/pages/llms/LLMSScreen";
 import ModelsScreen from "./screens/pages/llms/ModelScreen";
 import PaymentMenu from "./screens/pages/payment/menu";
+import Pricing from './screens/pages/pricing/Pricing';
 import TrainingJobs from "./screens/pages/trainer/jobs";
-import BillingScreen from "./screens/pages/llms/BillingScreen";
 import SignIn from "./screens/sign-in";
 import SignUp from "./screens/sign-up";
-import ChatUI from "./screens/pages/llms/InferenceScreen";
 import { Footer } from "./widgets/Footer";
 import LoadingScreen from "./widgets/LoadingScreen";
 import UserInfoPopup from "./widgets/userInfo";
-import Pricing from './screens/pages/pricing/Pricing'
-import './index.css'
 
 // Function to fetch models from Hugging Face
 const fetchModelDetails = async (modelId) => {
@@ -187,51 +187,57 @@ function App() {
 
   return (
     <AuthProvider>
-    <div className="flex flex-col">
-      {isLoading && <LoadingScreen />} 
-      {!isLoading && (
-        <Routes>
-          <Route path="/" element={
-            <>
-              {showAuthModel && (
-                <AuthModal onClose={() => setShowAuthModel(false)} />
-              )}
-              {isProfileClicked && (
-                <UserInfoPopup
-                  onClose={() => setIsProfileClicked(false)}
-                  userName={user.name}
-                  userEmail={user.email}
-                  userPhotoURL={user.photoURL}
+      <div className="flex flex-col">
+        {isLoading && <LoadingScreen />}
+        {!isLoading && (
+          <Routes>
+            <Route path="/" element={
+              <>
+                {showAuthModel && (
+                  <AuthModal onClose={() => setShowAuthModel(false)} />
+                )}
+                {isProfileClicked && (
+                  <UserInfoPopup
+                    onClose={() => setIsProfileClicked(false)}
+                    userName={user.name}
+                    userEmail={user.email}
+                    userPhotoURL={user.photoURL}
+                  />
+                )}
+                <Navbar
+                  isDarkTheme={isDarkTheme}
+                  themeSwitch={themeSwitch}
+                  toggleMobileMenu={toggleMobileMenu}
+                  isMobileMenuOpen={isMobileMenuOpen}
+                  onProfileClick={toggleProfileWidget} // Passing the function as a prop
                 />
-              )}
-              <Navbar
-                isDarkTheme={isDarkTheme}
-                themeSwitch={themeSwitch}
-                toggleMobileMenu={toggleMobileMenu}
-                isMobileMenuOpen={isMobileMenuOpen}
-                onProfileClick={toggleProfileWidget} // Passing the function as a prop
-              />
-              <div className="flex flex-1 bg-slate-100 dark:bg-slate-900">
-                <div className="flex-1 p-10 px-8  pt-20 pb-0 " style={{backgroundColor: '#ffd433'}}>
-                  <MainContent handleExploreClick={handleExploreClick} />
+                <div className="flex flex-1" style={{
+                  color: 'var(--white)',
+                  backgroundImage: 'linear-gradient(#014214 80%, #F4FDC6)',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                  <div className="flex-1  pt-5">
+                    <MainContent handleExploreClick={handleExploreClick} />
+                  </div>
                 </div>
-              </div>
-              <Footer />
-            </>
-          } />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/llms" element={<LLMSScreen />} />
-          <Route path="/jobs" element={<TrainingJobs />} />
-          <Route path="/models" element={<ModelsScreen />} />
-          <Route path="/bill" element={<BillingScreen />} />
-          <Route path="/inference:model" element={<ChatUI />} />
-          <Route path="/payment" element={<PaymentMenu />} />
-          <Route path="/chat/:url" element={<ChatLayout />} />
-        </Routes>
-      )}
-    </div>
+                <Footer />
+              </>
+            } />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/llms" element={<LLMSScreen />} />
+            <Route path="/jobs" element={<TrainingJobs />} />
+            <Route path="/models" element={<ModelsScreen />} />
+            <Route path="/bill" element={<BillingScreen />} />
+            <Route path="/inference:model" element={<ChatUI />} />
+            <Route path="/payment" element={<PaymentMenu />} />
+            <Route path="/chat/:url" element={<ChatLayout />} />
+          </Routes>
+        )}
+      </div>
     </AuthProvider>
   );
 }

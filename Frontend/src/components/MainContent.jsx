@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../auth/config/firebase-config';
 import PopUp from '../widgets/LoginPopUp';
+
 const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
   '&.learn-more': {
@@ -94,7 +95,7 @@ const MainContent = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ backgroundColor: '#ffd433', minHeight: '82vh', display: 'flex', alignItems: 'center' }}>
+    <Container maxWidth="lg" sx={{ minHeight: '88vh', display: 'flex', alignItems: 'center' }}>
       <Box sx={{
         py: { xs: 2, sm: 4, md: 6 },
         display: 'flex',
@@ -111,10 +112,16 @@ const MainContent = () => {
           mx: 'auto',
         }}>
           <Box sx={{ textAlign: { xs: 'center', md: 'left' }, mb: { xs: 4, md: 0 }, flex: 1, px: { xs: 2, md: 4 } }}>
-            <Typography variant="h2" sx={{ fontSize: { xs: '36px', sm: '48px', md: '54px' }, fontFamily: 'Poppins', color: 'black', mb: 2 }}>
-              <b>Your Own GPT</b>
+            <Typography variant="h2" sx={{
+              fontSize: { xs: '45px', sm: '48px', md: '54px' }, color: 'white', mb: 2, marginTop: 0,
+              marginBottom: '8px',
+              fontFamily: 'sans-serif',
+              fontWeight: 600,
+              lineHeight: '56px'
+            }}>
+              <b>YoGPT</b>
             </Typography>
-            <Box component="ul" sx={{ listStyle: 'none', pl: 0, fontFamily: 'Poppins', fontSize: { xs: '16px', sm: '20px', md: '24px' }, color: 'black', mb: 4, lineHeight: 1.5 }}>
+            <Box component="ul" sx={{ listStyle: 'none', pl: 0, fontFamily: 'Poppins', fontSize: { xs: '16px', sm: '20px', md: '24px' }, color: 'white', mb: 4, lineHeight: 1.5 }}>
               <GreenTickListItem>
                 <b>Fine-Tune</b> Models for your exact need.
               </GreenTickListItem>
@@ -129,41 +136,16 @@ const MainContent = () => {
               </GreenTickListItem>
             </Box>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent={{ xs: 'center', md: 'flex-start' }}>
-              <StyledButton variant="outlined" className="get-started" onClick={handleGetStartedClick} style={{ fontSize: '20px', fontWeight: 'bold', color: 'green' }}>
+              <StyledButton variant="outlined" className="get-started" onClick={handleGetStartedClick} style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}>
                 Get Started <ArrowForwardIcon sx={{ ml: 1 }} />
               </StyledButton>
             </Stack>
             <PopUp open={open} onClose={handleClose} />
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', flex: 1, mt: { xs: 4, md: 0 }, px: { xs: 2, md: 4 } }}>
-           <Box
-              sx={{
-                width: '100%',
-                maxWidth: '8000px',
-                height: 'auto',
-                borderRadius: '50%',
-                backgroundColor: 'white',
-                padding: 2,
-                boxShadow: theme.shadows[4],
-                transform: 'rotate(-30deg)', 
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Box
-                component="img"
-                src="/static/img/jarvis.png"
-                alt="Jarvis"
-                sx={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  transform: 'rotate(30deg)',
-                }}
-              />
-            </Box>
+          {/* Add two images in the same column */}
+          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <img src="/static/img/tst1.png" alt="Descriptive Alt Text 1" style={{ maxWidth: '120%', height: 'auto', marginBottom: '10px' }} />
+            <img src="/static/img/tst2.png" alt="Descriptive Alt Text 2" style={{ maxWidth: '120%', height: 'auto', marginBottom: '50px' }} />
           </Box>
         </Box>
       </Box>
