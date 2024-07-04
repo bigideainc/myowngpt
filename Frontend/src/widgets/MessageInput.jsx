@@ -24,7 +24,7 @@ const MessageInput = ({ model_url, addMessage, updateLastMessage }) => {
     };
 
     try {
-      const response = await axios.post('https://YOGPT-server-1.onrender.com/inference', requestData, {
+      const response = await axios.post('https://yogpt-server.vercel.app/inference', requestData, {
         headers: {
           'Content-Type': 'application/json'
         }
