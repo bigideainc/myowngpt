@@ -195,7 +195,7 @@ const NewJobModal = () => {
 
   return (
     
-    <Box className="flex flex-col ml-64 bg-white p-6 mt-16" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>
+    <Box className="flex flex-col ml-64 bg-slate-100 p-6 mt-16" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>
       {formError && (
         <Box className="fixed inset-0 flex justify-center items-center z-50" sx={{ backdropFilter: 'blur(8px)' }}>
           <Box className="w-full max-w-md mx-auto">
