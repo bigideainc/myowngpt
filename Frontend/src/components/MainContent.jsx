@@ -144,8 +144,8 @@ const MainContent = () => {
           </Box>
           {/* Add two images in the same column */}
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <img src="/static/img/tst1.png" alt="Descriptive Alt Text 1" style={{ maxWidth: '130%', height: 'auto', marginBottom: '10px' }} />
-            <img src="/static/img/tst2.png" alt="Descriptive Alt Text 2" style={{ maxWidth: '130%', height: 'auto', marginBottom: '50px' }} />
+            <img src="/static/img/tst1.png" alt="Descriptive Alt Text 1" style={{ maxWidth: '120%', height: 'auto', marginBottom: '10px' }} />
+            <img src="/static/img/tst2.png" alt="Descriptive Alt Text 2" style={{ maxWidth: '120%', height: 'auto', marginBottom: '50px' }} />
           </Box>
         </Box>
       </Box>
