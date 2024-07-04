@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../auth/AuthContext';
 import { deleteFineTuningJob, fetchJobs as fetchJobsFromFirebase } from '../auth/config/firebase-config';
-import ChartComponent from './ChartComponent';
 import JobDetails from './JobDetails';
 
 function DashboardContent({
@@ -168,9 +167,9 @@ function DashboardContent({
         </p>
       </div>
       </Paper >
-      <Paper elevation={2} sx={{padding:2, mb:4}}>
+      {/* <Paper elevation={2} sx={{padding:2, mb:4}}>
         <ChartComponent jobs={filteredJobs} models={models} />
-        </Paper>
+      </Paper> */}
       <h1 className="text-xl mb-4 font-bold">Training Runs</h1>
       <Paper elevation={2} sx={{padding:2, mb:4}}>
         <div className="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
