@@ -47,18 +47,42 @@ const checkJwt = expressJwt({
 
 // Completed Jobs
 app.post('/complete-training', async (req, res) => {
-    const { jobId, huggingFaceRepoId, minerId } = req.body;
+    const { jobId, huggingFaceRepoId, minerId, loss, accuracy } = req.body;
 
     if (!jobId || !huggingFaceRepoId) {
-        return res.status(400).json({ error: 'jobId and huggingFaceRepoId are required.' });
+        return res.status(400).json({ error: 'jobId, huggingFaceRepoId are required.' });
     }
 
     try {
-        await saveCompletedJob(jobId, minerId, huggingFaceRepoId);
+        await saveCompletedJob(jobId, minerId, huggingFaceRepoId, loss, accuracy);
         res.status(200).json({ message: 'Completed job saved successfully.' });
     } catch (error) {
         console.error('Failed to save completed job:', error);
         res.status(500).json({ error: 'Failed to save completed job.' });
+    }
+});
+
+// Endpoint to update the status of a specific training job
+app.patch('/update-status/:docId', checkJwt, async (req, res) => {
+    const { docId } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+        return res.status(400).json({ error: 'Status is required.' });
+    }
+
+    try {
+        let completedAt = null;
+        if (status === 'completed') {
+            completedAt = new Date().toISOString();
+        }
+        
+        // Assuming `updateStatus` is a function that updates the job's status in the database
+        await updatestatus(docId, status, completedAt);
+        res.json({ message: `Status updated to ${status} for job ${docId}` });
+    } catch (error) {
+        console.error('Failed to update job status:', error);
+        res.status(500).json({ error: 'Failed to update job status' });
     }
 });
 
@@ -202,25 +226,6 @@ app.post('/start-training/:docId', checkJwt, async (req, res) => {
     } catch (error) {
         console.error('Failed to start training job:', error);
         res.status(500).send({ error: 'Failed to start training job' });
-    }
-});
-
-// Endpoint to update the status of a specific training job
-app.patch('/update-status/:docId', checkJwt, async (req, res) => {
-    const { docId } = req.params;
-    const { status } = req.body;
-
-    if (!status) {
-        return res.status(400).json({ error: 'Status is required.' });
-    }
-
-    try {
-        // Assuming `updateStatus` is a function that updates the job's status in the database
-        await updatestatus(docId, status);
-        res.json({ message: `Status updated to ${status} for job ${docId}` });
-    } catch (error) {
-        console.error('Failed to update job status:', error);
-        res.status(500).json({ error: 'Failed to update job status' });
     }
 });
 
