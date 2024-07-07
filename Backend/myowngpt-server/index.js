@@ -45,6 +45,11 @@ const checkJwt = expressJwt({
     requestProperty: 'user' // ensures decoded token is attached to req.user
 });
 
+app.get('/', (req, res) => {
+    console.log("Hello server is live...");
+    res.send('Hello World');
+});
+
 // Completed Jobs
 app.post('/complete-training', async (req, res) => {
     const { jobId, huggingFaceRepoId, minerId, loss, accuracy } = req.body;

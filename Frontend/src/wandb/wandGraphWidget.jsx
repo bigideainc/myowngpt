@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import {
-    CartesianGrid,
-    Legend,
-    Line,
-    LineChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#ff0000'];
@@ -19,7 +19,7 @@ const GraphWidget = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    axios.get('https://YOGPT-server-1.onrender.com/wandb-data')
+    axios.get('https://yogpt-server.vercel.app/wandb-data')
       .then(response => {
         setData(response.data);
         setLoading(false);

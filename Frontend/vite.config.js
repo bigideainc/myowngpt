@@ -10,14 +10,3 @@ export default defineConfig({
     port: 8000,       // Specify the server port. You mentioned changing to 8000, but your code snippet says 3000.
   },
 })
-
-// import { defineConfig } from "vite"
-// import react from "@vitejs/plugin-react"
-
-// // https://vitejs.dev/config/
-// export default defineConfig({
-//   plugins: [react()],
-//   server: {
-//     port: 3000,
-//   },
-// })

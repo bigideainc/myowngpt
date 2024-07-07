@@ -1,4 +1,5 @@
 import { Delete, Visibility } from '@mui/icons-material';
+import { Paper } from '@mui/material';
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -6,9 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../auth/AuthContext';
 import { deleteFineTuningJob, fetchJobs as fetchJobsFromFirebase } from '../auth/config/firebase-config';
-import ChartComponent from './ChartComponent';
 import JobDetails from './JobDetails';
-import { Box,Paper } from '@mui/material';
 
 function DashboardContent({
   filteredJobs,
@@ -147,7 +146,7 @@ function DashboardContent({
   const sortedJobs = filteredByStatusJobs.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
 
   return (
-    <div className="flex flex-col ml-64 bg-white dark:bg-slate-900 p-6 mt-16" style={{ fontFamily: 'Poppins', fontSize: '14px' }}>
+    <div className="flex flex-col ml-64 bg-slate-100 p-6 mt-16" style={{ fontFamily: 'Poppins', fontSize: '14px' }}>
       <Paper sx={{padding:2, mb:2}}>
       <div className="flex justify-between items-center">
         
@@ -168,19 +167,19 @@ function DashboardContent({
         </p>
       </div>
       </Paper >
-      <Paper elevation={2} sx={{padding:2, mb:4}}>
+      {/* <Paper elevation={2} sx={{padding:2, mb:4}}>
         <ChartComponent jobs={filteredJobs} models={models} />
-        </Paper>
+      </Paper> */}
       <h1 className="text-xl mb-4 font-bold">Training Runs</h1>
       <Paper elevation={2} sx={{padding:2, mb:4}}>
         <div className="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
           <div className="flex items-center">
             <button data-dropdown-toggle="dropdownRadio"
-              className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+              className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5"
               type="button"
             >
               <svg
-                className="w-3 h-3 text-gray-500 dark:text-gray-400 me-3"
+                className="w-3 h-3 text-gray-500 me-3"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -197,12 +196,12 @@ function DashboardContent({
               </select>
             </button>
             <div className="ml-4">
-              <label htmlFor="status-filter" className="mr-2 text-gray-700 dark:text-gray-400">Status:</label>
+              <label htmlFor="status-filter" className="mr-2 text-gray-700">Status:</label>
               <select
                 id="status-filter"
                 onChange={handleStatusFilterChange}
                 value={statusFilter}
-                className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5"
               >
                 <option value="All">All</option>
                 <option value="pending">Pending</option>
@@ -216,7 +215,7 @@ function DashboardContent({
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
               <svg
-                className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                className="w-5 h-5 text-gray-500"
                 aria-hidden="true"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -234,7 +233,7 @@ function DashboardContent({
               id="table-search"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+              className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-green-500 focus:border-green-500"
               placeholder="Search for items"
             />
           </div>
@@ -248,8 +247,8 @@ function DashboardContent({
             Delete Selected
           </button>
         )}
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th className="p-4">
                 <input
@@ -257,7 +256,7 @@ function DashboardContent({
                   type="checkbox"
                   checked={selectedJobs.length === currentJobs.length}
                   onChange={handleSelectAllJobs}
-                  className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2 "
                 />
               </th>
               <th className="px-6 py-3">Model name</th>
@@ -271,29 +270,29 @@ function DashboardContent({
           <tbody>
             {sortedJobs.length > 0 ? sortedJobs.map((job, index) => (
               <React.Fragment key={index}>
-                <tr onClick={() => toggleRow(index)} style={getRowStyle(index)} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr onClick={() => toggleRow(index)} style={getRowStyle(index)} className="bg-white border-b hover:bg-gray-50">
                   <td className="w-4 p-4">
                     <input
                       id={`checkbox-table-search-${index}`}
                       type="checkbox"
                       checked={selectedJobs.includes(job.id)}
                       onChange={() => handleSelectJob(job.id)}
-                      className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500"
                     />
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{job.suffix}</td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{job.suffix}</td>
                   <td className="px-6 py-4">{job.baseModel}</td>
                   <td className="px-6 py-4">{job.fineTuningType}</td>
                   <td className="px-6 py-4">{moment.unix(job.createdAt.seconds).fromNow()}</td>
                   <td className={`px-6 py-4 font-medium ${getStatusColor(job.status)}`}>{job.status}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <a className="font-medium text-green-600 dark:text-green-500 hover:underline mr-4">
+                      <a className="font-medium text-green-600 hover:underline mr-4">
                         <Visibility />
                       </a>
                       <a
                         href="#"
-                        className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                        className="font-medium text-red-600 hover:underline"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeleteJob([job.id]);
@@ -305,7 +304,7 @@ function DashboardContent({
                   </td>
                 </tr>
                 {expandedRow === index && (
-                  <tr className="bg-green-100 dark:bg-gray-700">
+                  <tr className="bg-green-100">
                     <td colSpan="7" className="p-4">
                       <JobDetails job={job} setActiveScreen={setActiveScreen} /> {/* Pass setActiveScreen here */}
                     </td>

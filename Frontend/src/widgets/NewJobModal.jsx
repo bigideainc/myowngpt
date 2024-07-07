@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -9,11 +7,13 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Slider,
   Paper,
+  Slider,
   TextField,
   Typography
 } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { auth, newTrainingJob } from '../auth/config/firebase-config';
 import ModelService from '../data/ModelList';
 
@@ -195,7 +195,7 @@ const NewJobModal = () => {
 
   return (
     
-    <Box className="flex flex-col ml-64 bg-white dark:bg-slate-900 p-6 mt-16" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>
+    <Box className="flex flex-col ml-64 bg-slate-100 p-6 mt-16" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>
       {formError && (
         <Box className="fixed inset-0 flex justify-center items-center z-50" sx={{ backdropFilter: 'blur(8px)' }}>
           <Box className="w-full max-w-md mx-auto">
@@ -257,7 +257,7 @@ const NewJobModal = () => {
       </Box>
 
       <Paper elevation={3}>
-      <Box className="bg-white dark:bg-gray-800 p-5 rounded-lg w-full overflow-y-auto">
+      <Box className="bg-white p-5 rounded-lg w-full overflow-y-auto">
         <Box className="space-y-6">
           <Box className="space-y-4">
             <Box>
