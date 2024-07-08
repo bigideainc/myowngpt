@@ -35,7 +35,7 @@ const Navbar = ({ onProfileClick }) => {
 
   const handleSignOut = () => {
     signOut(auth).then(() => {
-      navigate('/sign-in');
+      navigate('/');
     }).catch((error) => {
       console.error('Sign out error', error);
     });

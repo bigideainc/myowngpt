@@ -1,12 +1,12 @@
 import { Delete, Visibility } from '@mui/icons-material';
 import { Paper } from '@mui/material';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, getFirestore, onSnapshot } from 'firebase/firestore';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../auth/AuthContext';
-import { deleteFineTuningJob, fetchJobs as fetchJobsFromFirebase } from '../auth/config/firebase-config';
+import { deleteFineTuningJob } from '../auth/config/firebase-config';
 import JobDetails from './JobDetails';
 
 function DashboardContent({
@@ -35,45 +35,37 @@ function DashboardContent({
   const [models, setModels] = useState([]); // Add a state to hold models
 
   useEffect(() => {
-    const loadJobs = async () => {
-      if (currentUser) { // Ensure the user is authenticated
-        try {
-          setLoading(true);
-          const jobs = await fetchJobsFromFirebase();
-          const sortedJobs = jobs.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds); // Sort jobs by createdAt timestamp
-          setActiveScreen(sortedJobs); // Use the appropriate function to set the jobs
-        } catch (error) {
-          console.error('Error fetching jobs:', error);
-        } finally {
+    const db = getFirestore();
+    const unsubscribe = onSnapshot(
+      collection(db, 'fine_tuning_jobs'),
+      (snapshot) => {
+        if (currentUser) {
+          try {
+            setLoading(true);
+            const jobs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const sortedJobs = jobs.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
+            setActiveScreen(sortedJobs);
+          } catch (error) {
+            console.error('Error fetching jobs:', error);
+          } finally {
+            setLoading(false);
+          }
+        } else {
+          console.log("No user is currently signed in.");
           setLoading(false);
         }
-      } else {
-        console.log("No user is currently signed in.");
-        setLoading(false);
+      },
+      (error) => {
+        console.error('Error fetching jobs:', error);
       }
-    };
+    );
 
-    loadJobs();
-  }, [currentUser]);
+    return () => unsubscribe(); // Cleanup subscription on unmount
+  }, [currentUser, setActiveScreen]);
 
-  useEffect(() => {
-    const fetchDeployedModels = async () => {
-      try {
-        const db = getFirestore();
-        const querySnapshot = await getDocs(collection(db, 'deployed_models'));
-        const modelsData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setModels(modelsData);
-        console.log('Models fetched:', modelsData); // Debugging log
-      } catch (error) {
-        console.error('Failed to fetch deployed models:', error);
-      }
-    };
-
-    fetchDeployedModels();
-  }, []);
+  // useEffect(() => {
+  //   fetchDeployedModels(setModels);
+  // }, []);
 
   const toggleRow = index => {
     setExpandedRow(expandedRow === index ? null : index);
@@ -112,7 +104,6 @@ function DashboardContent({
         await Promise.all(jobIds.map(id => deleteFineTuningJob(id)));
         Swal.fire('Deleted!', 'Your jobs have been deleted.', 'success');
         setSelectedJobs([]);
-        fetchJobs(); // Refresh the job list after deletion
       } catch (error) {
         console.error('Error deleting jobs:', error);
         Swal.fire('Error!', 'There was an error deleting your jobs.', 'error');
@@ -148,28 +139,23 @@ function DashboardContent({
   return (
     <div className="flex flex-col ml-64 bg-slate-100 p-6 mt-16" style={{ fontFamily: 'Poppins', fontSize: '14px' }}>
       <Paper sx={{padding:2, mb:2}}>
-      <div className="flex justify-between items-center">
-        
-        <h1 className="text-xl font-bold">Dashboard</h1>
-        <button
-        style={{color:'#ffd433'}}
-          className="bg-green-500 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-600"
-          onClick={() => navigate('/jobs')}
-        >
-          Create New Job
-        </button>
-
-      </div>
-      <div className="w-3/5">
-        <p className="text-gray-600 pb-3 font-medium text-base">
-          Manage your training jobs as well as creating new jobs.<br /><br />
-          Click <span className='font-semibold'>Create New Job</span> to start a training job.
-        </p>
-      </div>
-      </Paper >
-      {/* <Paper elevation={2} sx={{padding:2, mb:4}}>
-        <ChartComponent jobs={filteredJobs} models={models} />
-      </Paper> */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl font-bold">Dashboard</h1>
+          <button
+            style={{color:'#ffd433'}}
+            className="bg-green-500 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-600"
+            onClick={() => navigate('/jobs')}
+          >
+            Create New Job
+          </button>
+        </div>
+        <div className="w-3/5">
+          <p className="text-gray-600 pb-3 font-medium text-base">
+            Manage your training jobs as well as creating new jobs.<br /><br />
+            Click <span className='font-semibold'>Create New Job</span> to start a training job.
+          </p>
+        </div>
+      </Paper>
       <h1 className="text-xl mb-4 font-bold">Training Runs</h1>
       <Paper elevation={2} sx={{padding:2, mb:4}}>
         <div className="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
