@@ -71,10 +71,10 @@ const CardDescription = styled(Typography)(({ theme }) => ({
 
 const StartButton = styled(Button)(({ theme }) => ({
   textTransform: 'none',
-  color: theme.palette.primary.main,
-  borderColor: theme.palette.primary.main,
+  color: 'green',
+  borderColor: 'green',
   '&:hover': {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: 'green',
     color: '#fff',
   },
   [theme.breakpoints.down('sm')]: {
@@ -88,6 +88,7 @@ const NewPopup = ({ open, onClose }) => {
   const handleLLMs = () => {
       navigate('/llms');
   }
+
   return (
     <StyledDialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>
@@ -110,25 +111,25 @@ const NewPopup = ({ open, onClose }) => {
       <DialogContent>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: { xs: 'column', md: 'row' }, height: '100%', gap: 5 }}>
           <Card>
-            <CardImage src="static/img/finetune.png" alt="Faster Whisper" />
+            <CardImage src="static/img/finetune.png" alt="Fine-Tune LLMs" />
             <CardContent>
               <CardTitle>Fine-Tune LLMs</CardTitle>
               <CardDescription>
-                Implementation of Whisper model using CTranslate2, which is a fast inference engine.
+                Optimize language models for specific tasks.
               </CardDescription>
               <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <StartButton variant="outlined"onClick={handleLLMs} >
-                Explore
+                <StartButton variant="outlined" onClick={handleLLMs}>
+                  Explore
                 </StartButton>
               </Box>
             </CardContent>
           </Card>
           <Card>
-            <CardImage src="static/img/compute.png" alt="SD Automatic1111" />
+            <CardImage src="static/img/compute.png" alt="Provide Compute" />
             <CardContent>
               <CardTitle>Provide Compute</CardTitle>
               <CardDescription>
-                Automatic1111 API that powers one of the most popular Stable Diffusion web interfaces.
+                Provide distributed computing resources for model fine-tuning.
               </CardDescription>
               <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                 <StartButton variant="outlined">
