@@ -10,7 +10,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     backgroundColor: '#f4f6f8',
     height: 'auto',
     maxHeight: '80vh', // Allow dialog to grow but not exceed 80vh
-    maxWidth: '80vh', // Set the maxWidth to reduce the dialog width
+    maxWidth: '100vh', // Set the maxWidth to reduce the dialog width
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
     },
@@ -91,8 +91,8 @@ const NewPopup = ({ open, onClose }) => {
   return (
     <StyledDialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>
-        <Typography variant="h4" component="div" color="primary" gutterBottom>
-          Popup Title
+        <Typography variant="h4" component="div" color="GREEN" gutterBottom className='font-extrabold'>
+          YoGPT
         </Typography>
         <IconButton
           aria-label="close"
@@ -117,7 +117,7 @@ const NewPopup = ({ open, onClose }) => {
                 Implementation of Whisper model using CTranslate2, which is a fast inference engine.
               </CardDescription>
               <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <StartButton variant="outlined">
+                <StartButton variant="outlined"onClick={handleLLMs} >
                 Explore
                 </StartButton>
               </Box>
@@ -131,7 +131,7 @@ const NewPopup = ({ open, onClose }) => {
                 Automatic1111 API that powers one of the most popular Stable Diffusion web interfaces.
               </CardDescription>
               <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <StartButton variant="outlined" onClick={handleLLMs}>
+                <StartButton variant="outlined">
                   Explore
                 </StartButton>
               </Box>
