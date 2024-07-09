@@ -17,6 +17,7 @@ import TrainingJobs from "./screens/pages/trainer/jobs";
 import SignIn from "./screens/sign-in";
 import SignUp from "./screens/sign-up";
 import { Footer } from "./widgets/Footer";
+import Com from "./widgets/getCPUProgress";
 import LoadingScreen from "./widgets/LoadingScreen";
 import UserInfoPopup from "./widgets/userInfo";
 
@@ -235,6 +236,7 @@ function App() {
             <Route path="/inference:model" element={<ChatUI />} />
             <Route path="/payment" element={<PaymentMenu />} />
             <Route path="/chat/:url" element={<ChatLayout />} />
+            <Route path="/com" element={<Com/>}/>
           </Routes>
         )}
       </div>

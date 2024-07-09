@@ -89,6 +89,10 @@ const NewPopup = ({ open, onClose }) => {
       navigate('/llms');
   }
 
+  const handleCom = () => {
+    navigate('/com');
+}
+
   return (
     <StyledDialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>
@@ -132,7 +136,7 @@ const NewPopup = ({ open, onClose }) => {
                 Provide distributed computing resources for model fine-tuning.
               </CardDescription>
               <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <StartButton variant="outlined">
+                <StartButton variant="outlined" onClick={handleCom}>
                   Explore
                 </StartButton>
               </Box>
