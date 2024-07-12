@@ -52,14 +52,14 @@ app.get('/', (req, res) => {
 
 // Completed Jobs
 app.post('/complete-training', async (req, res) => {
-    const { jobId, huggingFaceRepoId, minerId, loss, accuracy } = req.body;
+    const { jobId, huggingFaceRepoId, minerId, loss, accuracy, totalPipelineTime } = req.body;
 
     if (!jobId || !huggingFaceRepoId) {
         return res.status(400).json({ error: 'jobId, huggingFaceRepoId are required.' });
     }
 
     try {
-        await saveCompletedJob(jobId, minerId, huggingFaceRepoId, loss, accuracy);
+        await saveCompletedJob(jobId, minerId, huggingFaceRepoId, loss, accuracy, totalPipelineTime);
         res.status(200).json({ message: 'Completed job saved successfully.' });
     } catch (error) {
         console.error('Failed to save completed job:', error);

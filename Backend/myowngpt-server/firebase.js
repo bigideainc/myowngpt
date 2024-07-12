@@ -34,7 +34,7 @@ async function uploadFile(bucketPath, fileBuffer, mimeType) {
 }
 
 // Completed Jobs
-async function saveCompletedJob(jobId, minerId, huggingFaceRepoId, loss, accuracy) {
+async function saveCompletedJob(jobId, minerId, huggingFaceRepoId, loss, accuracy, totalPipelineTime) {
   const completedJobsRef = db.collection('completed_jobs');
   try {
       const newJob = {
@@ -43,6 +43,7 @@ async function saveCompletedJob(jobId, minerId, huggingFaceRepoId, loss, accurac
           huggingFaceRepoId: huggingFaceRepoId,
           loss,
           accuracy,
+          totalPipelineTime,
           completedAt: admin.firestore.FieldValue.serverTimestamp()
       };
       await completedJobsRef.add(newJob);

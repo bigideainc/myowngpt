@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaDollarSign } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { auth } from '../auth/config/firebase-config';
+import AuthenticatorSetup from './AuthenticatorSetup';
 
 const drawerWidth = 260;
 
@@ -60,15 +61,15 @@ const RecentFiles = () => {
             Recent Jobs
           </Typography>
           <Button
-      variant="contained"
-      startIcon={<FaDollarSign />}
-      sx={{
-        textTransform: 'none',
-        backgroundColor: '#006400'
-      }}
-    >
-      CASH-OUT
-    </Button>
+            variant="contained"
+            startIcon={<FaDollarSign />}
+            sx={{
+              textTransform: 'none',
+              backgroundColor: '#006400'
+            }}
+          >
+            CASH-OUT
+          </Button>
         </Box>
         <TableContainer>
           <Table>
@@ -173,6 +174,7 @@ const Sidebar = ({ currentScreen, navigate }) => (
 
 const Com = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const [userPhotoURL, setUserPhotoURL] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [userEmail, setUserEmail] = useState('');
@@ -277,11 +279,25 @@ const Com = () => {
           )}
         </Toolbar>
       </AppBar>
-      <Sidebar currentScreen={window.location.pathname} navigate={navigate} />
-      <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: '100vh' }} className='bg-slate-100'>
-        <Toolbar />
-        <RecentFiles />
-      </Box>
+      {!isRegistered ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+          width="100%"
+        >
+          <AuthenticatorSetup onRegister={() => setIsRegistered(true)} />
+        </Box>
+      ) : (
+        <>
+          <Sidebar currentScreen={window.location.pathname} navigate={navigate} />
+          <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: '100vh' }} className='bg-slate-100'>
+            <Toolbar />
+            <RecentFiles />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
