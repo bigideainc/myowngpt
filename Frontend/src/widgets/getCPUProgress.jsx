@@ -1,4 +1,4 @@
-import { AccountBox, Computer, Home, MoreVert, Settings } from '@mui/icons-material';
+import { AccountBalance, AccountBox, Computer, Home, MoreVert, Settings } from '@mui/icons-material';
 import { AppBar, Box, Button, Checkbox, CircularProgress, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
@@ -7,6 +7,8 @@ import { FaDollarSign } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { auth, db } from '../auth/config/firebase-config';
 import AuthenticatorSetup from './AuthenticatorSetup';
+import TransactionHistory from './TransactionHistory';
+// import RecentFiles from './RecentFiles';
 
 const drawerWidth = 260;
 
@@ -30,6 +32,39 @@ const StatusIcon = ({ status }) => {
     </Box>
   );
 };
+
+const Sidebar = ({ currentScreen, setCurrentScreen }) => (
+  <Drawer
+    variant="permanent"
+    sx={{
+      width: drawerWidth,
+      flexShrink: 0,
+      '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box', backgroundColor: '#F5F5F5', color: '#333' },
+    }}
+  >
+    <Toolbar />
+    <Box sx={{ overflow: 'auto', padding: 2 }}>
+      <Button variant="outlined" color="primary" fullWidth sx={{ marginBottom: 2 }}>
+        MINER PROGRAM
+      </Button>
+      <Divider />
+      <List>
+        {[
+          { text: 'Home', icon: <Home />, path: '/' },
+          { text: 'Training Jobs', icon: <Computer />, component: 'RecentFiles' },
+          { text: 'Miner Account', icon: <AccountBox />, path: '/account' },
+          { text: 'Payment History', icon: <AccountBalance />, component: 'TransactionHistory' },
+          { text: 'Settings', icon: <Settings />, path: '/settings' },
+        ].map((item) => (
+          <ListItem button key={item.text} selected={currentScreen === item.component} onClick={() => setCurrentScreen(item.component)}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  </Drawer>
+);
 
 const RecentFiles = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -188,38 +223,6 @@ const RecentFiles = () => {
   );
 };
 
-const Sidebar = ({ currentScreen, navigate }) => (
-  <Drawer
-    variant="permanent"
-    sx={{
-      width: drawerWidth,
-      flexShrink: 0,
-      '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box', backgroundColor: '#F5F5F5', color: '#333' },
-    }}
-  >
-    <Toolbar />
-    <Box sx={{ overflow: 'auto', padding: 2 }}>
-      <Button variant="outlined" color="primary" fullWidth sx={{ marginBottom: 2 }}>
-        MINER PROGRAM
-      </Button>
-      <Divider />
-      <List>
-        {[
-          { text: 'Home', icon: <Home />, path: '/' },
-          { text: 'Training Jobs', icon: <Computer />, path: '/com' },
-          { text: 'Miner Account', icon: <AccountBox />, path: '/account' },
-          { text: 'Settings', icon: <Settings />, path: '/settings' },
-        ].map((item) => (
-          <ListItem button key={item.text} selected={currentScreen === item.path} onClick={() => navigate(item.path)}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  </Drawer>
-);
-
 const Com = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
@@ -227,6 +230,7 @@ const Com = () => {
   const [userPhotoURL, setUserPhotoURL] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [userEmail, setUserEmail] = useState('');
+  const [currentScreen, setCurrentScreen] = useState('RecentFiles');
   const navigate = useNavigate();
   const menuRef = useRef(null);
 
@@ -366,10 +370,11 @@ const Com = () => {
           </Box>
         ) : (
           <>
-            <Sidebar currentScreen={window.location.pathname} navigate={navigate} />
+            <Sidebar currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} />
             <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: '100vh' }} className='bg-slate-100'>
               <Toolbar />
-              <RecentFiles />
+              {currentScreen === 'RecentFiles' && <RecentFiles />}
+              {currentScreen === 'TransactionHistory' && <TransactionHistory />}
             </Box>
           </>
         )}
