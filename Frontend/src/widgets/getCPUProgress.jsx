@@ -1,7 +1,7 @@
 import { AccountBox, Computer, Home, MoreVert, Settings } from '@mui/icons-material';
 import { AppBar, Box, Button, Checkbox, CircularProgress, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaDollarSign } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
@@ -9,10 +9,6 @@ import { auth, db } from '../auth/config/firebase-config';
 import AuthenticatorSetup from './AuthenticatorSetup';
 
 const drawerWidth = 260;
-
-const recentFilesData = [
-  { name: 'NousResearch/Llama-2-7b-chat-hf', uploaded: 'Jul 8, 2024, 3:54 PM', duration: '26m 59s', mode: 'Meeting', status: 'completed', token: '25' },
-];
 
 const StatusIcon = ({ status }) => {
   const statusStyles = {
@@ -37,6 +33,46 @@ const StatusIcon = ({ status }) => {
 
 const RecentFiles = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [recentFilesData, setRecentFilesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setLoading(true);
+      const user = auth.currentUser;
+
+      if (user) {
+        const jobExecutionsQuery = query(collection(db, 'job_executions'), where('minerId', '==', user.uid));
+        const jobExecutionsSnapshot = await getDocs(jobExecutionsQuery);
+
+        const recentFiles = await Promise.all(jobExecutionsSnapshot.docs.map(async (jobExecutionDoc) => {
+          const jobExecutionData = jobExecutionDoc.data();
+          const { jobId, startDate, status } = jobExecutionData;
+
+          const fineTuningJobDoc = await getDoc(doc(db, 'fine_tuning_jobs', jobId));
+          const fineTuningJobData = fineTuningJobDoc.exists() ? fineTuningJobDoc.data() : {};
+
+          const completedJobQuery = query(collection(db, 'completed_jobs'), where('jobId', '==', jobId));
+          const completedJobSnapshot = await getDocs(completedJobQuery);
+          const completedJobData = !completedJobSnapshot.empty ? completedJobSnapshot.docs[0].data() : {};
+
+          return {
+            name: fineTuningJobData.baseModel || 'N/A',
+            uploaded: startDate.toDate().toLocaleString(),
+            duration: completedJobData.totalPipelineTime || 'N/A',
+            status: status || 'running',
+            token: completedJobData.accuracy || 'N/A',
+          };
+        }));
+
+        setRecentFilesData(recentFiles);
+      }
+
+      setLoading(false);
+    };
+
+    fetchJobs();
+  }, []);
 
   const handleSelectFile = (file) => {
     setSelectedFiles((prevSelected) =>
@@ -53,6 +89,10 @@ const RecentFiles = () => {
       setSelectedFiles([]);
     }
   };
+
+  if (loading) {
+    return <CircularProgress />;
+  }
 
   return (
     <Box>
@@ -116,6 +156,13 @@ const RecentFiles = () => {
               ))}
             </TableBody>
           </Table>
+          {recentFilesData.length === 0 && (
+            <Box mt={2} p={2} sx={{ backgroundColor: '#FEDBDB', borderRadius: 1, textAlign: 'center' }}>
+              <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: '#d32f2f' }}>
+                No jobs have been taken up by the miner.
+              </Typography>
+            </Box>
+          )}
         </TableContainer>
         {selectedFiles.length > 0 && (
           <Box mt={2} p={2} sx={{ backgroundColor: '#f5f5f5', borderRadius: 1 }}>
@@ -225,14 +272,10 @@ const Com = () => {
 
   const handleSignOut = () => {
     console.log("Logging out...");
-    signOut(auth)
-      .then(() => {
-        console.log("Signed out successfully");
-        navigate('/');
-      })
-      .catch((error) => {
-        console.error('Sign out error:', error);
-      });
+    signOut(auth).then(() => {
+      console.log("Logged out successfully");
+      navigate('/');
+    }).catch((error) => console.error('Sign out error', error));
   };
 
   const handleProceedToDashboard = () => {

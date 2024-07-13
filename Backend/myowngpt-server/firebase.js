@@ -233,7 +233,7 @@ async function start_training(docId, minerId, systemDetails) {
 
     // Create a job execution record
     const jobExecutionData = {
-      userId: doc.data().userId, // Assuming the original job document has a userId field
+      userId: doc.data().userId,
       minerId: minerId,
       jobId: docId,
       systemDetails: systemDetails,
