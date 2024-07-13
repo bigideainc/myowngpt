@@ -33,7 +33,7 @@ const StatusIcon = ({ status }) => {
   );
 };
 
-const Sidebar = ({ currentScreen, setCurrentScreen }) => (
+const Sidebar = ({ currentScreen, setCurrentScreen, navigate }) => (
   <Drawer
     variant="permanent"
     sx={{
@@ -56,7 +56,18 @@ const Sidebar = ({ currentScreen, setCurrentScreen }) => (
           { text: 'Payment History', icon: <AccountBalance />, component: 'TransactionHistory' },
           { text: 'Settings', icon: <Settings />, path: '/settings' },
         ].map((item) => (
-          <ListItem button key={item.text} selected={currentScreen === item.component} onClick={() => setCurrentScreen(item.component)}>
+          <ListItem
+            button
+            key={item.text}
+            selected={currentScreen === item.component}
+            onClick={() => {
+              if (item.path) {
+                navigate(item.path);
+              } else {
+                setCurrentScreen(item.component);
+              }
+            }}
+          >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItem>
@@ -370,7 +381,7 @@ const Com = () => {
           </Box>
         ) : (
           <>
-            <Sidebar currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} />
+            <Sidebar currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} navigate={navigate} />
             <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: '100vh' }} className='bg-slate-100'>
               <Toolbar />
               {currentScreen === 'RecentFiles' && <RecentFiles />}
