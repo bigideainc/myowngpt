@@ -224,7 +224,15 @@ const Com = () => {
   };
 
   const handleSignOut = () => {
-    signOut(auth).then(() => navigate('/')).catch((error) => console.error('Sign out error', error));
+    console.log("Logging out...");
+    signOut(auth)
+      .then(() => {
+        console.log("Signed out successfully");
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error('Sign out error:', error);
+      });
   };
 
   const handleProceedToDashboard = () => {
