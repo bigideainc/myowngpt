@@ -281,5 +281,5 @@ async function deleteFineTuningJob(docId) {
 }
 
 // Get a reference to the auth service
-export { addTrainingJob, addTrainingJobMetadata, auth, deleteFineTuningJob, fetchCompletedJobById, fetchJobs, fetchTrainingJobsForUser, getChatHistory, newTrainingJob, saveChatHistory, saveDeployedModel, submitFineTuningJob, updateTrainingJobStatus, userJobs };
+export { addTrainingJob, addTrainingJobMetadata, auth, db, deleteFineTuningJob, fetchCompletedJobById, fetchJobs, fetchTrainingJobsForUser, getChatHistory, newTrainingJob, saveChatHistory, saveDeployedModel, submitFineTuningJob, updateTrainingJobStatus, userJobs };
 

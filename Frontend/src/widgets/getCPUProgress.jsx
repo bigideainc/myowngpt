@@ -1,10 +1,11 @@
 import { AccountBox, Computer, Home, MoreVert, Settings } from '@mui/icons-material';
-import { AppBar, Box, Button, Checkbox, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Checkbox, CircularProgress, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaDollarSign } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
-import { auth } from '../auth/config/firebase-config';
+import { auth, db } from '../auth/config/firebase-config';
 import AuthenticatorSetup from './AuthenticatorSetup';
 
 const drawerWidth = 260;
@@ -175,6 +176,7 @@ const Sidebar = ({ currentScreen, navigate }) => (
 const Com = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [userPhotoURL, setUserPhotoURL] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [userEmail, setUserEmail] = useState('');
@@ -182,14 +184,21 @@ const Com = () => {
   const menuRef = useRef(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsAuthenticated(true);
         setUserPhotoURL(user.photoURL || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80');
         setUserEmail(user.email);
+
+        // Check if the user email is already registered as a miner
+        const minerQuery = await getDocs(query(collection(db, 'miners'), where('email', '==', user.email)));
+        if (!minerQuery.empty) {
+          setIsRegistered(true);
+        }
       } else {
         setIsAuthenticated(false);
       }
+      setLoading(false);
     });
 
     const handleClickOutside = (event) => {
@@ -216,6 +225,10 @@ const Com = () => {
 
   const handleSignOut = () => {
     signOut(auth).then(() => navigate('/')).catch((error) => console.error('Sign out error', error));
+  };
+
+  const handleProceedToDashboard = () => {
+    setIsRegistered(true);
   };
 
   return (
@@ -279,25 +292,37 @@ const Com = () => {
           )}
         </Toolbar>
       </AppBar>
-      {!isRegistered ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100vh"
-          width="100%"
-        >
-          <AuthenticatorSetup onRegister={() => setIsRegistered(true)} />
-        </Box>
-      ) : (
-        <>
-          <Sidebar currentScreen={window.location.pathname} navigate={navigate} />
-          <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: '100vh' }} className='bg-slate-100'>
-            <Toolbar />
-            <RecentFiles />
+      <Box sx={{ display: 'flex', width: '100%' }}>
+        {loading ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100vh"
+            width="100%"
+          >
+            <CircularProgress />
           </Box>
-        </>
-      )}
+        ) : !isRegistered ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100vh"
+            width="100%"
+          >
+            <AuthenticatorSetup onRegister={() => setIsRegistered(true)} userEmail={userEmail} onContinue={handleProceedToDashboard} />
+          </Box>
+        ) : (
+          <>
+            <Sidebar currentScreen={window.location.pathname} navigate={navigate} />
+            <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: '100vh' }} className='bg-slate-100'>
+              <Toolbar />
+              <RecentFiles />
+            </Box>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
