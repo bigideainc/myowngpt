@@ -19,7 +19,6 @@ import SignUp from "./screens/sign-up";
 import { Footer } from "./widgets/Footer";
 import Com from "./widgets/getCPUProgress";
 import LoadingScreen from "./widgets/LoadingScreen";
-import TransactionHistory from "./widgets/TransactionHistory";
 import UserInfoPopup from "./widgets/userInfo";
 
 // Function to fetch models from Hugging Face
@@ -238,7 +237,7 @@ function App() {
             <Route path="/payment" element={<PaymentMenu />} />
             <Route path="/chat/:url" element={<ChatLayout />} />
             <Route path="/com" element={<Com/>}/>
-            <Route path="/transaction-history" element={<TransactionHistory/>}/>
+            {/* <Route path="/transaction-history" element={<TransactionHistory/>}/> */}
           </Routes>
         )}
       </div>
