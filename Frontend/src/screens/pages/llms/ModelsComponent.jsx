@@ -291,12 +291,15 @@ const ModelsComponent = () => {
           sx={{
             fontFamily: 'Poppins',
             fontSize: '12px',
-            width: { xs: '100%', sm: '80%', md: '75%', lg: '70%' },
+            width: { xs: '100%', sm: '80%', md: '75%', lg: '80%' },
             padding: { xs: 2, sm: 3, md: 4 },
             boxSizing: 'border-box',
           }}
         >
-          <Typography variant="h4" gutterBottom>Deployed Models</Typography>
+          <Paper sx={{padding:1, my:2, mt:2}}>
+          <Typography variant="h5" gutterBottom sx={{ fontFamily: 'Poppins', marginBottom: '16px' }}>Deployed Models</Typography>
+          </Paper>
+          
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mb: 4 }}>
             <TextField
               variant="outlined"

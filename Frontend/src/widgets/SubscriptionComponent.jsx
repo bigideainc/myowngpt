@@ -32,10 +32,28 @@ const SubscriptionComponent = () => {
         // Handle the form submission logic here
     };
     return (
-        <Box className="flex flex-col bg-white dark:bg-slate-900 p-6 mt-16">
-            <Typography variant="h4" color="blue-gray" style={{ fontFamily: 'Poppins', marginBottom: '16px' }}>
+        <Box 
+        sx={{ 
+          display: 'flex',
+          justifyContent: 'flex-end',
+          width: '100%',
+          marginTop:10,
+          boxSizing: 'border-box',
+        }}>
+        <Box
+          sx={{
+            fontFamily: 'Poppins',
+            fontSize: '12px',
+            width: { xs: '100%', sm: '80%', md: '70%', lg: '80%' },
+            padding: { xs: 2, sm: 3, md: 4 },
+            boxSizing: 'border-box',
+          }} >
+            <Paper sx={{padding:1, my:2, mt:2}}>
+            <Typography variant="h5" style={{ fontFamily: 'Poppins', marginBottom: '16px' }}>
                 Subscribe to YOGPT 
             </Typography>
+            </Paper>
+           
             <MUICard className="mt-8 p-6">
                 <CardContent>
                     <Typography variant="h5" color="blue-gray" style={{ fontFamily: 'Poppins', marginBottom: '16px' }}>
@@ -88,6 +106,7 @@ const SubscriptionComponent = () => {
                     
                 </CardContent>
             </MUICard>
+        </Box>
         </Box>
     );
 };

@@ -28,14 +28,14 @@ const Navigator = ({ onProfileClick }) => {
     };
 
     return (
-        <nav className="bg-black fixed top-0 left-64 right-0 z-50 font-poppins text-[14px]">
+        <nav className="bg-white fixed top-0 left-64 right-0 z-50 font-poppins text-[14px]">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 lg:pl-2">
                 <div className="relative flex h-16 items-center justify-between">
-                    <div className="flex-1"></div> {/* This will push the content to the right */}
+                    <div className="flex-1"></div> 
                     <div className="flex items-center space-x-4">
                         <button className="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-white transition-all hover:bg-white/10 active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
                             <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-6 h-w-6" style={{ color: '#ffd433' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-6 h-w-6" style={{ color: 'black' }}>
                                     <path fillRule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z" clipRule="evenodd"></path>
                                 </svg>
                             </span>
