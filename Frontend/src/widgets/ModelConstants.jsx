@@ -6,9 +6,10 @@ export const modelOptions = [
     { label: 'GPT-2 Medium', value: 'openai-community/gpt2-medium' },
     { label: 'GPT-2 Large', value: 'openai-community/gpt2-large' },
     { label: 'GPT-2 XL', value: 'openai-community/gpt2-xl' },
-    { label: 'LLaMA-2 7B', value: 'openlm-research/open_llama_7b_v2' },
-    { label: 'LLaMA-2 13B', value: 'openlm-research/open_llama_13b' },
-    { label: 'NousResearch llama2', value: 'NousResearch/Llama-2-7b-chat-hf' },
+    { label: 'LLaMA-2 7B(Coming Soon)', value: 'openlm-research/open_llama_7b_v2' },
+    { label: 'LLaMA-2 13B(Coming Soon)', value: 'openlm-research/open_llama_13b' },
+    { label: 'NousResearch llama2(Coming Soon)', value: 'NousResearch/Llama-2-7b-chat-hf' },
+    { label: 'Grok-1(Coming Soon)', value: '' }
   ];
   
   export const datasetOptions = {
