@@ -30,12 +30,15 @@ export const modelOptions = [
     ],
     'openlm-research/open_llama_7b_v2': [
       { label: 'guanaco-llama2-1k', value: 'mlabonne/guanaco-llama2-1k' },
+      { label: 'bentely-customer-articles', value: 'Tobius/bentelycustomer' },
     ],
     'openlm-research/open_llama_13b': [
       { label: 'guanaco-llama2-1k', value: 'mlabonne/guanaco-llama2-1k' },
+      { label: 'bentely-customer-articles', value: 'Tobius/bentelycustomer' },
     ],
     'NousResearch/Llama-2-7b-chat-hf': [
       { label: 'guanaco-llama2-1k', value: 'mlabonne/guanaco-llama2-1k' },
+      { label: 'bentely-customer-articles', value: 'Tobius/bentelycustomer' },
     ],
     'apple/OpenELM-270M': [
       { label: 'oasst2_top4k_en', value: 'g-ronimo/oasst2_top4k_en' },
