@@ -3,9 +3,9 @@ import { auth } from "../../../auth/config/firebase-config";
 import Navigator from "../../../widgets/NavComponent";
 import Sidebar from "../../../widgets/sidebar"
 import UserInfoPopup from "../../../widgets/userInfo";
-import Subscription from "../../../widgets/SubscriptionComponent"
+import UserDocsComponent from "../../../widgets//UserDocComponent";
 
-const PaymentMenu = () => {
+const GuidelinesComponent = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileClicked, setIsProfileClicked] = useState(false);
@@ -76,9 +76,9 @@ const PaymentMenu = () => {
   const renderContent = () => {
     switch (activeScreen) {
       case "Models":
-        return <Subscription  />;
+        return <UserDocsComponent  />;
       default:
-        return <Subscription />;
+        return <UserDocsComponent />;
     }
   };
 
@@ -108,4 +108,4 @@ const PaymentMenu = () => {
   );
 };
 
-export default PaymentMenu;
+export default GuidelinesComponent;

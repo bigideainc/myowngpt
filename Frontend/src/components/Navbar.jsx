@@ -118,13 +118,13 @@ const Navbar = ({ onProfileClick }) => {
                 <>
                   <Link to="/"
                     href="#"
-                    className="text-white  hover:text-gray-300 rounded-md px-3 py-2 text-xl font-bold"
+                    className="text-white  hover:text-gray-200 rounded-md px-3 py-2 text-xl font-bold"
                   >
                     Community
                   </Link>
                   <Link
                     to="/pricing"
-                    className={`${location.pathname === '/pricing' ? 'bg-green-500/40 text-white' : 'text-white hover:text-gray-300'} rounded-md px-3 py-2 text-xl font-bold`}
+                    className={`${location.pathname === '/pricing' ? 'bg-green-500/30 text-white' : 'text-white hover:text-gray-300'} rounded-md px-3 py-2 text-xl font-bold`}
                   >
                     Pricing
                   </Link>

@@ -20,6 +20,7 @@ import { Footer } from "./widgets/Footer";
 import Com from "./widgets/getCPUProgress";
 import LoadingScreen from "./widgets/LoadingScreen";
 import UserInfoPopup from "./widgets/userInfo";
+import GuildelinesComponent from "./screens/pages/docs/GuidelinesComponent";
 
 // Function to fetch models from Hugging Face
 const fetchModelDetails = async (modelId) => {
@@ -67,9 +68,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
   const [showAuthModel, setShowAuthModel] = useState(false);
-  const [currentTitle, setCurrentTitle] = useState('');
   const [isProfileClicked, setIsProfileClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Initialize loading state to true
   const location = useLocation();
@@ -95,7 +94,7 @@ function App() {
 
   // Listen for changes in the authentication state
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
         setIsAuthenticated(true);
@@ -105,14 +104,15 @@ function App() {
       }
     });
     themeCheck();
+
+    // Clean up the subscription
+    return () => unsubscribe();
   }, []);
 
   const navigate = useNavigate(); // Define useNavigate hook here
 
   const handleExploreClick = (title, link) => {
     if (isAuthenticated) {
-      setCurrentTitle(title);
-      setShowAlert(true);
       // Navigate to the provided link
       if (link) {
         navigate(link);
@@ -121,11 +121,6 @@ function App() {
       setShowAuthModel(true);
     }
   };
-
-  // Initial Theme Check
-  useEffect(() => {
-    themeCheck();
-  }, []);
 
   const themeCheck = () => {
     const userTheme = localStorage.getItem("theme");
@@ -164,7 +159,7 @@ function App() {
   });
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
@@ -184,6 +179,9 @@ function App() {
         });
       }
     });
+
+    // Clean up the subscription
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -219,7 +217,7 @@ function App() {
                   display: 'flex',
                   alignItems: 'center'
                 }}>
-                  <div className="flex-1  pt-5">
+                  <div className="flex-1 pt-5">
                     <MainContent handleExploreClick={handleExploreClick} />
                   </div>
                 </div>
@@ -232,12 +230,11 @@ function App() {
             <Route path="/llms" element={<LLMSScreen />} />
             <Route path="/jobs" element={<TrainingJobs />} />
             <Route path="/models" element={<ModelsScreen />} />
-            <Route path="/bill" element={<BillingScreen />} />
             <Route path="/inference:model" element={<ChatUI />} />
-            <Route path="/payment" element={<PaymentMenu />} />
+            <Route path="/bill" element={<PaymentMenu />} />
             <Route path="/chat/:url" element={<ChatLayout />} />
-            <Route path="/com" element={<Com/>}/>
-            {/* <Route path="/transaction-history" element={<TransactionHistory/>}/> */}
+            <Route path="/com" element={<Com />} />
+            <Route path="/userdocs" element={<GuildelinesComponent />} />
           </Routes>
         )}
       </div>
