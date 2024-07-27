@@ -1,26 +1,35 @@
 import json
 import os
+import sys
 
 import pandas as pd
-
 import wandb
 
 # Set your wandb API key
 os.environ["WANDB_API_KEY"] = "efa7d98857a922cbe11e78fa1ac22b62a414fbf3"
 
-# Set your entity name, project name, and run ID
-entity_name = "ai-research-lab"
-project_name = "gpt_v4"
-run_id = "15v9e834"  # replace with your actual run ID
+# Extract command-line arguments
+if len(sys.argv) < 2:
+    print(json.dumps({"error": "Project name is required"}))
+    sys.exit(1)
 
-# Initialize the API and fetch the run
+entity_name = "ai-research-lab"
+project_name = sys.argv[1]
+
+# Initialize the API and fetch the last run
 api = wandb.Api()
 
 try:
-    run = api.run(f"{entity_name}/{project_name}/{run_id}")
+    # Fetch the latest run by sorting runs by creation time in descending order
+    runs = api.runs(f"{entity_name}/{project_name}", order="-created_at")
+    if not runs:
+        print(json.dumps({"error": "No runs found for the specified project"}))
+        sys.exit(1)
+    
+    last_run = runs[0]  # Get the most recent run
 
-    # Fetch the history of the run (logged metrics)
-    history = run.history()
+    # Fetch the history of the last run (logged metrics)
+    history = last_run.history()
 
     # Convert the DataFrame to JSON
     history_json = history.to_json(orient='records')
