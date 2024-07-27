@@ -185,7 +185,7 @@ const JobDetails = ({ job, setActiveScreen }) => { // Add setActiveScreen here
           )}
           {tabValue === 1 && (
             <Box sx={{ marginTop: '20px' }}>
-              <GraphWidget />
+              <GraphWidget projectName={job.id} />
             </Box>
           )}
         </CardContent>

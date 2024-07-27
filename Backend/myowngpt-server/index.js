@@ -149,14 +149,14 @@ app.get('/wandb-data', async (req, res) => {
     console.log('Endpoint /wandb-data reached');
 
     // Extract query parameters
-    const { projectName, runId } = req.query;
+    const { projectName } = req.query;
 
-    if (!projectName || !runId) {
-        return res.status(400).send({ error: 'Project name and run ID are required' });
+    if (!projectName) {
+        return res.status(400).send({ error: 'Project name is required' });
     }
 
-    // Call the Python script with the provided parameters
-    const command = `python wandb/test.py ${projectName} ${runId}`;
+    // Call the Python script with the provided parameter
+    const command = `python wandb/test.py ${projectName}`;
     exec(command, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing script: ${error.message}`);
@@ -182,7 +182,7 @@ app.get('/wandb-data', async (req, res) => {
             res.status(500).send({ error: 'Failed to parse script output' });
         }
     });
-})
+});
 
 // app.get('/wandb-data', async (req, res) => {
 //     console.log('Endpoint /wandb-data reached');
