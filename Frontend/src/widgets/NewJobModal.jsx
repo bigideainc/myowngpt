@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Slider, TextField, Typography, Select, MenuItem, FormControl, InputLabel, FormControlLabel } from '@mui/material';
+import { Box, Button, Checkbox, Paper, Slider, Typography, FormControl, InputLabel, MenuItem, Select, Grid, Icon } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { auth, newTrainingJob } from '../auth/config/firebase-config';
 import { modelOptions, datasetOptions } from './ModelConstants';
+import { Memory, Laptop, Code } from '@mui/icons-material';
 
 const NewJobModal = () => {
   const [formData, setFormData] = useState({
@@ -107,8 +108,54 @@ const NewJobModal = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const renderModelCards = (models) => {
+    return models.map((model) => {
+      let IconComponent = Code;
+
+      return (
+        <Grid item xs={12} sm={6} md={4} lg={3} key={model.value}>
+          <Paper
+            elevation={3}
+            className={`flex flex-col items-center p-4 m-2 ${model.label.includes('Coming Soon') ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+            onClick={() => !model.label.includes('Coming Soon') && setFormData({ ...formData, baseModel: model.value })}
+            sx={{
+              justifyContent: 'space-between',
+              fontSize: '14px',
+              fontFamily: 'Poppins',
+              backgroundColor: 'black',
+              color: 'white',
+              height: '150px'
+            }}
+          >
+            <Box className="flex items-center justify-between w-full">
+              <Typography variant="h6" sx={{ fontSize: '14px', fontFamily: 'Poppins', color: 'white' }}>{model.label}</Typography>
+              <IconComponent style={{ color: 'white' }} />
+            </Box>
+            <Typography variant="body2" color="textSecondary" sx={{ color: 'white' }}>{model.version}</Typography>
+            {model.label.includes('Coming Soon') && <Typography variant="body2" color="red">Coming Soon</Typography>}
+          </Paper>
+        </Grid>
+      );
+    });
+  };
+
   return (
-    <Box className="flex flex-col ml-64 bg-slate-100 p-6 mt-16" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>
+    <Box 
+        sx={{ 
+          display: 'flex',
+          justifyContent: 'flex-end',
+          width: '100%',
+          marginTop: 10,
+          boxSizing: 'border-box',
+        }}>
+    <Box
+          sx={{
+            fontFamily: 'Poppins',
+            fontSize: '12px',
+            width: { xs: '100%', sm: '80%', md: '70%', lg: '80%' },
+            padding: { xs: 2, sm: 3, md: 4 },
+            boxSizing: 'border-box',
+          }} >
       {formError && (
         <AlertBox message={formError} type="error" onClose={() => setFormError('')} />
       )}
@@ -122,8 +169,9 @@ const NewJobModal = () => {
         <AlertBox message="Failed to submit the model for training. Please try again." type="error" />
       )}
 
-      <Box className="flex justify-between items-center mb-4">
-        <Typography variant="h5">Fine Tuning Job</Typography>
+      <Box className="flex items-center mb-4" sx={{ justifyContent: 'flex-start' }}>
+        <Memory sx={{ marginRight: 1 }} /> 
+        <Typography variant="h6" sx={{ fontFamily: 'Poppins', fontSize: 14 }}>Fine Tuning Job</Typography>
       </Box>
 
       <Paper elevation={3}>
@@ -142,22 +190,14 @@ const NewJobModal = () => {
               </Select>
             </FormControl>
 
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>Base Model</InputLabel>
-              <Select
-                value={formData.baseModel}
-                onChange={handleInputChange}
-                name="baseModel"
-                label="Base Model"
-                inputProps={{ style: { fontFamily: 'Poppins', fontSize: '14px' } }}
-              >
-                {modelOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Box className="flex items-center" sx={{ marginTop: 2, justifyContent: 'flex-start' }}>
+              <Code sx={{ marginRight: 1 }} /> 
+              <Typography variant="h6" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>Select Base Model</Typography>
+            </Box>
+
+            <Grid container spacing={2}>
+              {renderModelCards(modelOptions)}
+            </Grid>
 
             {formData.baseModel && datasetOptions[formData.baseModel] && (
               <FormControl fullWidth variant="outlined">
@@ -206,6 +246,7 @@ const NewJobModal = () => {
           </Box>
         </Box>
       </Paper>
+    </Box>
     </Box>
   );
 };

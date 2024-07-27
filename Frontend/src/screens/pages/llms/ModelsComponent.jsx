@@ -1,11 +1,45 @@
-import { Delete as DeleteIcon, FilterList as FilterListIcon, Search as SearchIcon, ChatBubbleOutline as ChatBubbleOutlineIcon, MoreVert as MoreVertIcon, Send as SendIcon } from '@mui/icons-material';
-import { Alert, Box, Button, Card, CardContent, CardMedia, CssBaseline, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, InputAdornment, List, ListItem, ListItemText, Menu, MenuItem, Paper, Snackbar, TextField, Typography } from '@mui/material';
+import {
+  Delete as DeleteIcon,
+  FilterList as FilterListIcon,
+  Search as SearchIcon,
+  ChatBubbleOutline as ChatBubbleOutlineIcon,
+  MoreVert as MoreVertIcon,
+  Send as SendIcon,
+  ModelTraining as ModelTrainingIcon,
+  AddCircle as AddCircleIcon
+} from '@mui/icons-material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  CssBaseline,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  IconButton,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Paper,
+  Snackbar,
+  TextField,
+  Typography,
+  CircularProgress
+} from '@mui/material';
 import axios from 'axios';
 import { format, isToday, isYesterday } from 'date-fns';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, deleteDoc, doc, getDocs, getFirestore } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { ClipLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 import { auth, getChatHistory, saveChatHistory } from '../../../auth/config/firebase-config';
@@ -296,10 +330,26 @@ const ModelsComponent = () => {
             boxSizing: 'border-box',
           }}
         >
-          <Paper sx={{padding:1, my:2, mt:2}}>
-          <Typography variant="h5" gutterBottom sx={{ fontFamily: 'Poppins', marginBottom: '16px' }}>Deployed Models</Typography>
+          <Paper sx={{ padding: 2, mb: 4 }}>
+            <Box className="flex justify-between items-center">
+              <Box className="flex items-center">
+                <ModelTrainingIcon sx={{ marginRight: 1 }} />
+                <Typography variant="h5" sx={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 'bold' }}>
+                  Deployed Models
+                </Typography>
+              </Box>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => navigate('/jobs')}
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
+                <AddCircleIcon sx={{ marginRight: 1 }} />
+                Create New Training Job
+              </Button>
+            </Box>
           </Paper>
-          
+
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mb: 4 }}>
             <TextField
               variant="outlined"
@@ -338,7 +388,7 @@ const ModelsComponent = () => {
           </Box>
           {isLoading ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-              <ClipLoader size={50} color={"#123abc"} loading={isLoading} />
+              <CircularProgress size={50} color={"#123abc"} loading={isLoading} />
             </Box>
           ) : (
             <Grid container spacing={2}>
@@ -395,6 +445,33 @@ const ModelsComponent = () => {
                 </Grid>
               ))}
             </Grid>
+          )}
+          {!isLoading && models.length === 0 && (
+            <Box className="flex flex-col items-center justify-center text-white" style={{ height: '300px' }}>
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  backgroundColor: 'white',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 2
+                }}
+              >
+                <ModelTrainingIcon sx={{ fontSize: 40, color: 'black' }} />
+              </Box>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => navigate('/jobs')}
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
+                <AddCircleIcon sx={{ marginRight: 1 }} />
+                Create New Training Job
+              </Button>
+            </Box>
           )}
           <Snackbar
             open={snackbarOpen}
