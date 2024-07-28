@@ -27,6 +27,7 @@
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "chartjs-adapter-date-fns": "^3.0.0",
+    "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "file-saver": "^2.0.5",
     "firebase": "^10.10.0",
