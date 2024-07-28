@@ -156,7 +156,7 @@ app.get('/wandb-data', async (req, res) => {
     }
 
     // Call the Python script with the provided parameter
-    const command = `python wandb/test.py ${projectName}`;
+    const command = `python test.py ${projectName}`;
     exec(command, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing script: ${error.message}`);

@@ -20,6 +20,7 @@ const GraphWidget = ({ projectName }) => {
 
   useEffect(() => {
     if (projectName) {
+      // axios.get(`http://localhost:3000/wandb-data?projectName=${projectName}`)
       axios.get(`https://yogpt-server.vercel.app/wandb-data?projectName=${projectName}`)
         .then(response => {
           setData(response.data);
