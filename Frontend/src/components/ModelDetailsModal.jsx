@@ -3,7 +3,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Box, Button, Checkbox, CircularProgress, FormControlLabel, IconButton, MenuItem, Modal, Slider, TextField, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { newTrainingJob } from '../auth/config/firebase-config'; // Import the function to add a new training job
+import { auth, newTrainingJob } from '../auth/config/firebase-config'; // Import the function to add a new training job
 
 const ValueLabelComponent = (props) => {
   const { children, value } = props;
@@ -73,11 +73,15 @@ const ModelDetailsModal = ({ open, onClose, model }) => {
     setSelectedDataset(event.target.value);
   };
 
+  const user = auth.currentUser;
+
   const handleStartFineTuning = async () => {
     setLoading(true);
     const jobData = {
       baseModel: model.id,
       huggingFaceId: selectedDataset,
+      userId: user.uid,
+      fineTuningType: model.description,
       licenseSelected: "open", // Assuming licenseSelected is always "open"
       domain: model.description, // Assuming domain is always "domain"
       status: "pending", // Initial job status
