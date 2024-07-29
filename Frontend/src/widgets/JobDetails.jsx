@@ -38,7 +38,7 @@ const theme = createTheme({
   },
 });
 
-const JobDetails = ({ job, setActiveScreen }) => { // Add setActiveScreen here
+const JobDetails = ({ job, setActiveScreen }) => {
   const [tabValue, setTabValue] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJobForDeployment, setSelectedJobForDeployment] = useState(null);
