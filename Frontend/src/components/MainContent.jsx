@@ -1,7 +1,7 @@
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import { Box, Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { Box, Card, CardContent, Container, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { auth } from '../auth/config/firebase-config';
+import { auth, signInWithGoogle } from '../auth/config/firebase-config'; // import signInWithGoogle function
 import PopUp from '../widgets/LoginPopUp';
 import NewPopup from '../widgets/ServicesPopUp';
 import ModelCard from './ModelCard'; // Import the ModelCard component
@@ -133,6 +133,22 @@ const MainContent = () => {
     setFilter(event.target.value);
   };
 
+  const handleCardClick = (model) => {
+    if (!user) {
+      signInWithGoogle().then((result) => {
+        // handle success
+        setUser(result.user);
+        // you can perform any action after successful login here, like opening the model detail
+      }).catch((error) => {
+        // handle error
+        console.error('Google sign-in error', error);
+      });
+    } else {
+      // open model detail or any other action
+      alert(`Selected model: ${model.name}`);
+    }
+  };
+
   const filteredModels = models.filter(model => model.name.toLowerCase().includes(filter.toLowerCase()));
 
   return (
@@ -227,7 +243,7 @@ const MainContent = () => {
         <Typography variant="h5" align="center" color="textSecondary" gutterBottom style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '15px' }}>
           Select a model to fine-tune today...
         </Typography>
-        {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
           <TextField
             variant="outlined"
             placeholder="Filter by name"
@@ -244,12 +260,12 @@ const MainContent = () => {
             }}
             sx={{ width: '400px' }}
           />
-        </Box> */}
+        </Box>
 
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           {filteredModels.map((model) => (
             <Grid item xs={12} sm={6} md={4} lg={4} key={model.id}>
-              <ModelCard model={model} /> {/* Use the reusable ModelCard component */}
+              <ModelCard model={model} onClick={() => handleCardClick(model)} /> {/* Use the reusable ModelCard component */}
             </Grid>
           ))}
         </Grid>

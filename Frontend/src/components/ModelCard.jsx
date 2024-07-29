@@ -2,7 +2,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
 
-const ModelCard = ({ model }) => {
+const ModelCard = ({ model, onClick }) => {
   return (
     <Card
       sx={{
@@ -15,6 +15,7 @@ const ModelCard = ({ model }) => {
           boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
         },
       }}
+      onClick={onClick}
     >
       <CardContent>
         <Typography variant="h6" component="div" gutterBottom>
