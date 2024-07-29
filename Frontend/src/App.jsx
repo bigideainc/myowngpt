@@ -7,7 +7,7 @@ import MainContent from "./components/MainContent";
 import Navbar from "./components/Navbar";
 import './index.css';
 import ChatLayout from "./screens/pages/chat/ChatLayout";
-import BillingScreen from "./screens/pages/llms/BillingScreen";
+import GuildelinesComponent from "./screens/pages/docs/GuidelinesComponent";
 import ChatUI from "./screens/pages/llms/InferenceScreen";
 import LLMSScreen from "./screens/pages/llms/LLMSScreen";
 import ModelsScreen from "./screens/pages/llms/ModelScreen";
@@ -20,7 +20,6 @@ import { Footer } from "./widgets/Footer";
 import Com from "./widgets/getCPUProgress";
 import LoadingScreen from "./widgets/LoadingScreen";
 import UserInfoPopup from "./widgets/userInfo";
-import GuildelinesComponent from "./screens/pages/docs/GuidelinesComponent";
 
 // Function to fetch models from Hugging Face
 const fetchModelDetails = async (modelId) => {
@@ -210,17 +209,7 @@ function App() {
                   isMobileMenuOpen={isMobileMenuOpen}
                   onProfileClick={toggleProfileWidget} // Passing the function as a prop
                 />
-                <div className="flex flex-1" style={{
-                  color: 'var(--white)',
-                  backgroundImage: 'linear-gradient(#014214 80%, #F4FDC6)',
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center'
-                }}>
-                  <div className="flex-1 pt-5">
                     <MainContent handleExploreClick={handleExploreClick} />
-                  </div>
-                </div>
                 <Footer />
               </>
             } />
