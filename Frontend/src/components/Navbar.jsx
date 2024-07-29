@@ -161,7 +161,7 @@ const Navbar = ({ onProfileClick }) => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', md: 'block' } }}>
-          <Link to="/" style={{ color: 'white', textDecoration: 'none', fontSize: '1.5rem', fontWeight: '500' }}>AI Hub</Link>
+          <Link to="/" style={{ color: 'white', textDecoration: 'none', fontSize: '1.5rem', fontWeight: '500' }}>YoGPT</Link>
         </Typography>
         <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', display: { xs: 'none', md: 'flex' } }}>
           <Typography variant="h6" component="div" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
