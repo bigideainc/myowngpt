@@ -288,7 +288,7 @@ async function userJobs() {
 }
 
 async function fetchJobs() {
-    return await userJobs(); // Call the userJobs function you already have
+    return await userJobs(); 
 }
 
 // Function to delete a fine-tuning job
