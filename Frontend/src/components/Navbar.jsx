@@ -119,7 +119,7 @@ const Navbar = ({ onProfileClick }) => {
         </Link>
       </MenuItem>
       <MenuItem>
-        <Link to="/llms" style={{ color: 'inherit', textDecoration: 'none' }}>
+        <Link to="/dashboard" style={{ color: 'inherit', textDecoration: 'none' }}>
           Dashboard
         </Link>
       </MenuItem>
@@ -163,7 +163,7 @@ const Navbar = ({ onProfileClick }) => {
         <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', md: 'block' } }}>
           <Link to="/" style={{ color: 'white', textDecoration: 'none', fontSize: '1.5rem', fontWeight: '500' }}>AI Hub</Link>
         </Typography>
-        <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', display: { xs: 'none', md: 'flex' } }}>
           <Typography variant="h6" component="div" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
             <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Home</Link>
             <Link to="/models" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Models</Link>

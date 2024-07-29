@@ -1,9 +1,10 @@
-// import '@fortawesome/fontawesome-free/css/all.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Box, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { auth } from '../auth/config/firebase-config';
 import PopUp from '../widgets/LoginPopUp';
 import NewPopup from '../widgets/ServicesPopUp';
+import ModelCard from './ModelCard'; // Import the ModelCard component
 
 const networks = [
   {
@@ -35,10 +36,77 @@ const networks = [
   },
 ];
 
+const models = [
+  {
+    name: 'GPT2 ',
+    id: 'openai-community/gpt2',
+    description: 'Text Generation',
+    lastUsed: '3 hours ago',
+    usageCount: '339k'
+  },
+  {
+    name: 'GPT-2 Medium',
+    id: 'openai-community/gpt2-medium',
+    description: 'Text Generation',
+    lastUsed: '5 days ago',
+    usageCount: '48.5k'
+  },
+  {
+    name: 'GPT-2 Large',
+    id: 'openai-community/gpt2-large',
+    description: 'Text Generation',
+    lastUsed: '3 hours ago',
+    usageCount: '17.7k'
+  },
+  {
+    name: 'LLaMA-2 7B',
+    id: 'openlm-research/open_llama_7b_v2',
+    description: 'Text Generation',
+    lastUsed: '3 hours ago',
+    usageCount: '66.1k'
+  },
+  {
+    name: 'LLaMA-2 13B',
+    id: 'openlm-research/open_llama_13b',
+    description: 'Text Generation',
+    lastUsed: '17 days ago',
+    usageCount: '121k'
+  },
+  {
+    name: 'NousResearch llama2',
+    id: 'NousResearch/Llama-2-7b-chat-hf',
+    description: 'Text Generation',
+    lastUsed: '5 days ago',
+    usageCount: '616'
+  },
+  {
+    name: 'OpenELM 270M',
+    id: 'apple/OpenELM-270M',
+    description: 'Text Generation',
+    lastUsed: '21 hours ago',
+    usageCount: '84.8k'
+  },
+  {
+    name: 'OpenELM 450M',
+    id: 'apple/OpenELM-450M',
+    description: 'Text Generation',
+    lastUsed: '4 days ago',
+    usageCount: '3.47k'
+  },
+  {
+    name: 'OpenELM 3B',
+    id: 'apple/OpenELM-3B',
+    description: 'Text Generation',
+    lastUsed: '3 days ago',
+    usageCount: '77.8k'
+  },
+];
+
 const MainContent = () => {
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [newPopupOpen, setNewPopupOpen] = useState(false);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(setUser);
@@ -61,8 +129,14 @@ const MainContent = () => {
     setNewPopupOpen(false);
   };
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
+  const filteredModels = models.filter(model => model.name.toLowerCase().includes(filter.toLowerCase()));
+
   return (
-    <Box className="min-h-screen bg-gray-100" sx={{ marginTop: "70px", minHeight: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+    <Box className="min-h-screen bg-gray-100" sx={{ marginTop: "90px", marginBottom: "90px", minHeight: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', flexDirection: 'column' }}>
       <Container maxWidth="lg">
         <Typography variant="h4" align="center" color="textPrimary" gutterBottom style={{ fontSize: '2.0rem', fontWeight: '700' }}>
           AI Model Fine-Tuning Hub
@@ -145,6 +219,39 @@ const MainContent = () => {
               </CardContent>
             </Card>
           </Grid>
+        </Grid>
+
+        <Typography variant="h4" align="center" color="textPrimary" gutterBottom style={{ fontSize: '2.0rem', fontWeight: '700', marginTop: '50px' }}>
+          Models
+        </Typography>
+        <Typography variant="h5" align="center" color="textSecondary" gutterBottom style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '15px' }}>
+          Select a model to fine-tune today...
+        </Typography>
+        {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
+          <TextField
+            variant="outlined"
+            placeholder="Filter by name"
+            value={filter}
+            onChange={handleFilterChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            sx={{ width: '400px' }}
+          />
+        </Box> */}
+
+        <Grid container spacing={2} justifyContent="center" alignItems="center">
+          {filteredModels.map((model) => (
+            <Grid item xs={12} sm={6} md={4} lg={4} key={model.id}>
+              <ModelCard model={model} /> {/* Use the reusable ModelCard component */}
+            </Grid>
+          ))}
         </Grid>
       </Container>
 
