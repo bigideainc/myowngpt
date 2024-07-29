@@ -1,4 +1,4 @@
-import '@fortawesome/fontawesome-free/css/all.min.css';
+// import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Box, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { auth } from '../auth/config/firebase-config';
