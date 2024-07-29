@@ -1,10 +1,9 @@
 import { initializeApp } from 'firebase/app';
-import { GoogleAuthProvider, getAuth } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const sanitizeId = (id) => id.replace(/\//g, '|');
-
 
 const firebaseConfig = {
     apiKey: "AIzaSyD1w5Q5sN1rrwOq8lHPtmVg_pqalwYrLEE",
@@ -15,12 +14,37 @@ const firebaseConfig = {
     appId: "1:242213821849:web:9061001fa288c50249c708",
     measurementId: "G-22D29K0Y6C"
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
-const auth = getAuth(app, provider);
+const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);  // Initialize storage
+
+// Google Sign-In function
+const signInWithGoogle = async () => {
+    try {
+        const result = await signInWithPopup(auth, provider);
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log('User signed in: ', user);
+        return user;
+    } catch (error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.error('Error signing in with Google: ', error);
+        throw error;
+    }
+};
 
 // Save chat history
 const saveChatHistory = async (userId, id, chatHistory) => {
@@ -29,32 +53,32 @@ const saveChatHistory = async (userId, id, chatHistory) => {
     console.log(`Saving chat histories for userId: ${userId}, modelId: ${id}`);
     console.log('Chat histories to save:', chatHistory);
     try {
-      await setDoc(chatRef, { chatHistories: chatHistory }, { merge: true });
-      console.log('Chat histories saved successfully.');
+        await setDoc(chatRef, { chatHistories: chatHistory }, { merge: true });
+        console.log('Chat histories saved successfully.');
     } catch (error) {
-      console.error('Error saving chat histories:', error);
+        console.error('Error saving chat histories:', error);
     }
-  };
-  
-  // Retrieve chat history
+};
+
+// Retrieve chat history
 const getChatHistory = async (userId, id) => {
     const sanitizedId = sanitizeId(id);
     const chatRef = doc(db, 'chatHistories', `${userId}_${sanitizedId}`);
     console.log(`Retrieving chat histories for userId: ${userId}, modelId: ${id}`);
     try {
-      const chatDoc = await getDoc(chatRef);
-      if (chatDoc.exists()) {
-        console.log('Chat histories retrieved successfully:', chatDoc.data().chatHistories);
-        return chatDoc.data().chatHistories;
-      } else {
-        console.log('No chat histories found.');
-        return [];
-      }
+        const chatDoc = await getDoc(chatRef);
+        if (chatDoc.exists()) {
+            console.log('Chat histories retrieved successfully:', chatDoc.data().chatHistories);
+            return chatDoc.data().chatHistories;
+        } else {
+            console.log('No chat histories found.');
+            return [];
+        }
     } catch (error) {
-      console.error('Error retrieving chat histories:', error);
-      return [];
+        console.error('Error retrieving chat histories:', error);
+        return [];
     }
-  };
+};
 
 // Function to save deployed model information
 async function saveDeployedModel(jobId, modelId, serverUrl, modelName) {
@@ -184,7 +208,6 @@ async function addTrainingJob(modelName, modelId, datasetId, gpu, licenseSelecte
     }
 }
 
-
 // Inside firebase-config.js or a relevant module
 async function updateTrainingJobStatus(docId, status) {
     try {
@@ -280,6 +303,22 @@ async function deleteFineTuningJob(docId) {
     }
 }
 
-// Get a reference to the auth service
-export { addTrainingJob, addTrainingJobMetadata, auth, db, deleteFineTuningJob, fetchCompletedJobById, fetchJobs, fetchTrainingJobsForUser, getChatHistory, newTrainingJob, saveChatHistory, saveDeployedModel, submitFineTuningJob, updateTrainingJobStatus, userJobs };
+export {
+    addTrainingJob,
+    addTrainingJobMetadata,
+    auth,
+    db,
+    deleteFineTuningJob,
+    fetchCompletedJobById,
+    fetchJobs,
+    fetchTrainingJobsForUser,
+    getChatHistory,
+    newTrainingJob,
+    saveChatHistory,
+    saveDeployedModel,
+    signInWithGoogle, // Export the sign-in function
+    submitFineTuningJob,
+    updateTrainingJobStatus,
+    userJobs
+};
 
