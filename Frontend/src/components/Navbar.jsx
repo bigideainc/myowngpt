@@ -119,7 +119,7 @@ const Navbar = ({ onProfileClick }) => {
         </Link>
       </MenuItem>
       <MenuItem>
-        <Link to="/dashboard" style={{ color: 'inherit', textDecoration: 'none' }}>
+        <Link to="/llms" style={{ color: 'inherit', textDecoration: 'none' }}>
           Dashboard
         </Link>
       </MenuItem>
@@ -167,7 +167,7 @@ const Navbar = ({ onProfileClick }) => {
           <Typography variant="h6" component="div" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
             <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Home</Link>
             <Link to="/models" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Models</Link>
-            <Link to="/dashboard" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Dashboard</Link>
+            <Link to="/llms" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Dashboard</Link>
             <Link to="/datasets" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Datasets</Link>
             <Link to="/docs" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Docs</Link>
           </Typography>
