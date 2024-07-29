@@ -1,10 +1,10 @@
-import SearchIcon from '@mui/icons-material/Search';
-import { Box, Card, CardContent, Container, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { auth, signInWithGoogle } from '../auth/config/firebase-config'; // import signInWithGoogle function
 import PopUp from '../widgets/LoginPopUp';
 import NewPopup from '../widgets/ServicesPopUp';
 import ModelCard from './ModelCard'; // Import the ModelCard component
+import ModelDetailsModal from './ModelDetailsModal';
 
 const networks = [
   {
@@ -107,6 +107,7 @@ const MainContent = () => {
   const [open, setOpen] = useState(false);
   const [newPopupOpen, setNewPopupOpen] = useState(false);
   const [filter, setFilter] = useState('');
+  const [selectedModel, setSelectedModel] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(setUser);
@@ -136,17 +137,18 @@ const MainContent = () => {
   const handleCardClick = (model) => {
     if (!user) {
       signInWithGoogle().then((result) => {
-        // handle success
-        setUser(result.user);
-        // you can perform any action after successful login here, like opening the model detail
+        setUser(result);
+        setSelectedModel(model);
       }).catch((error) => {
-        // handle error
         console.error('Google sign-in error', error);
       });
     } else {
-      // open model detail or any other action
-      alert(`Selected model: ${model.name}`);
+      setSelectedModel(model);
     }
+  };
+
+  const handleModalClose = () => {
+    setSelectedModel(null);
   };
 
   const filteredModels = models.filter(model => model.name.toLowerCase().includes(filter.toLowerCase()));
@@ -243,24 +245,6 @@ const MainContent = () => {
         <Typography variant="h5" align="center" color="textSecondary" gutterBottom style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '15px' }}>
           Select a model to fine-tune today...
         </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
-          <TextField
-            variant="outlined"
-            placeholder="Filter by name"
-            value={filter}
-            onChange={handleFilterChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            sx={{ width: '400px' }}
-          />
-        </Box>
 
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           {filteredModels.map((model) => (
@@ -273,6 +257,9 @@ const MainContent = () => {
 
       <PopUp open={open} onClose={handleClose} />
       <NewPopup open={newPopupOpen} onClose={handleNewPopupClose} />
+      {selectedModel && (
+        <ModelDetailsModal open={!!selectedModel} onClose={handleModalClose} model={selectedModel} />
+      )}
     </Box>
   );
 };
