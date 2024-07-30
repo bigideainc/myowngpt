@@ -6,6 +6,7 @@ import { auth } from "./auth/config/firebase-config";
 import MainContent from "./components/MainContent";
 import Navbar from "./components/Navbar";
 import './index.css';
+import MinerDocumentation from './screens/pages/docs/MInerDocumentation'
 import ChatLayout from "./screens/pages/chat/ChatLayout";
 import BillingScreen from "./screens/pages/llms/BillingScreen";
 import ChatUI from "./screens/pages/llms/InferenceScreen";
@@ -225,6 +226,7 @@ function App() {
               </>
             } />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/miner-docs" element={<MinerDocumentation />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/llms" element={<LLMSScreen />} />
