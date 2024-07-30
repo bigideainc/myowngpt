@@ -13,31 +13,34 @@ import {
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#ff0000'];
 
-const GraphWidget = () => {
+const GraphWidget = ({ projectName }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
 
   useEffect(() => {
-    axios.get('https://yogpt-server.vercel.app/wandb-data')
-      .then(response => {
-        setData(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      });
+    if (projectName) {
+      axios.get(`https://myowngpt-server.onrender.com/wandb-data?projectName=${projectName}`)
+      // axios.get(`https://yogpt-server.vercel.app/wandb-data?projectName=${projectName}`)
+        .then(response => {
+          setData(response.data);
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          setLoading(false);
+        });
 
-    const handleResize = () => {
-      if (containerRef.current) {
-        containerRef.current.dispatchEvent(new Event('resize'));
-      }
-    };
+      const handleResize = () => {
+        if (containerRef.current) {
+          containerRef.current.dispatchEvent(new Event('resize'));
+        }
+      };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, [projectName]);
 
   const metrics = ['train/loss', 'train/global_step', 'train/learning_rate', 'train/grad_norm', 'train/epoch'];
 

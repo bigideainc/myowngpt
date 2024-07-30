@@ -1,21 +1,6 @@
 import { Typography } from "@material-tailwind/react";
 import { styled } from '@mui/system';
 
-const LINKS = [
-  {
-    title: "Explore",
-    items: ["Home", "Models", "Community", "Pricing"],
-  },
-  {
-    title: "Company",
-    items: ["About us", "Careers", "Press", "News"],
-  },
-  {
-    title: "Resource",
-    items: ["Blog", "Newsletter", "Events", "Help center"],
-  },
-];
-
 const currentYear = new Date().getFullYear();
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
@@ -25,13 +10,18 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 
 export function Footer() {
   return (
-    <footer className="relative py-10 w-full text-xl font-semibold p-4 text-center text-gray-300 dark:bg-neutral-700 dark:text-neutral-200" style={{ backgroundColor: '#099D51', fontFamily: 'Poppins', fontSize: '15px' }}>
-
-  © 2024 Copyright:
-  <a
-    className="text-white dark:text-neutral-400"
-    href="#"
-  >YOGPT</a>
+    <footer 
+      className="fixed bottom-0 w-full text-center py-2" 
+      style={{ backgroundColor: '#6e8efb', color: '#fff', fontFamily: 'Poppins', fontSize: '12px' }}
+    >
+      © {currentYear} Copyright:
+      <a
+        className="text-white"
+        href="#"
+        style={{ marginLeft: '5px' }}
+      >
+        YOGPT
+      </a>
     </footer>
   );
 }
