@@ -15,7 +15,7 @@ const networks = [
   {
     name: 'Commune',
     description: 'Community-driven AI platform',
-    icon: 'https://communeai.org/commune-logo-white.svg',
+    icon: 'https://avatars.githubusercontent.com/u/107713514?v=4',
   },
   {
     name: 'Hugging Face',
