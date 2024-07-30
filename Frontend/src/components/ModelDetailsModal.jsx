@@ -3,6 +3,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Box, Button, Checkbox, CircularProgress, FormControlLabel, IconButton, MenuItem, Modal, Slider, TextField, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { auth, newTrainingJob } from '../auth/config/firebase-config'; // Import the function to add a new training job
 
 const ValueLabelComponent = (props) => {
@@ -76,6 +78,11 @@ const ModelDetailsModal = ({ open, onClose, model }) => {
   const user = auth.currentUser;
 
   const handleStartFineTuning = async () => {
+    if (!selectedDataset) {
+      toast.error("Please select a dataset before starting the fine-tuning job.");
+      return;
+    }
+
     setLoading(true);
     const jobData = {
       baseModel: model.id,
@@ -96,173 +103,176 @@ const ModelDetailsModal = ({ open, onClose, model }) => {
       const jobResponse = await newTrainingJob(jobData);
       console.log("Created job ID:", jobResponse.jobId);
       setLoading(false);
-      alert("Fine-tuning job started successfully!");
+      toast.success("Fine-tuning job started successfully!");
       navigate('/llms');
     } catch (error) {
       setLoading(false);
       console.error("Error starting fine-tuning job:", error);
-      alert("Failed to start fine-tuning job.");
+      toast.error("Failed to start fine-tuning job.");
     }
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '50%',
-          bgcolor: 'background.paper',
-          borderRadius: 2,
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6">{model.name}</Typography>
-          <IconButton onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <Box sx={{ mt: 2 }}>
-          <TextField
-            label="Model ID"
-            value={model.id}
-            fullWidth
-            margin="normal"
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-          <TextField
-            label="Description"
-            value={model.description}
-            fullWidth
-            margin="normal"
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-          <TextField
-            select
-            label="HuggingFace Dataset ID"
-            fullWidth
-            margin="normal"
-            value={selectedDataset}
-            onChange={handleDatasetChange}
-          >
-            <MenuItem value="">Select a dataset</MenuItem>
-            {modelDatasets[model.id]?.map((dataset) => (
-              <MenuItem key={dataset} value={dataset}>{dataset}</MenuItem>
-            ))}
-          </TextField>
-          <Button
-            variant="contained"
-            onClick={handleToggleAdvanced}
-            sx={{ mt: 2, display: 'block', width: 'fit-content' }}
-          >
-            {showAdvanced ? 'Hide Advanced Settings' : 'Show Advanced Settings'}
-          </Button>
-          {showAdvanced && (
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body1">Hyperparameter Tuning</Typography>
-              <Box sx={{ mt: 2 }}>
-                <Typography gutterBottom>Batch size</Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Slider
-                    value={batchSize}
-                    onChange={handleBatchSizeChange}
-                    aria-labelledby="batch-size-slider"
-                    min={1}
-                    max={128}
-                    disabled={autoBatchSize}
-                    valueLabelDisplay="auto"
-                    ValueLabelComponent={ValueLabelComponent}
-                    sx={{ flexGrow: 1 }}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={autoBatchSize}
-                        onChange={(e) => setAutoBatchSize(e.target.checked)}
-                      />
-                    }
-                    label="Auto"
-                  />
-                </Box>
-              </Box>
-              <Box sx={{ mt: 2 }}>
-                <Typography gutterBottom>Learning rate multiplier</Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Slider
-                    value={learningRate}
-                    onChange={handleLearningRateChange}
-                    aria-labelledby="learning-rate-slider"
-                    min={0.1}
-                    max={10}
-                    step={0.1}
-                    disabled={autoLearningRate}
-                    valueLabelDisplay="auto"
-                    ValueLabelComponent={ValueLabelComponent}
-                    sx={{ flexGrow: 1 }}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={autoLearningRate}
-                        onChange={(e) => setAutoLearningRate(e.target.checked)}
-                      />
-                    }
-                    label="Auto"
-                  />
-                </Box>
-              </Box>
-              <Box sx={{ mt: 2 }}>
-                <Typography gutterBottom>Number of epochs</Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Slider
-                    value={epochs}
-                    onChange={handleEpochsChange}
-                    aria-labelledby="epochs-slider"
-                    min={1}
-                    max={10}
-                    disabled={autoEpochs}
-                    valueLabelDisplay="auto"
-                    ValueLabelComponent={ValueLabelComponent}
-                    sx={{ flexGrow: 1 }}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={autoEpochs}
-                        onChange={(e) => setAutoEpochs(e.target.checked)}
-                      />
-                    }
-                    label="Auto"
-                  />
-                </Box>
-              </Box>
-            </Box>
-          )}
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-            <Button variant="outlined" onClick={onClose}>
-              Cancel
-            </Button>
+    <>
+      <Modal open={open} onClose={onClose}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '50%',
+            bgcolor: 'background.paper',
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h6">{model.name}</Typography>
+            <IconButton onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <Box sx={{ mt: 2 }}>
+            <TextField
+              label="Model ID"
+              value={model.id}
+              fullWidth
+              margin="normal"
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+            <TextField
+              label="Description"
+              value={model.description}
+              fullWidth
+              margin="normal"
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+            <TextField
+              select
+              label="HuggingFace Dataset ID"
+              fullWidth
+              margin="normal"
+              value={selectedDataset}
+              onChange={handleDatasetChange}
+            >
+              <MenuItem value="">Select a dataset</MenuItem>
+              {modelDatasets[model.id]?.map((dataset) => (
+                <MenuItem key={dataset} value={dataset}>{dataset}</MenuItem>
+              ))}
+            </TextField>
             <Button
               variant="contained"
-              color="primary"
-              startIcon={loading ? <CircularProgress size={24} /> : <PlayArrowIcon />}
-              onClick={handleStartFineTuning}
-              disabled={loading}
+              onClick={handleToggleAdvanced}
+              sx={{ mt: 2, display: 'block', width: 'fit-content' }}
             >
-              {loading ? 'Starting...' : 'Start Fine-tuning'}
+              {showAdvanced ? 'Hide Advanced Settings' : 'Show Advanced Settings'}
             </Button>
+            {showAdvanced && (
+              <Box sx={{ mt: 2 }}>
+                <Typography variant="body1">Hyperparameter Tuning</Typography>
+                <Box sx={{ mt: 2 }}>
+                  <Typography gutterBottom>Batch size</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Slider
+                      value={batchSize}
+                      onChange={handleBatchSizeChange}
+                      aria-labelledby="batch-size-slider"
+                      min={1}
+                      max={128}
+                      disabled={autoBatchSize}
+                      valueLabelDisplay="auto"
+                      ValueLabelComponent={ValueLabelComponent}
+                      sx={{ flexGrow: 1 }}
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={autoBatchSize}
+                          onChange={(e) => setAutoBatchSize(e.target.checked)}
+                        />
+                      }
+                      label="Auto"
+                    />
+                  </Box>
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <Typography gutterBottom>Learning rate multiplier</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Slider
+                      value={learningRate}
+                      onChange={handleLearningRateChange}
+                      aria-labelledby="learning-rate-slider"
+                      min={0.1}
+                      max={10}
+                      step={0.1}
+                      disabled={autoLearningRate}
+                      valueLabelDisplay="auto"
+                      ValueLabelComponent={ValueLabelComponent}
+                      sx={{ flexGrow: 1 }}
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={autoLearningRate}
+                          onChange={(e) => setAutoLearningRate(e.target.checked)}
+                        />
+                      }
+                      label="Auto"
+                    />
+                  </Box>
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <Typography gutterBottom>Number of epochs</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Slider
+                      value={epochs}
+                      onChange={handleEpochsChange}
+                      aria-labelledby="epochs-slider"
+                      min={1}
+                      max={10}
+                      disabled={autoEpochs}
+                      valueLabelDisplay="auto"
+                      ValueLabelComponent={ValueLabelComponent}
+                      sx={{ flexGrow: 1 }}
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={autoEpochs}
+                          onChange={(e) => setAutoEpochs(e.target.checked)}
+                        />
+                      }
+                      label="Auto"
+                    />
+                  </Box>
+                </Box>
+              </Box>
+            )}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+              <Button variant="outlined" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={loading ? <CircularProgress size={24} /> : <PlayArrowIcon />}
+                onClick={handleStartFineTuning}
+                disabled={loading}
+              >
+                {loading ? 'Starting...' : 'Start Fine-tuning'}
+              </Button>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Modal>
+      </Modal>
+      <ToastContainer />
+    </>
   );
 };
 
