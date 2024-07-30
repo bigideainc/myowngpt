@@ -3,6 +3,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider } from "./auth/AuthContext";
 import AuthModal from "./auth/AuthModal";
 import { auth } from "./auth/config/firebase-config";
+import DashboardScreen from "./components/DashboardScreen";
 import MainContent from "./components/MainContent";
 import Navbar from "./components/Navbar";
 import './index.css';
@@ -218,6 +219,7 @@ function App() {
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/llms" element={<LLMSScreen />} />
             <Route path="/jobs" element={<TrainingJobs />} />
+            <Route path="/dashboard" element={<DashboardScreen />} />
             <Route path="/models" element={<ModelsScreen />} />
             <Route path="/inference:model" element={<ChatUI />} />
             <Route path="/bill" element={<PaymentMenu />} />
