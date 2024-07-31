@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
   AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
+  Box,
   Button,
+  IconButton,
   Menu,
   MenuItem,
-  Box,
-  ListItemIcon
+  Toolbar,
+  Typography
 } from '@mui/material';
-import { Menu as MenuIcon } from '@mui/icons-material';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { auth } from '../auth/config/firebase-config';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar = ({ onProfileClick }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

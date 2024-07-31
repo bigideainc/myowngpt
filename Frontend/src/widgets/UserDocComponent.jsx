@@ -1,28 +1,25 @@
-import React, { useState } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Paper, 
-  Button, 
-  IconButton, 
-  Drawer, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
+import { Edit as EditIcon, Menu as MenuIcon } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails
+  Typography
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ContentCopy as CopyIcon, Menu as MenuIcon, ExpandMore as ExpandMoreIcon, Edit as EditIcon } from '@mui/icons-material';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import React, { useState } from 'react';
+// import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const modelsData = [
   { type: 'GPT-2', models: ['GPT-2', 'GPT-2 Medium', 'GPT-2 Large', 'GPT-2 XL'] },

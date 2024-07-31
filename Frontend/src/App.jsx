@@ -3,12 +3,13 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider } from "./auth/AuthContext";
 import AuthModal from "./auth/AuthModal";
 import { auth } from "./auth/config/firebase-config";
+import DeployList from "./components/DashboardScreen";
 import MainContent from "./components/MainContent";
 import Navbar from "./components/Navbar";
 import './index.css';
-import MinerDocumentation from './screens/pages/docs/MInerDocumentation'
 import ChatLayout from "./screens/pages/chat/ChatLayout";
 import GuildelinesComponent from "./screens/pages/docs/GuidelinesComponent";
+import MinerDocumentation from './screens/pages/docs/MInerDocumentation';
 import ChatUI from "./screens/pages/llms/InferenceScreen";
 import LLMSScreen from "./screens/pages/llms/LLMSScreen";
 import ModelsScreen from "./screens/pages/llms/ModelScreen";
@@ -219,6 +220,7 @@ function App() {
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/llms" element={<LLMSScreen />} />
+            <Route path="/dashboard" element={<DeployList />}/>
             <Route path="/jobs" element={<TrainingJobs />} />
             <Route path="/models" element={<ModelsScreen />} />
             <Route path="/inference:model" element={<ChatUI />} />

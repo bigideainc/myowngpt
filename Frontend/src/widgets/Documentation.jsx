@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Paper, 
-  Button, 
-  IconButton, 
-  Drawer, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  TextField 
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography
 } from '@mui/material';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import React, { useState } from 'react';
+// import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ContentCopy as CopyIcon, Edit as EditIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 

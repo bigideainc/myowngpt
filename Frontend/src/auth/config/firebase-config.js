@@ -20,6 +20,7 @@ const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
 const db = getFirestore(app);
+const firestore = getFirestore(app);
 const storage = getStorage(app);  // Initialize storage
 
 // Google Sign-In function
@@ -307,11 +308,10 @@ export {
     addTrainingJob,
     addTrainingJobMetadata,
     auth,
-    db,
-    deleteFineTuningJob,
+    db, deleteFineTuningJob,
     fetchCompletedJobById,
     fetchJobs,
-    fetchTrainingJobsForUser, firebaseConfig, getChatHistory,
+    fetchTrainingJobsForUser, firebaseConfig, firestore, getChatHistory,
     newTrainingJob,
     saveChatHistory,
     saveDeployedModel,
