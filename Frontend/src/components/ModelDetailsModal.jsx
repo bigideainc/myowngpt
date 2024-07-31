@@ -104,7 +104,7 @@ const ModelDetailsModal = ({ open, onClose, model }) => {
       console.log("Created job ID:", jobResponse.jobId);
       setLoading(false);
       toast.success("Fine-tuning job started successfully!");
-      navigate('/llms');
+      navigate('/dashboard');
     } catch (error) {
       setLoading(false);
       console.error("Error starting fine-tuning job:", error);
