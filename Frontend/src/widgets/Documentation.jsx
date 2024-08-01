@@ -17,7 +17,7 @@ import {
   Typography
 } from '@mui/material';
 import React, { useState } from 'react';
-// import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ContentCopy as CopyIcon, Edit as EditIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
@@ -28,6 +28,25 @@ const StyledButton = styled(Button)(({ theme }) => ({
   fontFamily: 'Poppins',
   '&:hover': {
     backgroundColor: 'seagreen',
+  },
+}));
+
+const TerminalBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  marginBottom: theme.spacing(2),
+  padding: theme.spacing(1),
+  backgroundColor: '#1e1e1e',
+  borderRadius: theme.shape.borderRadius,
+  '& pre': {
+    margin: 0,
+    color: '#00ff00',
+    fontFamily: 'monospace',
+    fontSize: '14px',
+    flexGrow: 1,
+  },
+  '& .MuiIconButton-root': {
+    color: '#00ff00',
   },
 }));
 
@@ -67,14 +86,14 @@ const Documentation = () => {
   );
 
   const renderCommand = (command) => (
-    <Box display="flex" alignItems="center" mb={2} sx={{ backgroundColor: '#f5f5f5', p: 2, borderRadius: 1 }}>
-      <Typography variant="body2" sx={{ fontFamily: 'Poppins', fontSize: '14px', flexGrow: 1, color: 'black' }}>{command}</Typography>
+    <TerminalBox>
+      <pre>{command}</pre>
       <CopyToClipboard text={command}>
         <IconButton>
-          <CopyIcon sx={{ color: 'black' }} />
+          <CopyIcon />
         </IconButton>
       </CopyToClipboard>
-    </Box>
+    </TerminalBox>
   );
 
   return (
@@ -88,7 +107,6 @@ const Documentation = () => {
             width: 240,
             boxSizing: 'border-box',
             bgcolor: '#333',
-            fontSize:'10px',
             color: 'white',
             mt: '64px',
           },
@@ -123,7 +141,7 @@ const Documentation = () => {
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 4, bgcolor: 'white', mt: '64px' }}> {/* Adjust mt to match your navbar height */}
+      <Box component="main" sx={{ flexGrow: 1, p: 4, bgcolor: 'white', mt: '64px' }}>
         <IconButton onClick={toggleDrawer} sx={{ display: { md: 'none' }, mb: 2, color: 'black' }}>
           <MenuIcon />
         </IconButton>
