@@ -1,9 +1,9 @@
+import { Code, Memory } from '@mui/icons-material';
+import { Box, Button, Checkbox, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Slider, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { Box, Button, Checkbox, Paper, Slider, Typography, FormControl, InputLabel, MenuItem, Select, Grid, Icon } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { auth, newTrainingJob } from '../auth/config/firebase-config';
-import { modelOptions, datasetOptions } from './ModelConstants';
-import { Memory, Laptop, Code } from '@mui/icons-material';
+import { datasetOptions, modelOptions } from './ModelConstants';
 
 const NewJobModal = () => {
   const [formData, setFormData] = useState({
@@ -84,7 +84,7 @@ const NewJobModal = () => {
       setTimeout(() => {
         setShowSuccessAlert(false);
         resetForm();
-        navigate('/llms');
+        navigate('/dashboard');
       }, 2000);
     } catch (error) {
       setShowError(true);
