@@ -175,7 +175,7 @@ const Navbar = ({ onProfileClick }) => {
       {authCheckCompleted && isAuthenticated && (
         <>
           <MenuItem>
-            <Link to="/models" style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
               Models
             </Link>
           </MenuItem>
@@ -185,7 +185,7 @@ const Navbar = ({ onProfileClick }) => {
             </Link>
           </MenuItem>
           <MenuItem>
-            <Link to="/datasets" style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
               Datasets
             </Link>
           </MenuItem>
@@ -224,9 +224,9 @@ const Navbar = ({ onProfileClick }) => {
             <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Home</Link>
             {authCheckCompleted && isAuthenticated && (
               <>
-                <Link to="/models" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Models</Link>
+                <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Models</Link>
                 <Link to="/dashboard" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Dashboard</Link>
-                <Link to="/datasets" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Datasets</Link>
+                <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Datasets</Link>
               </>
             )}
             <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleDocsMenu}>
