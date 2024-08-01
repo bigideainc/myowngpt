@@ -8,30 +8,27 @@ import ModelDetailsModal from './ModelDetailsModal';
 
 const networks = [
   {
-    name: 'Bittensor',
-    description: 'Decentralized AI network',
-    icon: 'https://bittensor.com/favicon.ico',
-  },
-  {
     name: 'Commune',
     description: 'Community-driven AI platform',
     icon: 'https://avatars.githubusercontent.com/u/107713514?v=4',
+    comingSoon: false,
+  },
+  {
+    name: 'Bittensor',
+    description: 'Decentralized AI network',
+    icon: 'https://bittensor.com/favicon.ico',
+    comingSoon: true,
   },
   {
     name: 'Hugging Face',
     description: 'Open-source NLP models',
     icon: 'https://huggingface.co/favicon.ico',
+    comingSoon: true,
   },
   {
     name: 'OpenAI',
     description: 'State-of-the-art language models',
     icon: 'https://openai.com/favicon.ico',
-    comingSoon: true,
-  },
-  {
-    name: 'Anthropic',
-    description: 'Advanced AI research and models',
-    icon: 'https://www.anthropic.com/favicon.ico',
     comingSoon: true,
   },
 ];
@@ -134,7 +131,13 @@ const MainContent = () => {
     setFilter(event.target.value);
   };
 
-  const handleCardClick = (model) => {
+  const handleCardClick = (network) => {
+    if (!network.comingSoon) {
+      alert(`${network.name} Selected`);
+    }
+  };
+
+  const handleModelCardClick = (model) => {
     if (!user) {
       signInWithGoogle().then((result) => {
         setUser(result);
@@ -164,19 +167,21 @@ const MainContent = () => {
         </Typography>
 
         <Grid container spacing={4} justifyContent="center" alignItems="center">
-          {networks.slice(0, 4).map((network) => (
+          {networks.map((network, index) => (
             <Grid item xs={12} sm={6} md={3} key={network.name}>
               <Card
-                onClick={() => network.comingSoon ? alert(`${network.name} Coming Soon!`) : alert(`${network.name} Selected`)}
+                onClick={() => handleCardClick(network)}
                 sx={{
-                  height: 200,  // Set a fixed height
+                  height: 200,
                   background: 'linear-gradient(135deg, #6e8efb, #a777e3)',
                   color: '#fff',
-                  cursor: 'pointer',
+                  cursor: network.comingSoon ? 'default' : 'pointer',
+                  position: 'relative',
                   '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
+                    transform: network.comingSoon ? 'none' : 'translateY(-5px)',
+                    boxShadow: network.comingSoon ? 'none' : '0 6px 12px rgba(0, 0, 0, 0.15)',
                   },
+                  filter: network.comingSoon ? 'brightness(50%)' : 'none',
                 }}
               >
                 <CardContent align="center">
@@ -202,43 +207,6 @@ const MainContent = () => {
           ))}
         </Grid>
 
-        <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ marginTop: '20px' }}>
-          <Grid item xs={12}>
-            <Card
-              onClick={() => networks[4].comingSoon ? alert(`${networks[4].name} Coming Soon!`) : alert(`${networks[4].name} Selected`)}
-              sx={{
-                height: 200,  // Set a fixed height
-                background: 'linear-gradient(135deg, #6e8efb, #a777e3)',
-                color: '#fff',
-                cursor: 'pointer',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
-                },
-              }}
-            >
-              <CardContent align="center">
-                {networks[4].icon.startsWith('http') ? (
-                  <img src={networks[4].icon} alt={networks[4].name} style={{ width: '80px', height: '80px', marginBottom: '10px' }} />
-                ) : (
-                  <i className={`${networks[4].icon} fa-6x mb-4`}></i>
-                )}
-                <Typography variant="h5" component="div">
-                  {networks[4].name}
-                </Typography>
-                <Typography variant="body2">
-                  {networks[4].description}
-                </Typography>
-                {networks[4].comingSoon && (
-                  <Typography variant="body2" style={{ color: '#ffd700', marginTop: '5px' }}>
-                    Coming Soon
-                  </Typography>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-
         <Typography variant="h4" align="center" color="textPrimary" gutterBottom style={{ fontSize: '2.0rem', fontWeight: '700', marginTop: '50px' }}>
           Models
         </Typography>
@@ -249,7 +217,7 @@ const MainContent = () => {
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           {filteredModels.map((model) => (
             <Grid item xs={12} sm={6} md={4} lg={4} key={model.id}>
-              <ModelCard model={model} onClick={() => handleCardClick(model)} /> {/* Use the reusable ModelCard component */}
+              <ModelCard model={model} onClick={() => handleModelCardClick(model)} /> {/* Use the reusable ModelCard component */}
             </Grid>
           ))}
         </Grid>
