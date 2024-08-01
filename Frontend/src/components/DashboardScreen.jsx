@@ -42,6 +42,7 @@ import {
   where,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth, firestore } from "../auth/config/firebase-config";
@@ -264,11 +265,78 @@ const DeployList = () => {
     setEditModalOpen(false);
   };
 
+  const navigate = useNavigate();
+
   const handleCreateNewJob = () => {
-    // Handler to perform actions when the "Create New Training Job" button is clicked
+    navigate('/');
     console.log("Creating new training job");
-    // You might navigate to a job creation form or open a modal here
   };
+
+  const models = [
+    {
+      name: 'GPT2 ',
+      id: 'openai-community/gpt2',
+      description: 'Text Generation',
+      lastUsed: '3 hours ago',
+      usageCount: '339k'
+    },
+    {
+      name: 'GPT-2 Medium',
+      id: 'openai-community/gpt2-medium',
+      description: 'Text Generation',
+      lastUsed: '5 days ago',
+      usageCount: '48.5k'
+    },
+    {
+      name: 'GPT-2 Large',
+      id: 'openai-community/gpt2-large',
+      description: 'Text Generation',
+      lastUsed: '3 hours ago',
+      usageCount: '17.7k'
+    },
+    {
+      name: 'LLaMA-2 7B',
+      id: 'openlm-research/open_llama_7b_v2',
+      description: 'Text Generation',
+      lastUsed: '3 hours ago',
+      usageCount: '66.1k'
+    },
+    {
+      name: 'LLaMA-2 13B',
+      id: 'openlm-research/open_llama_13b',
+      description: 'Text Generation',
+      lastUsed: '17 days ago',
+      usageCount: '121k'
+    },
+    {
+      name: 'NousResearch llama2',
+      id: 'NousResearch/Llama-2-7b-chat-hf',
+      description: 'Text Generation',
+      lastUsed: '5 days ago',
+      usageCount: '616'
+    },
+    {
+      name: 'OpenELM 270M',
+      id: 'apple/OpenELM-270M',
+      description: 'Text Generation',
+      lastUsed: '21 hours ago',
+      usageCount: '84.8k'
+    },
+    {
+      name: 'OpenELM 450M',
+      id: 'apple/OpenELM-450M',
+      description: 'Text Generation',
+      lastUsed: '4 days ago',
+      usageCount: '3.47k'
+    },
+    {
+      name: 'OpenELM 3B',
+      id: 'apple/OpenELM-3B',
+      description: 'Text Generation',
+      lastUsed: '3 days ago',
+      usageCount: '77.8k'
+    },
+  ];
 
   return (
     <>
@@ -398,7 +466,7 @@ const DeployList = () => {
             <TableContainer component={Paper} sx={{ mt: 2 }}>
               <Table>
                 <TableHead>
-                  <TableRow sx={{ backgroundColor: "primary.main" }}>
+                  <TableRow sx={{ background: "linear-gradient(135deg, #6e8efb, #a777e3)" }}>
                     <TableCell
                       sx={{ color: "white", fontSize: "16px", fontWeight: "bold" }}
                     >
