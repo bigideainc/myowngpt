@@ -336,7 +336,7 @@ const MainContent = () => {
                   <Box sx={{ display: 'flex', justifyContent: 'center', }}>
                     <Button
                       variant="outlined"
-                      style={{ backgroundColor: '#E8D6FE', borderColor: 'white', color: 'black' }} // Adjust button styling
+                      style={{ backgroundColor: '#E8D6FE', borderColor: 'white' }} // Adjust button styling
                       size="small"
                       onClick={(e) => {
                         e.stopPropagation(); 
@@ -350,7 +350,7 @@ const MainContent = () => {
                         textTransform: 'none',
                         marginBottom: '10px',
                         fontWeight: 'bold',
-                        color: "blueviolet"
+                        // color: "blueviolet"
                       }}
                     >
                       Submit Model
