@@ -2,6 +2,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'; // Impo
 import { Box, Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { toast, ToastContainer } from 'react-toastify'; // Import toast components
+import 'react-toastify/dist/ReactToastify.css';
 import { auth, signInWithGoogle } from '../auth/config/firebase-config'; // import signInWithGoogle function
 import PopUp from '../widgets/LoginPopUp';
 import NewPopup from '../widgets/ServicesPopUp';
@@ -179,6 +181,18 @@ const MainContent = () => {
     model.name.toLowerCase().includes(filter.toLowerCase())
   );
 
+  const showToast = () => {
+    toast.info('Coming Soon', {
+      position: "top-right", // Set position to top-right
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   return (
     <Box
       className="min-h-screen bg-gray-100"
@@ -306,7 +320,7 @@ const MainContent = () => {
                       boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
                     },
                   }}
-                  onClick={() => { }}
+                  onClick={showToast}
                 >
                   <CardContent>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -325,9 +339,13 @@ const MainContent = () => {
                       style={{ backgroundColor: '#E8D6FE', borderColor: 'white', color: 'black' }} // Adjust button styling
                       size="small"
                       onClick={(e) => {
-                        e.stopPropagation();
-                        window.open(model.link, '_blank');
+                        e.stopPropagation(); 
+                        showToast(); 
                       }}
+                      // onClick={(e) => {
+                      //   e.stopPropagation();
+                      //   window.open(model.link, '_blank');
+                      // }}
                       sx={{
                         textTransform: 'none',
                         marginBottom: '10px',
@@ -348,7 +366,7 @@ const MainContent = () => {
 
 
       </Container>
-
+      <ToastContainer />
       <PopUp open={open} onClose={handleClose} />
       <NewPopup open={newPopupOpen} onClose={handleNewPopupClose} />
       {selectedModel && (
