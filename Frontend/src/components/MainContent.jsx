@@ -85,8 +85,8 @@ const models = [
     usageCount: '616'
   },
   {
-    name: 'LLaMA-2 7B',
-    id: 'openlm-research/open_llama_7b_v2',
+    name: 'LLaMA-3.1 8B',
+    id: 'unsloth/llama-3-8b-bnb-4bit',
     description: 'Text Generation',
     lastUsed: '3 hours ago',
     usageCount: '66.1k'
