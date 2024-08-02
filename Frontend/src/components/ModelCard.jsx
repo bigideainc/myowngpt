@@ -31,10 +31,7 @@ const ModelCard = ({ model, onClick, onUseModel }) => {
           <Button
             variant="outlined"
             size="small"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevents the card onClick from firing when the button is clicked
-              onUseModel(model);
-            }}
+            onClick={onClick}
             sx={{
               textTransform: 'none', // Removes uppercase styling from button text
             }}
