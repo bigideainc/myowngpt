@@ -176,11 +176,14 @@ const MainContent = () => {
   return (
     <Box className="min-h-screen bg-gray-100" sx={{ marginTop: "90px", marginBottom: "90px", minHeight: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', flexDirection: 'column' }}>
       <Container maxWidth="lg">
-        <Typography variant="h4" align="center" color="textPrimary" gutterBottom style={{ fontSize: '2.0rem', fontWeight: '700' }}>
-          AI Model Fine-Tuning Hub
+        <Typography variant="h3" align="center" color="textPrimary" gutterBottom style={{ fontSize: '2.0rem', fontWeight: '700' }}>
+          Fine-Tune Your Own GPT
         </Typography>
-        <Typography variant="h5" align="center" color="textSecondary" gutterBottom style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '15px' }}>
-          Available Networks
+        <Typography variant="h6" align="center" color="textSecondary" gutterBottom style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '15px' }}>
+          Share Your GPU and Earn Tokens
+        </Typography>
+        <Typography variant="h6" align="center" color="textSecondary" gutterBottom style={{ fontSize: '1.2rem', fontWeight: '500', marginBottom: '20px' }}>
+          Decentralized GPU Networks
         </Typography>
 
         <Grid container spacing={4} justifyContent="center" alignItems="center">
@@ -224,11 +227,11 @@ const MainContent = () => {
           ))}
         </Grid>
 
-        <Typography variant="h4" align="center" color="textPrimary" gutterBottom style={{ fontSize: '2.0rem', fontWeight: '700', marginTop: '50px' }}>
-          Models
+        <Typography variant="h1" align="center" color="textPrimary" gutterBottom style={{ fontSize: '1.8rem', fontWeight: '700', marginTop: '50px' }}>
+        Start Your Fine-Tuning Job
         </Typography>
-        <Typography variant="h5" align="center" color="textSecondary" gutterBottom style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '15px' }}>
-          Select a model to fine-tune today...
+        <Typography variant="h6" align="center" color="textSecondary" gutterBottom style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '15px' }}>
+        Choose Your Base Model
         </Typography>
 
         <Grid container spacing={2} justifyContent="center" alignItems="center">
