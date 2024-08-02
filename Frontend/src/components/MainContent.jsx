@@ -57,27 +57,6 @@ const models = [
     usageCount: '17.7k'
   },
   {
-    name: 'LLaMA-2 7B',
-    id: 'openlm-research/open_llama_7b_v2',
-    description: 'Text Generation',
-    lastUsed: '3 hours ago',
-    usageCount: '66.1k'
-  },
-  {
-    name: 'LLaMA-2 13B',
-    id: 'openlm-research/open_llama_13b',
-    description: 'Text Generation',
-    lastUsed: '17 days ago',
-    usageCount: '121k'
-  },
-  {
-    name: 'NousResearch llama2',
-    id: 'NousResearch/Llama-2-7b-chat-hf',
-    description: 'Text Generation',
-    lastUsed: '5 days ago',
-    usageCount: '616'
-  },
-  {
     name: 'OpenELM 270M',
     id: 'apple/OpenELM-270M',
     description: 'Text Generation',
@@ -97,6 +76,27 @@ const models = [
     description: 'Text Generation',
     lastUsed: '3 days ago',
     usageCount: '77.8k'
+  },
+  {
+    name: 'NousResearch llama2',
+    id: 'NousResearch/Llama-2-7b-chat-hf',
+    description: 'Text Generation',
+    lastUsed: '5 days ago',
+    usageCount: '616'
+  },
+  {
+    name: 'LLaMA-2 7B',
+    id: 'openlm-research/open_llama_7b_v2',
+    description: 'Text Generation',
+    lastUsed: '3 hours ago',
+    usageCount: '66.1k'
+  },
+  {
+    name: 'LLaMA-2 13B',
+    id: 'openlm-research/open_llama_13b',
+    description: 'Text Generation',
+    lastUsed: '17 days ago',
+    usageCount: '121k'
   },
 ];
 
