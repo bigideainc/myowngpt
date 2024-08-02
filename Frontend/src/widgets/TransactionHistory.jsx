@@ -73,7 +73,9 @@ const TransactionHistory = () => {
           <Box display="flex" gap={2}>
             <Button
               variant="contained"
-              sx={{ textTransform: 'none', backgroundColor: '#006400' }}
+              sx={{ textTransform: 'none', }}
+              style={{ backgroundColor: '#a777e3' }}
+
               onClick={exportToExcel}
             >
               Export to Excel
@@ -81,7 +83,9 @@ const TransactionHistory = () => {
             <CSVLink data={filteredTransactions} filename="transaction_history.csv" style={{ textDecoration: 'none' }}>
               <Button
                 variant="contained"
-                sx={{ textTransform: 'none', backgroundColor: '#006400' }}
+                sx={{ textTransform: 'none', }}
+                style={{ backgroundColor: '#a777e3' }}
+
               >
                 Export to CSV
               </Button>
@@ -140,7 +144,8 @@ const TransactionHistory = () => {
               <MenuItem value="Pending">Pending</MenuItem>
             </Select>
           </FormControl>
-          <Button variant="contained" onClick={applyFilters} sx={{ textTransform: 'none', backgroundColor: "green" }}>
+          <Button variant="contained" onClick={applyFilters} sx={{ textTransform: 'none', }} style={{ backgroundColor: '#a777e3' }}
+          >
             Apply Filter
           </Button>
         </Box>

@@ -164,8 +164,8 @@ const MinerAccount = () => {
             variant="contained" fullWidth
             sx={{
              textTransform: 'none',
-             backgroundColor: '#006400'
             }}
+            style={{ backgroundColor: '#a777e3' }}
             onClick={handleOpen}
           >
             Redeem Tokens

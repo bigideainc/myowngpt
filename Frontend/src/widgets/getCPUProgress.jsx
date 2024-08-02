@@ -212,8 +212,8 @@ const Com = () => {
               startIcon={<FaDollarSign />}
               sx={{
                 textTransform: 'none',
-                backgroundColor: '#006400'
               }}
+              style={{ backgroundColor: '#a777e3' }}
             >
               CASH-OUT
             </Button>
@@ -297,7 +297,74 @@ const Com = () => {
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }} className='bg-slate-100'>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#035E1B' }}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, background: 'linear-gradient(135deg, #6e8efb, #a777e3)' }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box display="flex" alignItems="center">
+            <Typography variant="h5" noWrap component="div">
+              YoGPT
+            </Typography>
+            <Box sx={{ display: 'flex', marginLeft: 4 }}>
+              {[
+                { label: 'Home', path: '/' },
+                { label: 'Docs', path: '/miner-docs' },
+              ].map((item) => (
+                <Typography
+                  key={item.label}
+                  variant="h8"
+                  component="div"
+                  sx={{ marginLeft: 2, cursor: 'pointer' }}
+                  onClick={() => navigate(item.path)}
+                >
+                  {item.label}
+                </Typography>
+              ))}
+            </Box>
+          </Box>
+          {isAuthenticated && (
+            <Box display="flex" alignItems="center" ref={menuRef}>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={handleMenu}
+              >
+                <img
+                  className="h-8 w-8 rounded-md"
+                  src={userPhotoURL}
+                  alt="User Profile"
+                  style={{ height: '32px', width: '32px', borderRadius: '8px' }}
+                />
+              </IconButton>
+              <Typography variant="body2" component="div" sx={{ marginLeft: 2 }}>
+                {userEmail}
+              </Typography>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => navigate('/')}>Home</MenuItem>
+                <MenuItem onClick={() => navigate('/account-settings')}>Account Settings</MenuItem>
+                <MenuItem onClick={handleSignOut}>Log Out</MenuItem>
+              </Menu>
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
+      {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, background: 'linear-gradient(135deg, #6e8efb, #a777e3)' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box display="flex" alignItems="center">
             <Typography variant="h5" noWrap component="div">
@@ -354,7 +421,7 @@ const Com = () => {
             </Box>
           )}
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <Box sx={{ display: 'flex', width: '100%' }}>
         {loading ? (
           <Box

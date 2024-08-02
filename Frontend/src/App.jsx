@@ -20,7 +20,6 @@ import SignIn from "./screens/sign-in";
 import SignUp from "./screens/sign-up";
 import { Footer } from "./widgets/Footer";
 import Com from "./widgets/getCPUProgress";
-import LoadingScreen from "./widgets/LoadingScreen";
 import UserInfoPopup from "./widgets/userInfo";
 
 // Function to fetch models from Hugging Face
@@ -188,8 +187,8 @@ function App() {
   return (
     <AuthProvider>
       <div className="flex flex-col">
-        {isLoading && <LoadingScreen />}
-        {!isLoading && (
+        {/* {isLoading && <LoadingScreen />}
+        {!isLoading && ( */}
           <Routes>
             <Route path="/" element={
               <>
@@ -229,7 +228,7 @@ function App() {
             <Route path="/com" element={<Com />} />
             <Route path="/userdocs" element={<GuildelinesComponent />} />
           </Routes>
-        )}
+        {/* )} */}
       </div>
     </AuthProvider>
   );
