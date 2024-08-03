@@ -284,23 +284,23 @@ const MainContent = () => {
           ))}
         </Grid>
 
-        <Divider sx={{ my: 6, color: '#280821', height: '10px', borderBottomWidth: 3 }} />
-
+        <Divider sx={{ mt: 6, color: '#280821', borderBottomWidth: 3 }} >
         <Typography
           variant="h1"
           align="center"
           color="textPrimary"
           gutterBottom
-          style={{ fontSize: '1.8rem', fontWeight: '700', }}
+          style={{ fontSize: '1.5rem', fontWeight: '700'}}
         >
           Start Your Fine-Tuning Job
         </Typography>
+        </Divider>
         <Typography
           variant="h6"
           align="center"
           color="textSecondary"
           gutterBottom
-          style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '15px' }}
+          style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '15px' }}
         >
           Choose Your Base Model
         </Typography>
