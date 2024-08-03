@@ -60,8 +60,8 @@ const sections = [
 const commands = {
   installCommunex: 'pip install communex',
   createKey: 'comx key create <key>',
-  cloneRepo: 'git clone https://github.com/bigideainc/CommuneImplementation.git',
-  cdRepo: 'cd CommuneImplementation',
+  cloneRepo: 'https://github.com/bigideainc/yogptv1.git',
+  cdRepo: 'cd yogptv1',
   installPoetry: 'pip install poetry',
   poetryShell: 'poetry shell',
   installRequirements: 'pip install -r requirements.txt',

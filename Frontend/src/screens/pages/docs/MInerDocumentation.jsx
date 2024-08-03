@@ -10,7 +10,6 @@ const MinerDocumentation = () => {
       <Navbar />
       <Box sx={{ display: 'flex', py: 8 }}>  
           <Documentation/>
-       
       </Box>
       <Footer/>
     </>
