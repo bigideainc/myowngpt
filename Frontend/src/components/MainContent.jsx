@@ -1,5 +1,5 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'; // Import an icon for the new card
-import { Box, Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Container, Divider, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import { toast, ToastContainer } from 'react-toastify'; // Import toast components
@@ -284,12 +284,14 @@ const MainContent = () => {
           ))}
         </Grid>
 
+        <Divider sx={{ my: 6, color: '#280821', height: '10px', borderBottomWidth: 3 }} />
+
         <Typography
           variant="h1"
           align="center"
           color="textPrimary"
           gutterBottom
-          style={{ fontSize: '1.8rem', fontWeight: '700', marginTop: '50px' }}
+          style={{ fontSize: '1.8rem', fontWeight: '700', }}
         >
           Start Your Fine-Tuning Job
         </Typography>
