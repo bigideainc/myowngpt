@@ -4,6 +4,7 @@ import { AuthProvider } from "./auth/AuthContext";
 import AuthModal from "./auth/AuthModal";
 import { auth } from "./auth/config/firebase-config";
 import DeployList from "./components/DashboardScreen";
+import Datasets from "./components/Datasets";
 import MainContent from "./components/MainContent";
 import Navbar from "./components/Navbar";
 import './index.css';
@@ -225,6 +226,7 @@ function App() {
             <Route path="/inference:model" element={<ChatUI />} />
             <Route path="/bill" element={<PaymentMenu />} />
             <Route path="/chat/:url" element={<ChatLayout />} />
+            <Route path="/datasets" element={<Datasets/>}/>
             <Route path="/com" element={<Com />} />
             <Route path="/userdocs" element={<GuildelinesComponent />} />
           </Routes>

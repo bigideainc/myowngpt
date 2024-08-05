@@ -338,7 +338,7 @@ const MainContent = () => {
                   <Box sx={{ display: 'flex', justifyContent: 'center', }}>
                     <Button
                       variant="outlined"
-                      style={{ backgroundColor: '#E8D6FE', borderColor: 'white' }} // Adjust button styling
+                      style={{ backgroundColor: '#E8D6FE', borderColor: 'white' }}
                       size="small"
                       onClick={(e) => {
                         e.stopPropagation(); 
