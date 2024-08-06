@@ -40,13 +40,13 @@ const TerminalBox = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   '& pre': {
     margin: 0,
-    color: '#00ff00',
+    color: '#ffff',
     fontFamily: 'monospace',
     fontSize: '14px',
     flexGrow: 1,
   },
   '& .MuiIconButton-root': {
-    color: '#00ff00',
+    color: '#ffff',
   },
 }));
 
@@ -149,9 +149,7 @@ const Documentation = () => {
         <Box id="introduction">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
             <Typography variant="h4" sx={{ fontFamily: 'Poppins', fontWeight: 'bold', fontSize: '14px' }}>INTRODUCTION</Typography>
-            <StyledButton startIcon={<EditIcon />}>
-              Edit this doc
-            </StyledButton>
+
           </Box>
           <Paper sx={{ padding: 3, mb: 4, bgcolor: 'white', color: 'black' }}>
             <Typography variant="body1" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>
