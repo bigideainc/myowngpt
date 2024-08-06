@@ -92,7 +92,7 @@ const DatasetModal = ({ open, onClose }) => {
             }
 
             try {
-                const response = await fetch('/create-dataset', {
+                const response = await fetch('https://yogpt-server.vercel.app/create-dataset', {
                     method: 'POST',
                     body: formData
                 });
