@@ -4,6 +4,7 @@ import { Box, Button, Container, Grid, InputAdornment, TextField, Toolbar, Typog
 import Chip from '@mui/material/Chip';
 import React, { useState } from 'react';
 import DatasetCard from '../widgets/DatasetCard';
+import DatasetModal from '../widgets/DatasetModal';
 import { Footer } from '../widgets/Footer';
 import Navbar from './Navbar';
 
@@ -34,6 +35,8 @@ const datasets = [
 ]
 
 const Datasets = () => {
+    const [modalOpen, setModalOpen] = useState(false);
+
     const [selectedChips, setSelectedChips] = useState({
         publicDatasets: false,
         yourDatasets: false,
@@ -44,7 +47,7 @@ const Datasets = () => {
     const handleChipToggle = (chip) => {
         setSelectedChips((prev) => {
             let updatedChips = { ...prev };
-            
+
             // Enforce exclusive selection for "Public Datasets" and "Your Datasets"
             if (chip === 'publicDatasets') {
                 updatedChips.publicDatasets = !prev.publicDatasets;
@@ -59,7 +62,7 @@ const Datasets = () => {
             } else {
                 updatedChips[chip] = !prev[chip];
             }
-            
+
             return updatedChips;
         });
     };
@@ -89,15 +92,18 @@ const Datasets = () => {
                         Explore, analyze, and share quality data. Learn more about data types, creating, and collaborating.
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
-                    
-                <Button
-                  variant="contained"
-                  style={{ backgroundColor: '#a777e3' }}
-                  startIcon={<Dataset />}
-                //   onClick={}
-                >
-                  Add New Dataset
-                </Button>
+
+
+                        <Button
+                            variant="contained"
+                            style={{ backgroundColor: '#a777e3' }}
+                            startIcon={<Dataset />}
+                            onClick={() => setModalOpen(true)} // Open the modal
+                        >
+                            Add New Dataset
+                        </Button>
+                        <DatasetModal open={modalOpen} onClose={() => setModalOpen(false)} />
+
                     </Box>
                     <Box sx={{ mb: 2 }}>
                         <TextField

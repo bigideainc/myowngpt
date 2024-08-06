@@ -4,15 +4,23 @@ import React from 'react';
 
 const DatasetCard = ({ repositoryName, lastUpdated, views, likes }) => {
     return (
-        <Card sx={{paddingTop: 1,
-            width: 450, height: 70, m: 1,
+        <Card sx={{
+            paddingTop: 1,
+            width: { xs: '100%', sm: '450px' }, // Responsive width
+            height: 70,
+            m: 1,
             background: '#FFFFFF',
             color: '#333',
             cursor: 'pointer',
             '&:hover': {
                 transform: 'translateY(-5px)',
                 boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
-            }, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 4, paddingLeft: 0
+            },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: 4,
+            paddingLeft: 0
         }}>
             <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginBottom: 0.3, textAlign: 'left', width: '100%' }}>
