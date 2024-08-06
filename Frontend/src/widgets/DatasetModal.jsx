@@ -9,7 +9,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { auth } from '../auth/config/firebase-config';
 
-
 const models = [
     { name: 'GPT2', id: 'openai-community/gpt2', description: 'Text Generation', lastUsed: '3 hours ago', usageCount: '339k' },
     { name: 'GPT-2 Medium', id: 'openai-community/gpt2-medium', description: 'Text Generation', lastUsed: '5 days ago', usageCount: '48.5k' },
@@ -73,7 +72,7 @@ const DatasetModal = ({ open, onClose }) => {
             setIsLoading(true);
             const submissionTime = new Date().toISOString();
             const fullDatasetName = `${userId}_${datasetName}`;
-    
+
             const formData = new FormData();
             formData.append('datasetName', fullDatasetName);
             formData.append('license', license);
@@ -81,7 +80,7 @@ const DatasetModal = ({ open, onClose }) => {
             formData.append('models', selectedModels.join(',')); // Join models as a comma-separated string
             formData.append('tags', tags.join(',')); // Join tags as a comma-separated string
             formData.append('submissionTime', submissionTime);
-    
+
             // Check if there are files and append the first one
             if (files.length > 0) {
                 const file = files[0].file; // Get the actual file object
@@ -97,7 +96,7 @@ const DatasetModal = ({ open, onClose }) => {
                     return;
                 }
             }
-    
+
             // Log the data being submitted
             console.log("Submitting Data:");
             console.log("Dataset Name:", fullDatasetName);
@@ -107,21 +106,21 @@ const DatasetModal = ({ open, onClose }) => {
             console.log("Tags:", tags);
             console.log("Submission Time:", submissionTime);
             console.log("Files:", files);
-    
+
             try {
                 const response = await fetch('https://yogpt-server.vercel.app/create-dataset', {
                     method: 'POST',
                     body: formData
                 });
-    
+
                 const data = await response.json();
-    
+
                 console.log("Response dataset:", data);
-    
+
                 if (!response.ok) {
                     throw new Error(data.error || 'Failed to create dataset.');
                 }
-    
+
                 setIsLoading(false);
                 toast.success('Dataset created successfully...', {
                     position: "top-right",
@@ -132,7 +131,7 @@ const DatasetModal = ({ open, onClose }) => {
                     draggable: true,
                     progress: undefined,
                 });
-    
+
                 // Clear form inputs
                 setDatasetName('');
                 setLicense('');
@@ -140,7 +139,7 @@ const DatasetModal = ({ open, onClose }) => {
                 setFiles([]);
                 setSelectedModels([]);
                 setTags([]);
-    
+
                 // Close modal
                 onClose();
             } catch (error) {
@@ -157,7 +156,7 @@ const DatasetModal = ({ open, onClose }) => {
                 setIsLoading(false);
             }
         }
-    };    
+    };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop: acceptedFiles => {
@@ -165,7 +164,8 @@ const DatasetModal = ({ open, onClose }) => {
                 id: Math.random().toString(36).substr(2, 9), // generating a pseudo-unique ID for key purposes
                 name: file.name,
                 size: file.size,
-                uploadedAt: new Date().toLocaleString()
+                uploadedAt: new Date().toLocaleString(),
+                file // Add the actual file object here
             }))]);
         },
         accept: {
