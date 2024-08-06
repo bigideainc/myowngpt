@@ -73,39 +73,55 @@ const DatasetModal = ({ open, onClose }) => {
             setIsLoading(true);
             const submissionTime = new Date().toISOString();
             const fullDatasetName = `${userId}_${datasetName}`;
-
+    
             const formData = new FormData();
             formData.append('datasetName', fullDatasetName);
             formData.append('license', license);
             formData.append('visibility', visibility);
-            formData.append('models', selectedModels); // Use the first model for simplicity
+            formData.append('models', selectedModels.join(',')); // Join models as a comma-separated string
             formData.append('tags', tags.join(',')); // Join tags as a comma-separated string
             formData.append('submissionTime', submissionTime);
-
-            // Append the first file and its metadata, assuming there is at least one file
+    
+            // Check if there are files and append the first one
             if (files.length > 0) {
                 const file = files[0].file; // Get the actual file object
-                formData.append('file', file);
-                formData.append('fileName', file.name);
-                formData.append('fileSize', (file.size / 1048576).toFixed(2) + ' MBs'); // Convert size to MB
-                formData.append('uploadedAt', files[0].uploadedAt);
+                if (file) {
+                    formData.append('file', file);
+                    formData.append('fileName', file.name);
+                    formData.append('fileSize', (file.size / 1048576).toFixed(2) + ' MBs'); // Convert size to MB
+                    formData.append('uploadedAt', files[0].uploadedAt);
+                } else {
+                    console.error('File is not available.');
+                    toast.error('File is not available.');
+                    setIsLoading(false);
+                    return;
+                }
             }
-
+    
+            // Log the data being submitted
+            console.log("Submitting Data:");
+            console.log("Dataset Name:", fullDatasetName);
+            console.log("License:", license);
+            console.log("Visibility:", visibility);
+            console.log("Models:", selectedModels);
+            console.log("Tags:", tags);
+            console.log("Submission Time:", submissionTime);
+            console.log("Files:", files);
+    
             try {
                 const response = await fetch('https://yogpt-server.vercel.app/create-dataset', {
                     method: 'POST',
                     body: formData
                 });
-
+    
                 const data = await response.json();
-
-                console.log("Response dataset: ", data);
-                
-
+    
+                console.log("Response dataset:", data);
+    
                 if (!response.ok) {
                     throw new Error(data.error || 'Failed to create dataset.');
                 }
-
+    
                 setIsLoading(false);
                 toast.success('Dataset created successfully...', {
                     position: "top-right",
@@ -116,7 +132,7 @@ const DatasetModal = ({ open, onClose }) => {
                     draggable: true,
                     progress: undefined,
                 });
-
+    
                 // Clear form inputs
                 setDatasetName('');
                 setLicense('');
@@ -124,7 +140,7 @@ const DatasetModal = ({ open, onClose }) => {
                 setFiles([]);
                 setSelectedModels([]);
                 setTags([]);
-
+    
                 // Close modal
                 onClose();
             } catch (error) {
@@ -141,7 +157,7 @@ const DatasetModal = ({ open, onClose }) => {
                 setIsLoading(false);
             }
         }
-    };
+    };    
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop: acceptedFiles => {
