@@ -15,6 +15,30 @@ admin.initializeApp({
 const db = admin.firestore();
 const storage = getStorage();
 
+async function saveDatasetDetails(datasetName, repoId, userId, license, visibility, models, tags, submissionTime, fileSize, uploadedAt) {
+  const datasetsRef = db.collection('datasets');
+  try {
+    const newDataset = {
+      datasetName,
+      repoId,
+      userId,
+      license,
+      visibility,
+      models,
+      tags,
+      submissionTime,
+      fileSize,
+      uploadedAt,
+      usage: 0
+    };
+    await datasetsRef.add(newDataset);
+    console.log(`Dataset details saved with datasetName: ${datasetName}`);
+  } catch (error) {
+    console.error("Error saving dataset details:", error);
+    throw error;
+  }
+}
+
 async function uploadFile(bucketPath, fileBuffer, mimeType) {
   console.log("Uploading file:", fileBuffer);
   const file = storage.bucket().file(bucketPath);
@@ -367,5 +391,5 @@ async function saveSystemDetails(minerId, systemDetails) {
 
 
 module.exports = {
-  addTrainingJob, updatestatus, saveCompletedJob, logMinerListening, saveSystemDetails, authenticateMiner, start_training, registerMiner, fetchPendingTrainingJobs, fetchPendingJobDetails, fetchJobDetailsById
+  addTrainingJob, saveDatasetDetails, updatestatus, saveCompletedJob, logMinerListening, saveSystemDetails, authenticateMiner, start_training, registerMiner, fetchPendingTrainingJobs, fetchPendingJobDetails, fetchJobDetailsById
 };

@@ -2,10 +2,13 @@ import { DatasetRounded, Delete, Upload } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Autocomplete, Box, Button, Card, CardContent, Chip, CircularProgress, Drawer, FormControlLabel, IconButton, MenuItem, Radio, RadioGroup, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { auth } from '../auth/config/firebase-config';
+
 
 const models = [
     { name: 'GPT2', id: 'openai-community/gpt2', description: 'Text Generation', lastUsed: '3 hours ago', usageCount: '339k' },
@@ -29,6 +32,18 @@ const DatasetModal = ({ open, onClose }) => {
     const [tags, setTags] = useState([]);
     const [datasetNameError, setDatasetNameError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserId(user.uid);
+            } else {
+                setUserId('');
+            }
+        });
+        return () => unsubscribe();
+    }, [])
 
     const validateData = () => {
         let valid = true;
@@ -53,26 +68,45 @@ const DatasetModal = ({ open, onClose }) => {
         return valid;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (validateData()) {
-            setIsLoading(true); // Start loading
-            setTimeout(() => {
-                const submissionTime = new Date().toISOString();
-                // Simulate a network request or some processing delay
-                console.log({
-                    datasetName,
-                    files: files.map(file => ({
-                        name: file.name,
-                        size: (file.size / 1048576).toFixed(2) + ' MBs',
-                        uploadedAt: file.uploadedAt
-                    })),
-                    license,
-                    visibility,
-                    models: selectedModels,
-                    tags,
-                    submissionTime
+            setIsLoading(true);
+            const submissionTime = new Date().toISOString();
+            const fullDatasetName = `${userId}_${datasetName}`;
+
+            const formData = new FormData();
+            formData.append('datasetName', fullDatasetName);
+            formData.append('license', license);
+            formData.append('visibility', visibility);
+            formData.append('models', selectedModels); // Use the first model for simplicity
+            formData.append('tags', tags.join(',')); // Join tags as a comma-separated string
+            formData.append('submissionTime', submissionTime);
+
+            // Append the first file and its metadata, assuming there is at least one file
+            if (files.length > 0) {
+                const file = files[0].file; // Get the actual file object
+                formData.append('file', file);
+                formData.append('fileName', file.name);
+                formData.append('fileSize', (file.size / 1048576).toFixed(2) + ' MBs'); // Convert size to MB
+                formData.append('uploadedAt', files[0].uploadedAt);
+            }
+
+            try {
+                const response = await fetch('/create-dataset', {
+                    method: 'POST',
+                    body: formData
                 });
-                setIsLoading(false); // Stop loading
+
+                const data = await response.json();
+
+                console.log("Response dataset: ", data);
+                
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create dataset.');
+                }
+
+                setIsLoading(false);
                 toast.success('Dataset created successfully...', {
                     position: "top-right",
                     autoClose: 5000,
@@ -82,17 +116,30 @@ const DatasetModal = ({ open, onClose }) => {
                     draggable: true,
                     progress: undefined,
                 });
-            // Clear form inputs
-            setDatasetName('');
-            setLicense('');
-            setVisibility('public');
-            setFiles([]);
-            setSelectedModels([]);
-            setTags([]);
-            
-            // Close modal
-            // onClose();
-            }, 2000);
+
+                // Clear form inputs
+                setDatasetName('');
+                setLicense('');
+                setVisibility('public');
+                setFiles([]);
+                setSelectedModels([]);
+                setTags([]);
+
+                // Close modal
+                onClose();
+            } catch (error) {
+                console.error('Error creating dataset:', error);
+                toast.error(error.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                setIsLoading(false);
+            }
         }
     };
 
