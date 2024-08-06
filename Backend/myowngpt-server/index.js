@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const { expressjwt: expressJwt } = require('express-jwt');
 const { 
     addTrainingJob, 
+    saveDatasetDetails,
     logMinerListening, 
     saveSystemDetails,
     saveCompletedJob, 
