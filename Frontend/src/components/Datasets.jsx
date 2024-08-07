@@ -1,71 +1,95 @@
 import { Dataset } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Button, Container, Grid, InputAdornment, TextField, Toolbar, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Grid, InputAdornment, TextField, Toolbar, Typography } from '@mui/material';
 import Chip from '@mui/material/Chip';
-import React, { useState } from 'react';
+import { formatDistanceToNow } from 'date-fns';
+import { onAuthStateChanged } from 'firebase/auth';
+import { collection, getFirestore, onSnapshot, query } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { auth } from '../auth/config/firebase-config';
 import DatasetCard from '../widgets/DatasetCard';
 import DatasetModal from '../widgets/DatasetModal';
 import { Footer } from '../widgets/Footer';
 import Navbar from './Navbar';
 
-const datasets = [
-    { name: "argilla/magpie-ultra-v0.1", updated: "about 2 hours ago", views: "50k", likes: "108" },
-    { name: "AI-MO/NuminaMath-CoT", updated: "17 days ago", views: "860k", likes: "141" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "AI-MO/NuminaMath-CoT", updated: "17 days ago", views: "860k", likes: "141" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "AI-MO/NuminaMath-CoT", updated: "17 days ago", views: "860k", likes: "141" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "AI-MO/NuminaMath-CoT", updated: "17 days ago", views: "860k", likes: "141" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "AI-MO/NuminaMath-CoT", updated: "17 days ago", views: "860k", likes: "141" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "AI-MO/NuminaMath-CoT", updated: "17 days ago", views: "860k", likes: "141" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "AI-MO/NuminaMath-CoT", updated: "17 days ago", views: "860k", likes: "141" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" },
-    { name: "HuggingFaceTB/smollm-corpus", updated: "20 days ago", views: "237M", likes: "157" }
-    // Add more datasets as needed
-]
-
 const Datasets = () => {
     const [modalOpen, setModalOpen] = useState(false);
-
+    const [allDatasets, setAllDatasets] = useState([]);
+    const [datasets, setDatasets] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [selectedChips, setSelectedChips] = useState({
         publicDatasets: false,
         yourDatasets: false,
-        csv: false,
-        xlsx: false,
+        GPT: false,
+        Llama: false,
+        OpenELM: false,
     });
+    const [currentFilter, setCurrentFilter] = useState('all');
+    const [userId, setUserId] = useState('');
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserId(user.uid);
+            } else {
+                setUserId('');
+            }
+        });
+
+        return () => unsubscribeAuth();
+    }, []);
+
+    useEffect(() => {
+        const db = getFirestore();
+        const datasetsRef = collection(db, 'datasets');
+        const q = query(datasetsRef);
+
+        setIsLoading(true);
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const loadedDatasets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setAllDatasets(loadedDatasets);
+            setDatasets(loadedDatasets);
+            setIsLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, [userId]);
+
+    useEffect(() => {
+        const filteredDatasets = allDatasets.filter(dataset => {
+            const visibilityFilter = selectedChips.publicDatasets ? dataset.visibility === 'public' :
+                selectedChips.yourDatasets ? dataset.userId === userId : true;
+            const modelFilter = selectedChips.GPT ? dataset.model.toLowerCase().includes('gpt') :
+                selectedChips.Llama ? dataset.model.toLowerCase().includes('llama') :
+                    selectedChips.OpenELM ? dataset.model.toLowerCase().includes('openelm') : true;
+            const searchFilter = dataset.datasetName.toLowerCase().includes(searchQuery.toLowerCase());
+
+            return visibilityFilter && modelFilter && searchFilter;
+        });
+
+        setDatasets(filteredDatasets);
+    }, [selectedChips, searchQuery, allDatasets, userId]);
 
     const handleChipToggle = (chip) => {
-        setSelectedChips((prev) => {
-            let updatedChips = { ...prev };
-
-            // Enforce exclusive selection for "Public Datasets" and "Your Datasets"
-            if (chip === 'publicDatasets') {
-                updatedChips.publicDatasets = !prev.publicDatasets;
-                if (updatedChips.publicDatasets) {
-                    updatedChips.yourDatasets = false;
-                }
-            } else if (chip === 'yourDatasets') {
-                updatedChips.yourDatasets = !prev.yourDatasets;
-                if (updatedChips.yourDatasets) {
-                    updatedChips.publicDatasets = false;
-                }
-            } else {
-                updatedChips[chip] = !prev[chip];
-            }
-
-            return updatedChips;
-        });
+        setSelectedChips(prev => ({
+            ...prev,
+            [chip]: !prev[chip],
+        }));
     };
+
+    useEffect(() => {
+        let filteredDatasets = allDatasets;
+
+        if (currentFilter === 'public') {
+            filteredDatasets = allDatasets.filter(dataset => dataset.visibility === 'public');
+        } else if (currentFilter === 'your') {
+            filteredDatasets = allDatasets.filter(dataset => dataset.userId === userId);
+        }
+
+        setDatasets(filteredDatasets);
+    }, [currentFilter, allDatasets, userId]);
+
 
     return (
         <>
@@ -92,83 +116,67 @@ const Datasets = () => {
                         Explore, analyze, and share quality data. Learn more about data types, creating, and collaborating.
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
-
-
                         <Button
                             variant="contained"
                             style={{ backgroundColor: '#a777e3' }}
                             startIcon={<Dataset />}
-                            onClick={() => setModalOpen(true)} // Open the modal
+                            onClick={() => setModalOpen(true)}
                         >
                             Add New Dataset
                         </Button>
                         <DatasetModal open={modalOpen} onClose={() => setModalOpen(false)} />
-
                     </Box>
-                    <Box sx={{ mb: 2 }}>
-                        <TextField
-                            fullWidth
-                            placeholder="Search datasets"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                            variant="outlined"
+                    <TextField
+                        fullWidth
+                        placeholder="Search datasets"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                        variant="outlined"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                    />
+                    <Box sx={{ display: 'flex', gap: 1, mt: 2, mb: 4 }}>
+                        <Chip
+                            label="All Datasets"
+                            variant={currentFilter === 'all' ? "filled" : "outlined"}
+                            onClick={() => setCurrentFilter('all')}
+                            sx={{ backgroundColor: currentFilter === 'all' ? '#a777e3' : 'transparent', color: currentFilter === 'all' ? 'white' : 'inherit' }}
                         />
-                    </Box>
-                    <Box sx={{ display: 'flex', gap: 1, mb: 4 }}>
                         <Chip
                             label="Public Datasets"
-                            variant="outlined"
-                            onClick={() => handleChipToggle('publicDatasets')}
-                            sx={{
-                                backgroundColor: selectedChips.publicDatasets ? '#a777e3' : 'transparent',
-                                color: selectedChips.publicDatasets ? 'white' : 'inherit',
-                            }}
+                            variant={currentFilter === 'public' ? "filled" : "outlined"}
+                            onClick={() => setCurrentFilter('public')}
+                            sx={{ backgroundColor: currentFilter === 'public' ? '#a777e3' : 'transparent', color: currentFilter === 'public' ? 'white' : 'inherit' }}
                         />
                         <Chip
                             label="Your Datasets"
-                            variant="outlined"
-                            onClick={() => handleChipToggle('yourDatasets')}
-                            sx={{
-                                backgroundColor: selectedChips.yourDatasets ? '#a777e3' : 'transparent',
-                                color: selectedChips.yourDatasets ? 'white' : 'inherit',
-                            }}
+                            variant={currentFilter === 'your' ? "filled" : "outlined"}
+                            onClick={() => setCurrentFilter('your')}
+                            sx={{ backgroundColor: currentFilter === 'your' ? '#a777e3' : 'transparent', color: currentFilter === 'your' ? 'white' : 'inherit' }}
                         />
-                        <Chip
-                            label="CSV"
-                            variant="outlined"
-                            onClick={() => handleChipToggle('csv')}
-                            sx={{
-                                backgroundColor: selectedChips.csv ? '#a777e3' : 'transparent',
-                                color: selectedChips.csv ? 'white' : 'inherit',
-                            }}
-                        />
-                        <Chip
-                            label="XLSX"
-                            variant="outlined"
-                            onClick={() => handleChipToggle('xlsx')}
-                            sx={{
-                                backgroundColor: selectedChips.xlsx ? '#a777e3' : 'transparent',
-                                color: selectedChips.xlsx ? 'white' : 'inherit',
-                            }}
-                        />
-                    </Box>
+                    </Box>{isLoading ? (
+                <CircularProgress size={60} />
+            ) : (
                     <Grid container spacing={0.05}>
                         {datasets.map((dataset, index) => (
                             <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
                                 <DatasetCard
-                                    repositoryName={dataset.name}
-                                    lastUpdated={dataset.updated}
-                                    views={dataset.views}
+                                    repositoryName={dataset.datasetName}
+                                    model={dataset.models}
+                                    tags={['NLP', 'Text Generation',]}
+                                    lastUpdated={formatDistanceToNow(new Date(dataset.uploadedAt), { addSuffix: true })}
+                                    visibility={dataset.visibility}
                                     likes={dataset.likes}
                                 />
                             </Grid>
                         ))}
                     </Grid>
+            )}
                 </Container>
             </Box>
             <Footer />

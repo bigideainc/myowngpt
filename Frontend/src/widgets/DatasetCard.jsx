@@ -1,51 +1,59 @@
-import { Download, FileOpenSharp } from '@mui/icons-material';
-import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Storage, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Box, Card, CardContent, Chip, IconButton, Typography } from '@mui/material';
 import React from 'react';
 
-const DatasetCard = ({ repositoryName, lastUpdated, views, likes }) => {
-    return (
-        <Card sx={{
-            paddingTop: 1,
-            width: { xs: '100%', sm: '450px' }, // Responsive width
-            height: 70,
-            m: 1,
-            background: '#FFFFFF',
-            color: '#333',
-            cursor: 'pointer',
-            '&:hover': {
-                transform: 'translateY(-5px)',
-                boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
-            },
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            padding: 4,
-            paddingLeft: 0
-        }}>
-            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginBottom: 0.3, textAlign: 'left', width: '100%' }}>
-                    {repositoryName}
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'flex-start' }}>
-                    <Typography variant="body2" color="text.secondary" sx={{ flexGrow: 0, marginRight: 2 }}>
-                        Updated {lastUpdated}
-                    </Typography>
-                    <IconButton aria-label="likes" size="small" sx={{ padding: '0 8px' }}>
-                        <FileOpenSharp fontSize="small" />
-                        <Typography variant="body2" sx={{ ml: 0.5 }}>
-                            {likes}MBs
-                        </Typography>
-                    </IconButton>
-                    <IconButton aria-label="views" size="small" sx={{ padding: '0 8px' }}>
-                        <Download fontSize="small" />
-                        <Typography variant="body2" sx={{ ml: 0.5 }}>
-                            {views}
-                        </Typography>
-                    </IconButton>
-                </Box>
-            </CardContent>
-        </Card>
-    );
+const DatasetCard = ({ repositoryName, lastUpdated, visibility, model, tags }) => {
+  return (
+    <Card sx={{
+      paddingTop: 1,
+      width: { xs: '100%', sm: '480px' }, // Responsive width
+      background: '#FFFFFF',
+      color: '#333',
+      cursor: 'pointer',
+      '&:hover': {
+        transform: 'translateY(-5px)',
+        boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
+      },
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: '8px',
+      paddingBottom: 0,
+      marginBottom: 2.5
+    }}>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', padding: '8px 0', paddingBottom: 0 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 0.5 }}>
+          <Storage fontSize="small" sx={{ marginRight: 0.5 }} /> {/* Database icon */}
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
+            {repositoryName}
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'flex-start', marginBottom: 0.1, marginTop: 0.5 }}>
+          <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold' }}>
+            Model:
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ ml: 0.5 }}>
+            {model}
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'flex-start', marginBottom: 0 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ flexGrow: 0, marginRight: 2, fontWeight: 'bold' }}>
+            Updated {lastUpdated}
+          </Typography>
+          <IconButton aria-label="visibility" size="small" sx={{ paddingRight: '0px' }}>
+            {visibility === 'public' ? <Visibility fontSize="small" /> : <VisibilityOff fontSize="small" />}
+          </IconButton>
+          <Typography variant="body2" sx={{ mr: 1 }}>
+              {visibility}
+          </Typography>
+          {/* Display Tags in the same line */}
+          {tags.map((tag, index) => (
+            <Chip key={index} label={tag} sx={{ marginRight: 0.5 }} size="small" />
+          ))}
+        </Box>
+      </CardContent>
+    </Card>
+  );
 };
 
 export default DatasetCard;
