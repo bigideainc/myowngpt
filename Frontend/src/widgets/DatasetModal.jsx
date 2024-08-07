@@ -27,7 +27,7 @@ const DatasetModal = ({ open, onClose }) => {
     const [license, setLicense] = useState('');
     const [visibility, setVisibility] = useState('public');
     const [files, setFiles] = useState([]);
-    const [selectedModels, setSelectedModels] = useState([]);
+    const [selectedModel, setSelectedModel] = useState(null); // Change to a single model
     const [tags, setTags] = useState([]);
     const [datasetNameError, setDatasetNameError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -60,8 +60,8 @@ const DatasetModal = ({ open, onClose }) => {
             toast.error('Please select a license.');
             valid = false;
         }
-        if (selectedModels.length === 0) {
-            toast.error('Please select at least one model.');
+        if (!selectedModel) { // Update validation for single model selection
+            toast.error('Please select a model.');
             valid = false;
         }
         return valid;
@@ -77,7 +77,7 @@ const DatasetModal = ({ open, onClose }) => {
             formData.append('datasetName', fullDatasetName);
             formData.append('license', license);
             formData.append('visibility', visibility);
-            formData.append('models', selectedModels.join(',')); // Join models as a comma-separated string
+            formData.append('model', selectedModel.id); // Use the model ID instead of name
             formData.append('tags', tags.join(',')); // Join tags as a comma-separated string
             formData.append('submissionTime', submissionTime);
 
@@ -102,7 +102,7 @@ const DatasetModal = ({ open, onClose }) => {
             console.log("Dataset Name:", fullDatasetName);
             console.log("License:", license);
             console.log("Visibility:", visibility);
-            console.log("Models:", selectedModels);
+            console.log("Model ID:", selectedModel.id);
             console.log("Tags:", tags);
             console.log("Submission Time:", submissionTime);
             console.log("Files:", files);
@@ -137,7 +137,7 @@ const DatasetModal = ({ open, onClose }) => {
                 setLicense('');
                 setVisibility('public');
                 setFiles([]);
-                setSelectedModels([]);
+                setSelectedModel(null);
                 setTags([]);
 
                 // Close modal
@@ -289,22 +289,17 @@ const DatasetModal = ({ open, onClose }) => {
               />
         
               <Autocomplete
-                multiple
                 id="models-autocomplete"
-                options={models.map((model) => model.name)}
-                value={selectedModels}
-                onChange={(event, newValue) => setSelectedModels(newValue)}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
-                  ))
-                }
+                options={models}
+                getOptionLabel={(option) => option.name}
+                value={selectedModel}
+                onChange={(event, newValue) => setSelectedModel(newValue)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     variant="outlined"
-                    label="Models"
-                    placeholder="Select Models"
+                    label="Model"
+                    placeholder="Select a Model"
                   />
                 )}
               />
