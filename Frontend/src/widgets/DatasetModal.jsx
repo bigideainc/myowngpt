@@ -108,7 +108,7 @@ const DatasetModal = ({ open, onClose }) => {
             console.log("Files:", files);
 
             try {
-                const response = await fetch('https://yogpt-server.vercel.app/create-dataset', {
+                const response = await fetch('https://myowngpt-server.onrender.com/create-dataset', {
                     method: 'POST',
                     body: formData
                 });

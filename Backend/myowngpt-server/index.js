@@ -66,6 +66,8 @@ app.get('/', (req, res) => {
 
 // Endpoint to create a dataset
 app.post('/create-dataset', upload.single('file'), async (req, res) => {
+    console.log("Dataset request: ", req.body);
+
     const { datasetName, license, visibility, models, tags, submissionTime, fileName, fileSize, uploadedAt } = req.body;
 
     // Validate incoming request data
@@ -75,20 +77,18 @@ app.post('/create-dataset', upload.single('file'), async (req, res) => {
 
     const file = req.file;
     const model = models[0]; // Use the first model in the array
-    const uploadsDir = path.join(__dirname, 'uploads');
 
-    // Ensure the uploads directory exists
-    if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-
-    const tempFilePath = path.join(uploadsDir, file.originalname);
+    // Use /tmp directory for file operations
+    const tempFilePath = path.join('/tmp', file.originalname);
 
     // Save the uploaded file to a temporary location
     fs.writeFileSync(tempFilePath, file.buffer);
 
+    // Log the dataset request
+    console.log("Dataset request: ", req.body);
+
     // Call the Python script to create and upload the dataset
-    const pythonScript = './dataset.py'; // Update this path to your actual Python script
+    const pythonScript = 'dataset.py'; // Update this path to your actual Python script
     const command = `python ${pythonScript} ${tempFilePath} ${model} ${datasetName}`;
 
     exec(command, async (error, stdout, stderr) => {
