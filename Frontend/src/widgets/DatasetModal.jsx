@@ -68,7 +68,7 @@ const DatasetModal = ({ open, onClose }) => {
     };
 
     const handleSubmit = async () => {
-        if (validateData()) {
+        // if (validateData()) {
             setIsLoading(true);
             const submissionTime = new Date().toISOString();
             const fullDatasetName = `${userId}_${datasetName}`;
@@ -154,7 +154,7 @@ const DatasetModal = ({ open, onClose }) => {
                     progress: undefined,
                 });
                 setIsLoading(false);
-            }
+            // }
         }
     };
 
