@@ -16,32 +16,6 @@ const ValueLabelComponent = (props) => {
   );
 };
 
-const modelDatasets = {
-  "openai-community/gpt2": ["iohadrubin/wikitext-103-raw-v1", "carlosejimenez/wikitext__wikitext-2-raw-v1"],
-  "openai-community/gpt2-medium": ["iohadrubin/wikitext-103-raw-v1", "carlosejimenez/wikitext__wikitext-2-raw-v1"],
-  "openai-community/gpt2-large": ["iohadrubin/wikitext-103-raw-v1", "carlosejimenez/wikitext__wikitext-2-raw-v1"],
-  "openai-community/gpt2-xl": ["iohadrubin/wikitext-103-raw-v1", "carlosejimenez/wikitext__wikitext-2-raw-v1"],
-  "openlm-research/open_llama_7b_v2": ["mlabonne/guanaco-llama2-1k"],
-  "openlm-research/open_llama_13b": ["mlabonne/guanaco-llama2-1k"],
-  "NousResearch/Llama-2-7b-chat-hf": ["mlabonne/guanaco-llama2-1k"],
-  "apple/OpenELM-270M": ["g-ronimo/oasst2_top4k_en"],
-  "apple/OpenELM-450M": ["g-ronimo/oasst2_top4k_en"],
-  "apple/OpenELM-3B": ["g-ronimo/oasst2_top4k_en"]
-};
-
-const modelGPUs = {
-  "openai-community/gpt2": "Nvidia RTX 2080 Ti",
-  "openai-community/gpt2-medium": "Nvidia RTX 3090",
-  "openai-community/gpt2-large": "Nvidia A100 (40GB VRAM)",
-  "openai-community/gpt2-xl": "Nvidia A100 (40GB VRAM)",
-  "openlm-research/open_llama_7b_v2": "Nvidia RTX 2060",
-  "openlm-research/open_llama_13b": "Nvidia RTX 3060 12GB",
-  "NousResearch/Llama-2-7b-chat-hf": "Nvidia RTX 3090",
-  "apple/OpenELM-270M": "Nvidia GTX 1660",
-  "apple/OpenELM-450M": "Nvidia RTX 2060",
-  "apple/OpenELM-3B": "Nvidia RTX 3090"
-};
-
 const DatasetDetailsModel = ({ open, onClose, model, dataset }) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [batchSize, setBatchSize] = useState(32);

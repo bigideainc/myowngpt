@@ -68,7 +68,7 @@ onClick={handleCardClick}
     <DatasetDetailsModel
         open={detailsModalOpen}
         onClose={() => setDetailsModalOpen(false)}
-        model={{ name: model, id: model, description: "Text Generation" }} // Simplified for demo
+        model={{ name: model, id: model, description: tags }}
         dataset={repositoryName}
       />
     </>
