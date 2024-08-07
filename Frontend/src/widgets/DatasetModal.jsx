@@ -82,12 +82,22 @@ const DatasetModal = ({ open, onClose }) => {
             formData.append('submissionTime', submissionTime);
 
             // Check if there are files and append the first one
+            // Check if there are files and append the first one
             if (files.length > 0) {
                 const file = files[0].file; // Get the actual file object
                 if (file) {
                     formData.append('file', file);
                     formData.append('fileName', file.name);
-                    formData.append('fileSize', (file.size / 1048576).toFixed(2) + ' MBs'); // Convert size to MB
+
+                    // Calculate file size more accurately
+                    const fileSizeInMB = file.size / 1048576; // size in MB
+                    let formattedSize = fileSizeInMB.toFixed(2) + ' MBs';
+                    if (fileSizeInMB < 0.01) { // if the file size is less than 0.01 MB
+                        const fileSizeInKB = file.size / 1024; // size in KB
+                        formattedSize = fileSizeInKB.toFixed(2) + ' KBs'; // format in KB instead
+                    }
+
+                    formData.append('fileSize', formattedSize);
                     formData.append('uploadedAt', files[0].uploadedAt);
                 } else {
                     console.error('File is not available.');
@@ -218,17 +228,17 @@ const DatasetModal = ({ open, onClose }) => {
                     placeholder="New dataset name"
                 />
             </Box>
-            <Card sx={{ 
+            <Card sx={{
                 p: 5,
                 m: 3,
-                border: '2px dashed #1976d2', 
+                border: '2px dashed #1976d2',
                 borderRadius: 2,
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
                 justifyContent: 'center',
                 minHeight: '250px',
-                cursor: 'pointer' 
+                cursor: 'pointer'
             }}>
                 <CardContent {...getRootProps()} sx={{ textAlign: 'center', mb: 5 }}>
                     <input {...getInputProps()} />
@@ -247,7 +257,7 @@ const DatasetModal = ({ open, onClose }) => {
                     </Typography>
                 </CardContent>
             </Card>
-            
+
             {files.length > 0 && (
                 <Box sx={{ padding: '0 24px' }}>
                     {files.map((file) => (
@@ -261,53 +271,53 @@ const DatasetModal = ({ open, onClose }) => {
                 </Box>
             )}
             <Box sx={{ width: 500, maxWidth: '100%', padding: '0 24px', marginTop: 2 }}>
-              <Typography variant="h6" sx={{ mb: 2 }}>
-                Select Model and Tags
-              </Typography>
-        
-              <Autocomplete
-              sx={{mb: 3}}
-                multiple
-                id="tags-autocomplete"
-                options={tagOptions}
-                freeSolo
-                value={tags}
-                onChange={(event, newValue) => setTags(newValue)}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip variant="outlined" label={option} {...getTagProps({ index })} key={index} />
-                  ))
-                }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Tags"
-                    placeholder="Add Tags"
-                  />
-                )}
-              />
-        
-              <Autocomplete
-                multiple
-                id="models-autocomplete"
-                options={models.map((model) => model.name)}
-                value={selectedModels}
-                onChange={(event, newValue) => setSelectedModels(newValue)}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
-                  ))
-                }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Models"
-                    placeholder="Select Models"
-                  />
-                )}
-              />
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                    Select Model and Tags
+                </Typography>
+
+                <Autocomplete
+                    sx={{ mb: 3 }}
+                    multiple
+                    id="tags-autocomplete"
+                    options={tagOptions}
+                    freeSolo
+                    value={tags}
+                    onChange={(event, newValue) => setTags(newValue)}
+                    renderTags={(value, getTagProps) =>
+                        value.map((option, index) => (
+                            <Chip variant="outlined" label={option} {...getTagProps({ index })} key={index} />
+                        ))
+                    }
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            variant="outlined"
+                            label="Tags"
+                            placeholder="Add Tags"
+                        />
+                    )}
+                />
+
+                <Autocomplete
+                    multiple
+                    id="models-autocomplete"
+                    options={models.map((model) => model.name)}
+                    value={selectedModels}
+                    onChange={(event, newValue) => setSelectedModels(newValue)}
+                    renderTags={(value, getTagProps) =>
+                        value.map((option, index) => (
+                            <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+                        ))
+                    }
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            variant="outlined"
+                            label="Models"
+                            placeholder="Select Models"
+                        />
+                    )}
+                />
             </Box>
             <Box sx={{ padding: '0 24px', marginTop: 2 }}>
                 <TextField
@@ -337,15 +347,15 @@ const DatasetModal = ({ open, onClose }) => {
                 </RadioGroup>
             </Box>
             <Box sx={{ padding: '24px', paddingTop: 0, textAlign: 'center' }}>
-            <Button
-                variant="contained"
-                color="primary"
-                startIcon={isLoading ? <CircularProgress size={24} /> : <Upload />}
-                onClick={handleSubmit}
-                disabled={isLoading}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={isLoading ? <CircularProgress size={24} /> : <Upload />}
+                    onClick={handleSubmit}
+                    disabled={isLoading}
                 >
-                {isLoading ? 'Creating...' : 'Create Dataset'}
-            </Button>
+                    {isLoading ? 'Creating...' : 'Create Dataset'}
+                </Button>
             </Box>
             <ToastContainer />
         </Drawer>
