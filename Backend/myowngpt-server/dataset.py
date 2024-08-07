@@ -31,8 +31,13 @@ class DatasetCreator:
         if model_type not in creation_methods:
             raise ValueError(f"Unsupported model type: {model_type}. Supported types are: {', '.join(creation_methods.keys())}")
 
-        creation_methods[model_type]()
-        self.dataset_type = model_type
+        try:
+            creation_methods[model_type]()
+            self.dataset_type = model_type
+            print(f"Dataset created successfully for model type: {model_type}.")
+        except Exception as e:
+            print(f"Error during dataset creation: {e}")
+            raise
 
     def _create_gpt2_dataset(self):
         self.processed_dataframe = pd.DataFrame({
@@ -93,35 +98,41 @@ class DatasetCreator:
         if self.processed_dataframe is None:
             raise ValueError("Dataset not created. Call create_dataset() first.")
         
-        api = HfApi()
-        user = api.whoami(token=token)["name"]
-        repo_id = f"{user}/{repo_name}"
-        
-        create_repo(repo_id, repo_type="dataset", token=token, exist_ok=True)
-        
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            data_dir = os.path.join(tmp_dir, "data")
-            os.makedirs(data_dir)
+        try:
+            api = HfApi()
+            user = api.whoami(token=token)["name"]
+            repo_id = f"{user}/{repo_name}"
+
+            create_repo(repo_id, repo_type="dataset", token=token, exist_ok=True)
             
-            parquet_path = os.path.join(data_dir, "train.parquet")
-            self.processed_dataframe.to_parquet(parquet_path, index=False)
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                data_dir = os.path.join(tmp_dir, "data")
+                os.makedirs(data_dir)
+                
+                parquet_path = os.path.join(data_dir, "train.parquet")
+                self.processed_dataframe.to_parquet(parquet_path, index=False)
+                
+                if self.dataset_type == 'openelm':
+                    jsonl_path = os.path.join(data_dir, "train.jsonl")
+                    with open(jsonl_path, 'w') as f:
+                        for _, row in self.processed_dataframe.iterrows():
+                            json.dump({'messages': row['messages']}, f)
+                            f.write('\n')
+                
+                api.upload_folder(
+                    folder_path=data_dir,
+                    repo_id=repo_id,
+                    repo_type="dataset",
+                    path_in_repo="data",
+                    token=token
+                )
             
-            if self.dataset_type == 'openelm':
-                jsonl_path = os.path.join(data_dir, "train.jsonl")
-                with open(jsonl_path, 'w') as f:
-                    for _, row in self.processed_dataframe.iterrows():
-                        json.dump({'messages': row['messages']}, f)
-                        f.write('\n')
-            
-            api.upload_folder(
-                folder_path=data_dir,
-                repo_id=repo_id,
-                repo_type="dataset",
-                path_in_repo="data",
-                token=token
-            )
-        
-        return repo_id
+            print(f"Dataset uploaded successfully to repository: {repo_id}.")
+            return repo_id
+        except Exception as e:
+            print(f"Error uploading to Hugging Face: {e}")
+            raise
+
 
 def create_and_upload_dataset(
     file_path: str,
@@ -136,43 +147,64 @@ def create_and_upload_dataset(
     :param repo_name: Name of the repository to create/update on Hugging Face.
     :return: Repository ID of the created/updated dataset.
     """
-    # Read the file into a DataFrame
-    if file_path.endswith('.csv'):
-        dataframe = pd.read_csv(file_path)
-    elif file_path.endswith(('.xls', '.xlsx')):
-        dataframe = pd.read_excel(file_path)
-    else:
-        raise ValueError("Unsupported file type. Please provide a CSV, XLS, or XLSX file.")
+    try:
+        # Read the file into a DataFrame
+        if file_path.endswith('.csv'):
+            dataframe = pd.read_csv(file_path)
+        elif file_path.endswith(('.xls', '.xlsx')):
+            dataframe = pd.read_excel(file_path)
+        else:
+            raise ValueError("Unsupported file type. Please provide a CSV, XLS, or XLSX file.")
+    except Exception as e:
+        print(f"Error reading file: {e}")
+        raise
     
     # Automatically detect question and response columns
     question_col = None
     response_col = None
     
     # Attempt to identify the correct columns based on common patterns
-    for col in dataframe.columns:
-        lower_col = col.lower()
-        if 'question' in lower_col:
-            question_col = col
-        elif 'answer' in lower_col or 'response' in lower_col:
-            response_col = col
+    try:
+        for col in dataframe.columns:
+            lower_col = col.lower()
+            if 'question' in lower_col:
+                question_col = col
+            elif 'answer' in lower_col or 'response' in lower_col:
+                response_col = col
+        
+        if not question_col or not response_col:
+            raise ValueError("Could not automatically detect question and response columns. Please ensure the file contains columns with names including 'question' and 'answer' or 'response'.")
+    except Exception as e:
+        print(f"Error detecting question and response columns: {e}")
+        raise
     
-    if not question_col or not response_col:
-        raise ValueError("Could not automatically detect question and response columns. Please ensure the file contains columns with names including 'question' and 'answer' or 'response'.")
-    
-    creator = DatasetCreator(dataframe, question_col, response_col)
-    creator.create_dataset(model_type)
-    
-    # Use the predefined Hugging Face API token
-    hf_token = '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'
-    repo_id = creator.upload_to_huggingface(hf_token, repo_name)
-    return repo_id
+    try:
+        creator = DatasetCreator(dataframe, question_col, response_col)
+        creator.create_dataset(model_type)
+    except Exception as e:
+        print(f"Error creating dataset: {e}")
+        raise
+
+    try:
+        # Use the predefined Hugging Face API token
+        hf_token = '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'
+        repo_id = creator.upload_to_huggingface(hf_token, repo_name)
+        print(f"Repository ID: {repo_id}")
+        return repo_id
+    except Exception as e:
+        print(f"Error uploading dataset to Hugging Face: {e}")
+        raise
+
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Create and upload dataset to Hugging Face")
-    parser.add_argument('file_path', type=str, help='Path to the input file (CSV, XLS, or XLSX)')
-    parser.add_argument('model_type', type=str, choices=['gpt2', 'llama2', 'openelm'], help='Model type')
-    parser.add_argument('repo_name', type=str, help='Name of the repository to create/update on Hugging Face')
+    try:
+        parser = argparse.ArgumentParser(description="Create and upload dataset to Hugging Face")
+        parser.add_argument('file_path', type=str, help='Path to the input file (CSV, XLS, or XLSX)')
+        parser.add_argument('model_type', type=str, choices=['gpt2', 'llama2', 'openelm'], help='Model type')
+        parser.add_argument('repo_name', type=str, help='Name of the repository to create/update on Hugging Face')
 
-    args = parser.parse_args()
-    repo_id = create_and_upload_dataset(args.file_path, args.model_type, args.repo_name)
-    print(f"Repository ID: {repo_id}")
+        args = parser.parse_args()
+        repo_id = create_and_upload_dataset(args.file_path, args.model_type, args.repo_name)
+        print(f"Repository ID: {repo_id}")
+    except Exception as e:
+        print(f"Error in main execution: {e}")
