@@ -102,7 +102,7 @@ const DatasetModal = ({ open, onClose }) => {
             console.log("Dataset Name:", fullDatasetName);
             console.log("License:", license);
             console.log("Visibility:", visibility);
-            console.log("Model ID:", selectedModel.id.toLowerCase()); // Ensure this is correct
+            console.log("Model ID:", selectedModel.id);
             console.log("Tags:", tags);
             console.log("Submission Time:", submissionTime);
             console.log("Files:", files);
