@@ -1,7 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Box, Button, Checkbox, CircularProgress, FormControlLabel, IconButton, Modal, Slider, TextField, Tooltip, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -28,6 +28,12 @@ const DatasetDetailsModel = ({ open, onClose, model, dataset }) => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Assuming dataset is an object with an 'id' you want to display
+    setSelectedDataset(dataset ? dataset.datasetId : "");
+    console.log("Updated dataset details:", dataset);
+  }, [dataset]);
 
   const handleToggleAdvanced = () => {
     setShowAdvanced(!showAdvanced);

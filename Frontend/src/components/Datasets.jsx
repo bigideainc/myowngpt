@@ -167,6 +167,7 @@ const Datasets = () => {
                 <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
                   <DatasetCard
                     repositoryName={dataset.datasetName}
+                    datasetId={dataset.repoId}
                     model={dataset.models}
                     tags={['LLMs', 'Text Generation']}
                     lastUpdated={formatDistanceToNow(new Date(dataset.uploadedAt), { addSuffix: true })}

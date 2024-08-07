@@ -3,7 +3,7 @@ import { Box, Card, CardContent, Chip, IconButton, Typography } from '@mui/mater
 import React, { useState } from 'react';
 import DatasetDetailsModel from '../components/DatasetDetailsModel';
 
-const DatasetCard = ({ repositoryName, lastUpdated, visibility, model, tags }) => {
+const DatasetCard = ({ repositoryName, datasetId, lastUpdated, visibility, model, tags }) => {
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
 
   const handleCardClick = () => {
@@ -69,7 +69,7 @@ onClick={handleCardClick}
         open={detailsModalOpen}
         onClose={() => setDetailsModalOpen(false)}
         model={{ name: model, id: model, description: tags }}
-        dataset={repositoryName}
+        dataset={{datasetId}}
       />
     </>
   );
