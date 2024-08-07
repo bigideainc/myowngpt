@@ -75,7 +75,14 @@ app.post('/create-dataset', upload.single('file'), async (req, res) => {
 
     const file = req.file;
     const model = models[0]; // Use the first model in the array
-    const tempFilePath = path.join(__dirname, 'uploads', file.originalname);
+    const uploadsDir = path.join(__dirname, 'uploads');
+
+    // Ensure the uploads directory exists
+    if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    const tempFilePath = path.join(uploadsDir, file.originalname);
 
     // Save the uploaded file to a temporary location
     fs.writeFileSync(tempFilePath, file.buffer);
@@ -118,8 +125,64 @@ app.post('/create-dataset', upload.single('file'), async (req, res) => {
             return res.status(500).json({ error: 'Failed to save dataset details.' });
         }
     });
-
 });
+
+// Endpoint to create a dataset
+// app.post('/create-dataset', upload.single('file'), async (req, res) => {
+//     const { datasetName, license, visibility, models, tags, submissionTime, fileName, fileSize, uploadedAt } = req.body;
+
+//     // Validate incoming request data
+//     if (!datasetName || !req.file || !models || models.length === 0) {
+//         return res.status(400).json({ error: 'Invalid request data. Ensure datasetName, file, and models are provided.' });
+//     }
+
+//     const file = req.file;
+//     const model = models[0]; // Use the first model in the array
+//     const tempFilePath = path.join(__dirname, 'uploads', file.originalname);
+
+//     // Save the uploaded file to a temporary location
+//     fs.writeFileSync(tempFilePath, file.buffer);
+
+//     // Call the Python script to create and upload the dataset
+//     const pythonScript = './dataset.py'; // Update this path to your actual Python script
+//     const command = `python ${pythonScript} ${tempFilePath} ${model} ${datasetName}`;
+
+//     exec(command, async (error, stdout, stderr) => {
+//         // Delete the temporary file after the process is complete
+//         fs.unlink(tempFilePath, (unlinkErr) => {
+//             if (unlinkErr) {
+//                 console.error(`Error deleting temp file: ${unlinkErr.message}`);
+//             } else {
+//                 console.log(`Temporary file deleted: ${tempFilePath}`);
+//             }
+//         });
+
+//         if (error) {
+//             console.error(`Error executing Python script: ${error.message}`);
+//             return res.status(500).json({ error: 'Failed to create dataset.' });
+//         }
+//         if (stderr) {
+//             console.error(`Python script error: ${stderr}`);
+//             return res.status(500).json({ error: 'Error in Python script execution.' });
+//         }
+
+//         // Assuming the Python script returns the repo_id
+//         const repo_id = stdout.trim();
+
+//         // Extract userId from the datasetName
+//         const userId = datasetName.split('_')[0];
+
+//         try {
+//             // Save dataset details to Firestore
+//             await saveDatasetDetails(datasetName, repo_id, userId, license, visibility, models, tags, submissionTime, fileSize, uploadedAt);
+//             res.status(200).json({ repo_id });
+//         } catch (saveError) {
+//             console.error(`Error saving dataset details: ${saveError.message}`);
+//             return res.status(500).json({ error: 'Failed to save dataset details.' });
+//         }
+//     });
+
+// });
 
 // Completed Jobs
 app.post('/complete-training', async (req, res) => {
