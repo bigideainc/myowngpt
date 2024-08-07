@@ -1,10 +1,22 @@
 import { Storage, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Card, CardContent, Chip, IconButton, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
+import DatasetDetailsModel from '../components/DatasetDetailsModel';
 
 const DatasetCard = ({ repositoryName, lastUpdated, visibility, model, tags }) => {
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+
+  const handleCardClick = () => {
+    setDetailsModalOpen(true);
+  };
+
   return (
-    <Card sx={{
+    <>
+    <Card
+
+onClick={handleCardClick}
+     sx={{
+      
       paddingTop: 1,
       width: { xs: '100%', sm: '480px' }, // Responsive width
       background: '#FFFFFF',
@@ -53,6 +65,13 @@ const DatasetCard = ({ repositoryName, lastUpdated, visibility, model, tags }) =
         </Box>
       </CardContent>
     </Card>
+    <DatasetDetailsModel
+        open={detailsModalOpen}
+        onClose={() => setDetailsModalOpen(false)}
+        model={{ name: model, id: model, description: "Text Generation" }} // Simplified for demo
+        dataset={repositoryName}
+      />
+    </>
   );
 };
 
