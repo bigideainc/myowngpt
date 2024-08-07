@@ -30,6 +30,19 @@ const server = http.createServer(app);
 const io = socketIo(server);
 const port = process.env.PORT || 3000;
 
+const corsOptions = {
+    origin: 'https://www.yogpt.ai',
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions))
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
