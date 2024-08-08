@@ -169,24 +169,24 @@ const Navbar = ({ onProfileClick }) => {
           Home
         </Link>
       </MenuItem>
-      <MenuItem onClick={handleDocsMenu}>
-        Docs
-      </MenuItem>
-      {authCheckCompleted && isAuthenticated && (
-        <>
           <MenuItem>
             <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
               Models
             </Link>
           </MenuItem>
           <MenuItem>
-            <Link to="/dashboard" style={{ color: 'inherit', textDecoration: 'none' }}>
-              Dashboard
-            </Link>
-          </MenuItem>
-          <MenuItem>
             <Link to="/datasets" style={{ color: 'inherit', textDecoration: 'none' }}>
               Datasets
+            </Link>
+          </MenuItem>
+      <MenuItem onClick={handleDocsMenu}>
+        Docs
+      </MenuItem>
+      {authCheckCompleted && isAuthenticated && (
+        <>
+          <MenuItem>
+            <Link to="/dashboard" style={{ color: 'inherit', textDecoration: 'none' }}>
+              Dashboard
             </Link>
           </MenuItem>
           <MenuItem onClick={handleMenu}>
@@ -222,11 +222,11 @@ const Navbar = ({ onProfileClick }) => {
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
           <Typography variant="h6" component="div" sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
             <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Home</Link>
+                <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Models</Link>
+                <Link to="/datasets" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Datasets</Link>
             {authCheckCompleted && isAuthenticated && (
               <>
-                <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Models</Link>
                 <Link to="/dashboard" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Dashboard</Link>
-                <Link to="/datasets" style={{ margin: '0 15px', color: 'white', textDecoration: 'none', fontSize: '1rem', fontWeight: '500' }}>Datasets</Link>
               </>
             )}
             <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleDocsMenu}>
