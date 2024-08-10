@@ -94,6 +94,13 @@ const models = [
     lastUsed: '3 hours ago',
     usageCount: '66.1k',
   },
+  {
+    name: 'Gemini ',
+    id: 'google/gemma-2b',
+    description: 'Text Generation',
+    lastUsed: '3 hours ago',
+    usageCount: '66.1k',
+  },
   // Replacing the last model with a "Submit Your Model" card
   {
     name: 'Submit Your Model',

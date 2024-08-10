@@ -54,6 +54,7 @@ const statuses = {
   running: { color: "black", text: "Running", icon: "🟡" },
   stopped: { color: "black", text: "Stopped", icon: "🔴" },
   pending: { color: "black", text: "Pending", icon: "🟠" },
+  default: { color: "red", text: "Unknown", icon: "🔴" },
 };
 
 const modelDatasets = {
@@ -356,7 +357,7 @@ const DeployList = () => {
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
           <Card>
             <CardContent>
-              <Typography variant="h4" gutterBottom>
+              <Typography variant="h5" gutterBottom>
                 Training Jobs
               </Typography>
               <Box
@@ -468,37 +469,37 @@ const DeployList = () => {
                 <TableHead>
                   <TableRow sx={{ background: "linear-gradient(135deg, #6e8efb, #a777e3)" }}>
                     <TableCell
-                      sx={{ color: "white", fontSize: "16px", fontWeight: "bold" }}
+                      sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
                     >
                       Job ID
                     </TableCell>
                     <TableCell
-                      sx={{ color: "white", fontSize: "16px", fontWeight: "bold" }}
+                      sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
                     >
                       Model ID
                     </TableCell>
                     <TableCell
-                      sx={{ color: "white", fontSize: "16px", fontWeight: "bold" }}
+                      sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
                     >
                       Model Description
                     </TableCell>
                     <TableCell
-                      sx={{ color: "white", fontSize: "16px", fontWeight: "bold" }}
+                      sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
                     >
                       Dataset ID
                     </TableCell>
                     <TableCell
-                      sx={{ color: "white", fontSize: "16px", fontWeight: "bold" }}
+                      sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
                     >
                       Status
                     </TableCell>
                     <TableCell
-                      sx={{ color: "white", fontSize: "16px", fontWeight: "bold" }}
+                      sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
                     >
                       Running Time
                     </TableCell>
                     <TableCell
-                      sx={{ color: "white", fontSize: "16px", fontWeight: "bold" }}
+                      sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
                     >
                       Actions
                     </TableCell>
@@ -508,7 +509,7 @@ const DeployList = () => {
                   {filteredJobs.map((job) => (
                     <TableRow
                       key={job.id}
-                      sx={{ fontWeight: "medium", cursor: "pointer" }}
+                      sx={{ fontWeight: "normal", cursor: "pointer" }}
                       onClick={() => handleRowClick(job)}
                     >
                       <TableCell>{job.id}</TableCell>
@@ -517,14 +518,15 @@ const DeployList = () => {
                       <TableCell>{job.huggingFaceId}</TableCell>
                       <TableCell>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <Typography
+                        <Typography
                             variant="body2"
                             sx={{
                               marginRight: 1,
-                              color: statuses[job.status].color,
+                              fontSize:'14px',
+                              color: statuses[job.status] ? statuses[job.status].color : "gray",
                             }}
                           >
-                            {statuses[job.status].icon} {statuses[job.status].text}
+                            {statuses[job.status] ? statuses[job.status].icon: "🔴"} {statuses[job.status] ? statuses[job.status].text : "Failed"}
                           </Typography>
                         </Box>
                       </TableCell>

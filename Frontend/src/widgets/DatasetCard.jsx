@@ -18,7 +18,7 @@ onClick={handleCardClick}
      sx={{
       
       paddingTop: 1,
-      width: { xs: '100%', sm: '480px' }, // Responsive width
+      width: { xs: '100%', sm: '409px' }, // Responsive width
       background: '#FFFFFF',
       color: '#333',
       cursor: 'pointer',

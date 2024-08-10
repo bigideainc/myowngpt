@@ -109,7 +109,7 @@ const Datasets = () => {
       >
         <Container maxWidth="xl" sx={{ mt: 0.1, mb: 4 }}>
           <Toolbar />
-          <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
             Datasets
           </Typography>
           <Typography sx={{ mb: 2 }}>
@@ -140,7 +140,7 @@ const Datasets = () => {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />
-          <Box sx={{ display: 'flex', gap: 1, mt: 2, mb: 4 }}>
+          <Box sx={{ display: 'flex', gap:1, mt: 2, mb: 4 }}>
             <Chip
               label="All Datasets"
               variant={currentFilter === 'all' ? "filled" : "outlined"}

@@ -26,12 +26,14 @@ const modelDatasets = {
   "NousResearch/Llama-2-7b-chat-hf": ["mlabonne/guanaco-llama2-1k"],
   "apple/OpenELM-270M": ["g-ronimo/oasst2_top4k_en"],
   "apple/OpenELM-450M": ["g-ronimo/oasst2_top4k_en"],
-  "apple/OpenELM-3B": ["g-ronimo/oasst2_top4k_en"]
+  "apple/OpenELM-3B": ["g-ronimo/oasst2_top4k_en"],
+  "google/gemma-2b":["Abirate/english_quotes"],
+  "google/gemma-2-9b":["Abirate/english_quotes"]
 };
 
 const modelGPUs = {
   "openai-community/gpt2": "Nvidia RTX 2080 Ti",
-  "openai-community/gpt2-medium": "Nvidia RTX 3090",
+  "openai-community/gpt2-medium": "Nvidia RTX 3090",  
   "openai-community/gpt2-large": "Nvidia A100 (40GB VRAM)",
   "openai-community/gpt2-xl": "Nvidia A100 (40GB VRAM)",
   "openlm-research/open_llama_7b_v2": "Nvidia RTX 2060",
@@ -39,7 +41,9 @@ const modelGPUs = {
   "NousResearch/Llama-2-7b-chat-hf": "Nvidia RTX 3090",
   "apple/OpenELM-270M": "Nvidia GTX 1660",
   "apple/OpenELM-450M": "Nvidia RTX 2060",
-  "apple/OpenELM-3B": "Nvidia RTX 3090"
+  "apple/OpenELM-3B": "Nvidia RTX 3090",
+  "google/gemma-2b": "Nvidia RTX 3090",
+  "google/gemma-2-9b": "Nvidia A100 (40GB VRAM)",
 };
 
 const ModelDetailsModal = ({ open, onClose, model }) => {
