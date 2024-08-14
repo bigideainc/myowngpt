@@ -267,12 +267,12 @@ const Documentation = () => {
                 </TableHead>
                 <TableBody>
                   {[
-                    { model: 'llama2-7b', rate: 1.2, loss: '&lt;= 0.20', time: '10-12' },
-                    { model: 'OpenELM-270', rate: 1.0, loss: '&lt;= 0.50', time: '3-5' },
-                    { model: 'OpenELM-450M', rate: 1.3, loss: '&lt;= 0.35', time: '6-8' },
-                    { model: 'OpenELM-3B', rate: 2.2, loss: '&lt;= 0.20', time: '10-12' },
-                    { model: 'GPT2', rate: 1.5, loss: '&lt;= 0.50', time: '3-5' },
-                    { model: 'LLama3B', rate: 2.2, loss: '&lt;= 0.35', time: '6-8' },
+                    { model: 'llama2-7b', rate: 1.2, loss: '<= 0.20', time: '10-12' },
+                    { model: 'OpenELM-270', rate: 1.0, loss: '<= 0.50', time: '3-5' },
+                    { model: 'OpenELM-450M', rate: 1.3, loss: '<= 0.35', time: '6-8' },
+                    { model: 'OpenELM-3B', rate: 2.2, loss: '<= 0.20', time: '10-12' },
+                    { model: 'GPT2', rate: 1.5, loss: '<= 0.50', time: '3-5' },
+                    { model: 'LLama3B', rate: 2.2, loss: '<= 0.35', time: '6-8' },
                   ].map((row, index) => (
                     <TableRow key={index}>
                       <TableCell sx={{ color: 'black', fontSize: '14px' }}>{row.model}</TableCell>
