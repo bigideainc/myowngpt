@@ -67,5 +67,12 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "vite": "^5.4.0"
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "not < 0.2%",
+    "not op_mini all",
+    "Edge >= 18"
+  ]
 }
