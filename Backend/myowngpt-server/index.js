@@ -65,6 +65,33 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
+// Endpoint to update job status to "rewarded"
+app.patch('/reward-job/:jobId', async (req, res) => {
+    const { jobId } = req.params;
+
+    try {
+        // Fetch the job document based on the jobId
+        const completedJobsRef = db.collection('completed_jobs').doc(jobId);
+        const doc = await completedJobsRef.get();
+
+        if (!doc.exists) {
+            return res.status(404).json({ error: 'Job not found.' });
+        }
+
+        // Update the job status to "rewarded"
+        await completedJobsRef.update({
+            status: 'rewarded',
+            reward_message: 'Job status updated to rewarded',
+            completedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        res.status(200).json({ message: `Job ${jobId} status updated to rewarded.` });
+    } catch (error) {
+        console.error('Failed to update job status:', error);
+        res.status(500).json({ error: 'Failed to update job status.' });
+    }
+});
+
 app.get('/completed-jobs', async (req, res) => {
     try {
         const completedJobs = await fetchCompletedJobs();
