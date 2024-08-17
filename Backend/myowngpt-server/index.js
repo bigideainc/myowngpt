@@ -19,7 +19,8 @@ const {
     authenticateMiner, 
     fetchPendingJobDetails, 
     start_training, 
-    updatestatus 
+    updatestatus,
+    fetchCompletedJobs
 } = require('./firebase');
 const { exec } = require('child_process');
 const http = require('http');
@@ -62,6 +63,16 @@ const checkJwt = expressJwt({
 app.get('/', (req, res) => {
     console.log("Hello server is live...");
     res.send('Hello World');
+});
+
+app.get('/completed-jobs', async (req, res) => {
+    try {
+        const completedJobs = await fetchCompletedJobs();
+        res.status(200).json(completedJobs);
+    } catch (error) {
+        console.error('Failed to fetch completed jobs:', error);
+        res.status(500).json({ error: 'Failed to fetch completed jobs.' });
+    }
 });
 
 // Endpoint to create a dataset

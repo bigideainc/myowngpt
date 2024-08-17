@@ -389,7 +389,29 @@ async function saveSystemDetails(minerId, systemDetails) {
   }
 }
 
+async function fetchCompletedJobs() {
+  try {
+    const completedJobsRef = db.collection('completed_jobs');
+    const querySnapshot = await completedJobsRef.get();
+
+    if (querySnapshot.empty) {
+      console.log('No completed jobs found.');
+      return [];
+    }
+
+    const completedJobs = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    console.log(completedJobs);  // Log the completed jobs to console for verification
+    return completedJobs;
+  } catch (error) {
+    console.error("Error fetching completed jobs:", error);
+    return [];  // Return an empty array in case of error
+  }
+}
 
 module.exports = {
-  addTrainingJob, saveDatasetDetails, updatestatus, saveCompletedJob, logMinerListening, saveSystemDetails, authenticateMiner, start_training, registerMiner, fetchPendingTrainingJobs, fetchPendingJobDetails, fetchJobDetailsById
+  addTrainingJob, fetchCompletedJobs, saveDatasetDetails, updatestatus, saveCompletedJob, logMinerListening, saveSystemDetails, authenticateMiner, start_training, registerMiner, fetchPendingTrainingJobs, fetchPendingJobDetails, fetchJobDetailsById
 };
