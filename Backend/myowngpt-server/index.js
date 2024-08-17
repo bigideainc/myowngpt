@@ -20,7 +20,8 @@ const {
     fetchPendingJobDetails, 
     start_training, 
     updatestatus,
-    fetchCompletedJobs
+    fetchCompletedJobs,
+    updateJobStatusToRewarded
 } = require('./firebase');
 const { exec } = require('child_process');
 const http = require('http');
@@ -70,25 +71,15 @@ app.patch('/reward-job/:jobId', async (req, res) => {
     const { jobId } = req.params;
 
     try {
-        // Fetch the job document based on the jobId
-        const completedJobsRef = db.collection('completed_jobs').doc(jobId);
-        const doc = await completedJobsRef.get();
-
-        if (!doc.exists) {
-            return res.status(404).json({ error: 'Job not found.' });
+        const result = await updateJobStatusToRewarded(jobId);
+        if (result.success) {
+            res.status(200).json({ message: result.message });
+        } else {
+            res.status(500).json({ error: result.error });
         }
-
-        // Update the job status to "rewarded"
-        await completedJobsRef.update({
-            status: 'rewarded',
-            reward_message: 'Job status updated to rewarded',
-            completedAt: admin.firestore.FieldValue.serverTimestamp()
-        });
-
-        res.status(200).json({ message: `Job ${jobId} status updated to rewarded.` });
     } catch (error) {
-        console.error('Failed to update job status:', error);
-        res.status(500).json({ error: 'Failed to update job status.' });
+        console.error('Error in reward-job endpoint:', error);
+        res.status(500).json({ error: 'Internal server error.' });
     }
 });
 

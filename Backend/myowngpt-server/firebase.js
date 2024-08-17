@@ -412,6 +412,30 @@ async function fetchCompletedJobs() {
   }
 }
 
+async function updateJobStatusToRewarded(jobId) {
+  const completedJobsRef = db.collection('completed_jobs').doc(jobId);
+  
+  try {
+      const doc = await completedJobsRef.get();
+
+      if (!doc.exists) {
+          throw new Error('Job not found.');
+      }
+
+      // Update the job status to "rewarded"
+      await completedJobsRef.update({
+          status: 'rewarded',
+          reward_message: 'Job status updated to rewarded',
+          completedAt: admin.firestore.FieldValue.serverTimestamp()
+      });
+
+      return { success: true, message: `Job ${jobId} status updated to rewarded.` };
+  } catch (error) {
+      console.error('Failed to update job status:', error);
+      return { success: false, error: 'Failed to update job status.' };
+  }
+}
+
 module.exports = {
-  addTrainingJob, fetchCompletedJobs, saveDatasetDetails, updatestatus, saveCompletedJob, logMinerListening, saveSystemDetails, authenticateMiner, start_training, registerMiner, fetchPendingTrainingJobs, fetchPendingJobDetails, fetchJobDetailsById
+  addTrainingJob, updateJobStatusToRewarded, fetchCompletedJobs, saveDatasetDetails, updatestatus, saveCompletedJob, logMinerListening, saveSystemDetails, authenticateMiner, start_training, registerMiner, fetchPendingTrainingJobs, fetchPendingJobDetails, fetchJobDetailsById
 };
