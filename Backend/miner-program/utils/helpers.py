@@ -68,32 +68,17 @@ def submit_to_runpod(script_path, runpod_api_key):
         submit_job_to_pod(script_path, pod_id)
 
 async def fetch_jobs():
-    print("Waiting for training jobs...")
-    while True:
-        try:
-            async with aiohttp.ClientSession() as session:
-                headers = {'Authorization': f'Bearer {TOKEN}'}
-                async with session.get(f"{BASE_URL}/pending-jobs", headers=headers) as response:
-                    if response.status == 200:
-                        jobs = await response.json()
-                        if jobs:
-                            print(f"Received jobs: {jobs}")
-                            # You can add logic here to process the jobs
-                        else:
-                            print("No jobs available at the moment.")
-                    elif response.status == 401:
-                        print("Unauthorized access. Check your credentials.")
-                    else:
-                        print(f"Failed to fetch jobs: {await response.text()}")
-        except aiohttp.ClientError as e:
-            print(f"Client error: {e}")
-        except Exception as e:
-            print(f"Unexpected error: {e}")
-        
-        await asyncio.sleep(3)  # Wait for 10 seconds before the next poll
-
-if __name__ == "__main__":
-    asyncio.run(fetch_jobs())
+    print("Waiting for training jobs")
+    async with aiohttp.ClientSession() as session:
+        headers = {'Authorization': f'Bearer {TOKEN}'}
+        async with session.get(f"{BASE_URL}/pending-jobs", headers=headers) as response:
+            if response.status == 200:
+                return await response.json()
+            elif response.status == 401:
+                return "Unauthorized"
+            else:
+                print(f"Failed to fetch jobs: {await response.text()}")
+                return []
 
 async def fetch_and_save_job_details(job_id):
     async with aiohttp.ClientSession() as session:
