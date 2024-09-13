@@ -1,3 +1,4 @@
+import { ContentCopy as CopyIcon, Menu as MenuIcon } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -16,10 +17,9 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { ContentCopy as CopyIcon, Menu as MenuIcon } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   backgroundColor: 'mediumseagreen',
@@ -253,7 +253,7 @@ const Documentation = () => {
           <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Poppins', mb: 2, fontSize: '14px',fontWeight: 'bold' }}>REWARDS AND TOKENS</Typography>
           <Paper sx={{ padding: 3, mb: 4, bgcolor: 'white', color: 'black' }}>
             <Typography variant="body1" sx={{ fontFamily: 'Poppins', fontSize: '14px' }}>
-              The YoGPT platform offers a robust reward system to incentivize miners, validators, and inference agents for their contributions. Rewards are based on the successful completion of fine-tuning jobs, meeting validation loss thresholds, and adhering to time constraints. Rewards are converted into Communie tokens and credited to the participant's account upon successful job completion.
+              The YoGPT platform offers a robust reward system to incentivize miners, validators, and inference agents for their contributions. Rewards are based on the successful completion of fine-tuning jobs, meeting validation loss thresholds, and adhering to time constraints. Rewards are converted into Commune tokens and credited to the participant's account upon successful job completion.
             </Typography>
             <TableContainer component={Paper} sx={{ mt: 2, bgcolor: 'white' }}>
               <Table>
