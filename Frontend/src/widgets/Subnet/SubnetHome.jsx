@@ -3,6 +3,7 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { BsBell, BsMoon, BsSun } from 'react-icons/bs';
 import { FaApple, FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { SiAmd, SiIntel, SiNvidia } from 'react-icons/si';
+import { Link } from 'react-router-dom';
 import GPUSelectionApp from './ClusterDeployment';
 import Demo from './HeatMap';
 import ClusterDashboard from './subnet';
@@ -54,11 +55,16 @@ const SubnetHome = () => {
         <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} min-h-screen flex flex-col`}>
             {/* Fixed Top Navigation */}
             <header className={`${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-sm py-4 px-6 sm:px-8 flex items-center justify-between fixed top-0 left-0 right-0 z-10`}>
-                <div className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
+        <span className="text-lg font-semibold">YOGPT</span>
+        <span className="text-gray-400 hidden sm:block">/</span>
+        <span className={`${darkMode ? 'text-gray-300' : 'text-gray-500'} hidden sm:block`}>COMMUNEX</span>
+    </Link>
+                {/* <div className="flex items-center gap-2">
                     <span className="text-lg font-semibold">YOGPT</span>
                     <span className="text-gray-400 hidden sm:block">/</span>
                     <span className={`${darkMode ? 'text-gray-300' : 'text-gray-500'} hidden sm:block`}>COMMUNEX</span>
-                </div>
+                </div> */}
                 <nav className="hidden md:flex items-center gap-6 text-sm">
                     {['Home', 'Chips', 'Miners', 'Validators', 'Earnings & Rewards', 'Inference'].map((nav) => (
                         <button
