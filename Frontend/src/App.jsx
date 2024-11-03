@@ -21,6 +21,7 @@ import SignIn from "./screens/sign-in";
 import SignUp from "./screens/sign-up";
 import { Footer } from "./widgets/Footer";
 import Com from "./widgets/getCPUProgress";
+import SubnetHome from "./widgets/Subnet/SubnetHome";
 import UserInfoPopup from "./widgets/userInfo";
 
 // Function to fetch models from Hugging Face
@@ -227,6 +228,7 @@ function App() {
             <Route path="/bill" element={<PaymentMenu />} />
             <Route path="/chat/:url" element={<ChatLayout />} />
             <Route path="/datasets" element={<Datasets/>}/>
+            <Route path="/com-subnet" element={<SubnetHome/>}/>
             <Route path="/com" element={<Com />} />
             <Route path="/userdocs" element={<GuildelinesComponent />} />
           </Routes>
