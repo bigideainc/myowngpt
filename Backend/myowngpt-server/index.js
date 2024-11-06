@@ -56,7 +56,7 @@ const upload = multer({ storage: storage });
 
 // Middleware to validate JWT
 const checkJwt = expressJwt({
-    secret: process.env.JWT_SECRET,
+    secret: '$2y$10$mnDtWe5QwnGhte39CBL3oukxFXnq9k0ZOqLk3g8M.G11ZY1kpBkye',
     algorithms: ['HS256'],
     requestProperty: 'user' // ensures decoded token is attached to req.user
 });
@@ -480,7 +480,7 @@ app.post('/login', async (req, res) => {
             const token = jwt.sign({
                 username: user.username,
                 minerId: user.userId
-            }, process.env.JWT_SECRET, { expiresIn: '24h' });
+            }, '$2y$10$mnDtWe5QwnGhte39CBL3oukxFXnq9k0ZOqLk3g8M.G11ZY1kpBkye', { expiresIn: '24h' });
 
             res.status(200).send({
                 token,
@@ -509,7 +509,7 @@ app.post('/login', async (req, res) => {
 //             const token = jwt.sign({
 //                 username: user.username,
 //                 minerId: user.userId
-//             }, process.env.JWT_SECRET, { expiresIn: '24h' });
+//             }, '$2y$10$mnDtWe5QwnGhte39CBL3oukxFXnq9k0ZOqLk3g8M.G11ZY1kpBkye', { expiresIn: '24h' });
 
 //             // Save system details in Firestore
 //             const minerRef = db.collection('miners').doc(user.userId);
