@@ -150,13 +150,13 @@ const MainContent = () => {
         signInWithGoogle()
           .then((result) => {
             setUser(result);
-            navigate('/com'); // Navigate to /com after successful login
+            navigate('/com-subnet'); // Navigate to /com after successful login
           })
           .catch((error) => {
             console.error('Google sign-in error', error);
           });
       } else {
-        navigate('/com'); // Directly navigate if already logged in
+        navigate('/com-subnet'); // Directly navigate if already logged in
       }
     } else if (!network.comingSoon) {
       alert(`${network.name} Selected`);
