@@ -54,7 +54,7 @@ const SelectionPanel = ({ selectedGPU, darkMode, onContinue }) => {
                             <div>
                                 <h3 className="font-medium">{selectedGPU.name}</h3>
                                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                    {selectedGPU.description || 'No description available'}
+                                    {selectedGPU.model || 'No model specified'}
                                 </p>
                                 <p className="text-sm mt-2">Status: {availabilityStatus}</p>
                                 <p className="text-sm mt-2">Cost per hour: {selectedGPU.costPerHour ? `$${selectedGPU.costPerHour}` : 'N/A'}</p>
