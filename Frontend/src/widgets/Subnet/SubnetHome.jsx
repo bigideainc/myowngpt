@@ -6,6 +6,8 @@ import { SiAmd, SiIntel, SiNvidia } from 'react-icons/si';
 import { Link } from 'react-router-dom';
 import GPUSelectionApp from './ClusterDeployment';
 import Demo from './HeatMap';
+import World from './Nodes/Globe.jsx';
+import defaultMarkers from "./Nodes/markers.js";
 import ClusterDashboard from './subnet';
 
 const SubnetHome = () => {
@@ -92,90 +94,18 @@ const SubnetHome = () => {
 
             {/* Main Content with Scrollable Area */}
             <main className={`flex-1 overflow-y-auto pt-20 pb-24 px-6 flex justify-center ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-                <div className="w-full max-w-7xl">
+                <div className="w-full max-w-8xl">
                     {isChipView ? (
                         <GPUSelectionApp darkMode={darkMode} />
                     ) : isMinersView ? (
                         <ClusterDashboard darkMode={darkMode} />
                     ) : (
                         <div className="rounded-lg shadow-lg">
-                            <div className={`p-4 flex flex-col lg:flex-row ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-                                {/* Providers Sidebar */}
-                                <div className={`w-full lg:w-1/4 p-4 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'} rounded-lg`}>
-                                    <h3 className="text-lg font-semibold mb-4">Providers <span className={`${darkMode ? 'text-gray-500' : 'text-gray-500'} text-sm`}>37</span></h3>
-                                    <div className="space-y-4">
-                                        {providers.map((provider, index) => (
-                                            <div
-                                                key={index}
-                                                className={`flex items-center justify-between p-3 cursor-pointer ${darkMode ? 'bg-gray-700' : 'bg-white'} rounded-lg border ${darkMode ? 'border-gray-700' : 'border-gray-200'} ${selectedProvider === provider.name ? 'ring-2 ring-blue-500' : ''}`}
-                                                onClick={() => handleProviderClick(provider)}
-                                            >
-                                                <div className="text-sm font-medium">{provider.name}</div>
-                                                <div className={`text-right ${darkMode ? 'text-gray-400' : 'text-gray-500'} text-xs`}>
-                                                    <div>{provider.gpus} GPUs</div>
-                                                    <div>{provider.cpus} CPUs</div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Pricing Table */}
-                                <div className="w-full lg:w-3/4 pl-4">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h2 className="text-xl font-semibold">Live Pricing</h2>
-                                        <button onClick={() => setIsChipView(true)} className={`text-sm font-medium ${darkMode ? 'text-gray-400 border-gray-600' : 'text-gray-500 border-gray-300'} border rounded-lg px-3 py-1`}>View All</button>
-                                    </div>
-
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-left">
-                                            <thead>
-                                                <tr className={`${darkMode ? 'text-gray-400' : 'text-gray-500'} text-sm border-b`}>
-                                                    <th className="p-2">Chip</th>
-                                                    <th className="p-2">Supply</th>
-                                                    <th className="p-2">Price per Hour</th>
-                                                    <th className="p-2">Overall Utilization</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {filteredGpuData.map((gpu, index) => (
-                                                    <tr key={index} className={`border-b ${darkMode ? 'hover:bg-gray-700 border-gray-700' : 'hover:bg-gray-50'}`}>
-                                                        <td className="p-2 flex items-center gap-3">
-                                                            {gpu.icon}
-                                                            <span>{gpu.name}</span>
-                                                        </td>
-                                                        <td className="p-2">
-                                                            <div className="text-sm font-medium">{gpu.supply}</div>
-                                                            <div className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Available</div>
-                                                        </td>
-                                                        <td className="p-2">
-                                                            <div className="text-sm font-medium">{gpu.price}</div>
-                                                            <div className={`text-xs ${gpu.change.startsWith('+') ? 'text-red-500' : 'text-green-500'}`}>
-                                                                {gpu.change}
-                                                            </div>
-                                                        </td>
-                                                        <td className="p-2">
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="flex items-center gap-1">
-                                                                    {[...Array(10)].map((_, i) => (
-                                                                        <div key={i} className={`w-2 h-4 rounded-sm ${i < gpu.utilization / 10 ? 'bg-green-900' : `${darkMode ? 'bg-gray-700' : 'bg-gray-300'}`}`}></div>
-                                                                    ))}
-                                                                </div>
-                                                                <div className="text-sm">
-                                                                    <span className="font-semibold">{gpu.utilization}%</span> Busy / <span className={`${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>{100 - gpu.utilization}% Free</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                        <World initialMarkers={defaultMarkers} darkMode={darkMode} />
+                        
 
                             {/* YOGPT Summary Section */}
-                            <div className={`w-full lg:w-2/3 mx-auto p-6 border-b lg:border-b-0 lg:border-r ${darkMode ? 'border-gray-700' : 'border-white'}`}>
+                            <div className={`w-full lg:w-2/3 mx-auto p-6 pt-0 border-b lg:border-b-0 lg:border-r ${darkMode ? 'border-gray-700' : 'border-white'}`}>
                                 <h3 className="text-lg font-semibold mb-4 text-center">YOGPT</h3>
                                 <h4 className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-700'} mb-4 text-center`}>
                                     Supply Insights and Overview

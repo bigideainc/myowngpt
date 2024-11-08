@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaApple } from 'react-icons/fa';
+import { FaApple, FaDesktop } from 'react-icons/fa';
 import { SiAmd, SiNvidia } from 'react-icons/si';
 import ChipSelection from './ConnectivitySelection';
 
@@ -14,13 +14,38 @@ const gpuData = [
     { id: 8, name: 'Google TPU v4', memory: '32GB', usage: 20, type: 'TPU', brand: 'TPU', costPerHour: 0.35 },
 ];
 
-const connectivityOptions = [
-    { id: 'low', label: 'Low Speed', download: '53.22 MB/s', upload: '10.40 MB/s' },
-    { id: 'medium', label: 'Medium', download: '53.22 MB/s', upload: '10.40 MB/s' },
-    { id: 'high', label: 'High Speed', download: '620.72 MB/s', upload: '500.40 MB/s' },
-    { id: 'ultra', label: 'Ultra High Speed', download: '6.72 GB/s', upload: '5.40 GB/s' },
-];
-
+const OwnComputerCard = ({ isSelected, onSelect, darkMode }) => {
+    return (
+      <div
+        className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+          isSelected
+            ? `bg-gradient-to-r from-[#6e8efb] to-[#a777e3] text-white`
+            : `${darkMode ? 'border-gray-700' : 'border-gray-300'} bg-gradient-to-r from-[#6e8efb] to-[#a777e3] text-white`
+        }`}
+        onClick={() => onSelect('ownComputer')}
+        style={{ height: '150px' }}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <FaDesktop size={32} className="mr-2" />
+            <h3 className="font-semibold">Use Your Own Computer</h3>
+          </div>
+          <div className="mt-2 flex justify-end">
+            <input
+              type="radio"
+              checked={isSelected}
+              onChange={() => onSelect('ownComputer')}
+              className="form-radio text-white"
+            />
+          </div>
+        </div>
+        <p className="mt-4 text-sm">
+          Connect and utilize your personal computing resources.
+        </p>
+      </div>
+    );
+  };
+  
 const GPUCard = ({ gpu, isSelected, onSelect, darkMode }) => {
     const segments = 10;
     const busySegments = Math.round((gpu.usage / 100) * segments);
@@ -53,7 +78,7 @@ const GPUCard = ({ gpu, isSelected, onSelect, darkMode }) => {
             </div>
         </div>
     );
-};
+}
 
 const GPUSelectionApp = ({ darkMode }) => {
     const [selectedGPUId, setSelectedGPUId] = useState(null);
@@ -116,13 +141,20 @@ const GPUSelectionApp = ({ darkMode }) => {
                     {filteredGpuData.map((gpu) => (
                         <GPUCard key={gpu.id} gpu={gpu} isSelected={gpu.id === selectedGPUId} onSelect={handleSelectGPU} darkMode={darkMode} />
                     ))}
+                    {/* Own Computer Card */}
+                    <OwnComputerCard isSelected={selectedGPUId === 'ownComputer'} onSelect={handleSelectGPU} darkMode={darkMode} />
                 </div>
 
                 {/* Summary Section */}
                 <div className="w-full md:w-1/3">
                     <div className={`border rounded-lg p-4 shadow-md ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-300 text-gray-800'}`}>
-                        <h2 className="text-xl font-semibold">Selected GPU Information</h2>
-                        {selectedGPU ? (
+                        <h2 className="text-xl font-semibold">Selected Option</h2>
+                        {selectedGPUId === 'ownComputer' ? (
+                            <>
+                                <p className="mt-4 text-sm">You have selected to use your own computer. Ensure connectivity and compatibility with the application.</p>
+                                <button onClick={handleContinue} className={`mt-4 px-4 py-2 rounded ${darkMode ? 'bg-gray-700 text-white' : 'bg-black text-white'}`}>Continue</button>
+                            </>
+                        ) : selectedGPU ? (
                             <>
                                 <ul className="mt-4 space-y-2 text-sm">
                                     <li><strong>Name:</strong> {selectedGPU.name}</li>
@@ -130,7 +162,6 @@ const GPUSelectionApp = ({ darkMode }) => {
                                     <li><strong>Usage:</strong> {selectedGPU.usage}% Busy / {100 - selectedGPU.usage}% Free</li>
                                     <li><strong>Type:</strong> {selectedGPU.type}</li>
                                     <li><strong>Brand:</strong> {selectedGPU.brand}</li>
-                                    <li><strong>Cost per Hour:</strong> ${selectedGPU.costPerHour.toFixed(2)}</li>
                                 </ul>
                                 <div className="mt-4 flex items-center space-x-2">
                                     <button onClick={handleContinue} className={`px-4 py-2 rounded ${darkMode ? 'bg-gray-700 text-white' : 'bg-black text-white'}`}>Continue</button>
@@ -142,7 +173,6 @@ const GPUSelectionApp = ({ darkMode }) => {
                         )}
                     </div>
                 </div>
-
             </div>
         </div>
     );
