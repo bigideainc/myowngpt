@@ -105,13 +105,13 @@ const SubnetHome = () => {
                         
 
                             {/* YOGPT Summary Section */}
-                            <div className={`w-full lg:w-2/3 mx-auto p-6 pt-0 border-b lg:border-b-0 lg:border-r ${darkMode ? 'border-gray-700' : 'border-white'}`}>
+                            <div className={`w-full lg:w-2/3 mx-auto p-6 pt-0 border-b lg:border-b-0 ${darkMode ? 'border-gray-700' : 'border-white'}`}>
                                 <h3 className="text-lg font-semibold mb-4 text-center">YOGPT</h3>
                                 <h4 className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-700'} mb-4 text-center`}>
                                     Supply Insights and Overview
                                 </h4>
                                 <div className="grid grid-cols-12 gap-1 mb-4">
-                                    <Demo />
+                                    <Demo darkMode={darkMode} />
 
                                 </div>
                             </div>
