@@ -40,7 +40,7 @@ const ComputeOptions = ({ darkMode }) => {
     const borderColor = darkMode ? 'border-gray-700' : 'border-gray-200';
 
     return (
-        <div className={`p-6 ${bgColor} rounded-lg shadow-lg`}>
+        <div className={`p-6 ${bgColor} rounded-lg`}>
             <h2 className="text-lg font-semibold mb-4 text-blue-500 leading-snug">
                 Powering YOGPT-Commune Subnet Operations
             </h2>

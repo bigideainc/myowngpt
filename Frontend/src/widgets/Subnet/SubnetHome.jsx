@@ -100,7 +100,7 @@ const SubnetHome = () => {
                     ) : isMinersView ? (
                         <ClusterDashboard darkMode={darkMode} />
                     ) : (
-                        <div className="rounded-lg shadow-lg">
+                        <div className="rounded-lg">
                         <World initialMarkers={defaultMarkers} darkMode={darkMode} />
                         
 

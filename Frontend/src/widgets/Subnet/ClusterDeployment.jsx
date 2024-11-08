@@ -1,181 +1,256 @@
-import React, { useEffect, useState } from 'react';
-import { FaApple, FaDesktop } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaMapMarkerAlt, FaMemory, FaMicrochip } from 'react-icons/fa';
 import { SiAmd, SiNvidia } from 'react-icons/si';
 import ChipSelection from './ConnectivitySelection';
+import OwnComputerCard from './Nodes/UseOwnComputerCard';
 
 const gpuData = [
-    { id: 1, name: 'NVIDIA GeForce RTX 3090', memory: '24GB', usage: 70, type: 'GPU', brand: 'Nvidia', costPerHour: 0.5 },
-    { id: 2, name: 'NVIDIA GeForce RTX 3090', memory: '12GB', usage: 40, type: 'GPU', brand: 'Nvidia', costPerHour: 0.4 },
-    { id: 3, name: 'NVIDIA GeForce RTX 3060', memory: '12GB', usage: 80, type: 'GPU', brand: 'Nvidia', costPerHour: 0.3 },
-    { id: 4, name: 'NVIDIA RTX A6000', memory: '24GB', usage: 50, type: 'GPU', brand: 'Nvidia', costPerHour: 0.7 },
-    { id: 5, name: 'QUADRO RTX 8000', memory: '48GB', usage: 10, type: 'GPU', brand: 'Nvidia', costPerHour: 0.9 },
-    { id: 6, name: 'Apple M1', memory: '16GB', usage: 30, type: 'CPU', brand: 'Apple', costPerHour: 0.2 },
-    { id: 7, name: 'AMD EPYC 7763', memory: '32GB', usage: 60, type: 'CPU', brand: 'AMD', costPerHour: 0.25 },
-    { id: 8, name: 'Google TPU v4', memory: '32GB', usage: 20, type: 'TPU', brand: 'TPU', costPerHour: 0.35 },
+    { id: 1, name: 'NVIDIA A4000 x2', memory: '16GB', details: 'Intel Xeon W-2123 @ 3.60GHz, 256G RAM, 2T NVME', type: 'GPU', brand: 'Nvidia', costPerHour: '0.8', location: 'Alchemy', description: 'T5820' },
+    { id: 2, name: 'HP DL360 G9', memory: 'No GPU', details: 'Intel Xeon E5-2680 v4 @ 2.40GHz, 128G RAM, 1.8T NVME', type: 'CPU', brand: 'Intel', costPerHour: '0.35', location: 'Alchemy', description: 'Server' },
+    { id: 3, name: 'HP DL360 G9', memory: 'No GPU', details: 'Intel Xeon E5-2680 v4 @ 2.40GHz, 128G RAM, 1.8T NVME', type: 'CPU', brand: 'Intel', costPerHour: '0.35', location: 'Alchemy', description: 'Server' },
+    { id: 4, name: 'NVIDIA A4000 x2', memory: '16GB', details: 'Intel Xeon W-2125 @ 4.00GHz, 48G RAM, 2T NVME', type: 'GPU', brand: 'Nvidia', costPerHour: '0.5', location: 'Alchemy', description: 'T5820' },
 ];
 
-const OwnComputerCard = ({ isSelected, onSelect, darkMode }) => {
-    return (
-      <div
-        className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-          isSelected
-            ? `bg-gradient-to-r from-[#6e8efb] to-[#a777e3] text-white`
-            : `${darkMode ? 'border-gray-700' : 'border-gray-300'} bg-gradient-to-r from-[#6e8efb] to-[#a777e3] text-white`
-        }`}
-        onClick={() => onSelect('ownComputer')}
-        style={{ height: '150px' }}
+const HardwareCard = ({ hardware, isSelected, onSelect, darkMode }) => {
+  const isGPU = hardware.type === 'GPU';
+  
+  return (
+    <div
+      className={`
+        relative overflow-hidden rounded-xl transition-all duration-300 hover:scale-[1.02] cursor-pointer
+        ${isSelected 
+          ? 'ring-2 ring-blue-500 shadow-lg shadow-blue-500/20' 
+          : `shadow-md ${darkMode ? 'shadow-gray-900/30' : 'shadow-gray-200/50'}`
+        }
+        ${darkMode ? 'bg-gray-800' : 'bg-white'}
+      `}
+      onClick={() => onSelect(hardware.id)}
+    >
+      {/* Header */}
+      <div className={`p-4 ${isGPU 
+        ? 'bg-gradient-to-r from-violet-600 to-indigo-600' 
+        : 'bg-gradient-to-r from-blue-600 to-cyan-600'}`}
       >
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <FaDesktop size={32} className="mr-2" />
-            <h3 className="font-semibold">Use Your Own Computer</h3>
+          <div className="flex items-center space-x-2">
+            {hardware.brand === 'Nvidia' ? 
+              <SiNvidia className="text-white text-xl" /> : 
+              <SiAmd className="text-white text-xl" />
+            }
+            <h3 className="font-bold text-white text-lg truncate">{hardware.name}</h3>
           </div>
-          <div className="mt-2 flex justify-end">
-            <input
-              type="radio"
-              checked={isSelected}
-              onChange={() => onSelect('ownComputer')}
-              className="form-radio text-white"
+          <span className="px-3 py-1 bg-white/20 rounded-full text-white text-sm">
+            {hardware.type}
+          </span>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4 space-y-3">
+        <div className="grid grid-cols-2 gap-3">
+          {/* Memory Section */}
+          <div className="flex items-center space-x-2">
+            <div className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+              <FaMemory className={`${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+            </div>
+            <div>
+              <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Memory</p>
+              <p className="font-medium text-sm">{hardware.memory}</p>
+            </div>
+          </div>
+
+          {/* Location Section */}
+          <div className="flex items-center space-x-2">
+            <div className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+              <FaMapMarkerAlt className={`${darkMode ? 'text-purple-400' : 'text-purple-600'}`} />
+            </div>
+            <div>
+              <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Location</p>
+              <p className="font-medium text-sm">{hardware.location}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Details Section */}
+        <div className="mt-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+          <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Specifications</p>
+          <p className="text-sm mt-1 leading-relaxed">{hardware.details}</p>
+        </div>
+
+        {/* Description Badge */}
+        <div className="flex items-center justify-between mt-2">
+          <span className={`text-xs px-3 py-1 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+            {hardware.description}
+          </span>
+          <input
+            type="radio"
+            checked={isSelected}
+            onChange={() => onSelect(hardware.id)}
+            className="w-4 h-4 text-blue-600"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+const SelectionPanel = ({ selectedGPU, darkMode, onContinue }) => {
+  return (
+    <div className={`
+      rounded-xl p-6 h-fit sticky top-4
+      ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}
+      shadow-xl ${darkMode ? 'shadow-gray-900/30' : 'shadow-gray-200/50'}
+    `}>
+      <h2 className="text-xl font-bold mb-4">Selected Hardware</h2>
+      
+      {!selectedGPU && (
+        <div className="text-center py-8">
+          <FaMicrochip className={`text-4xl mx-auto mb-3 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} />
+          <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            No hardware selected
+          </p>
+        </div>
+      )}
+
+      {selectedGPU === 'ownComputer' && (
+        <div className="space-y-4">
+          <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-900">
+            <h3 className="font-medium text-purple-900 dark:text-purple-300">Using Personal Computer</h3>
+            <p className="text-sm text-purple-700 dark:text-purple-400 mt-1">
+              Ensure your system meets the minimum requirements
+            </p>
+          </div>
+        </div>
+      )}
+
+      {selectedGPU && selectedGPU !== 'ownComputer' && (
+        <div className="space-y-4">
+          <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+            <div className="flex items-start space-x-3">
+              {selectedGPU.brand === 'Nvidia' ? 
+                <SiNvidia className="text-2xl mt-1" /> : 
+                <SiAmd className="text-2xl mt-1" />
+              }
+              <div>
+                <h3 className="font-medium">{selectedGPU.name}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  {selectedGPU.description}
+                </p>
+              </div>
+            </div>
+            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+              <p className="text-sm">{selectedGPU.details}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <button
+        onClick={onContinue}
+        className={`
+          w-full mt-6 py-2 px-4 rounded-lg font-medium transition-colors
+          ${selectedGPU
+            ? 'bg-blue-600 hover:bg-blue-700 text-white'
+            : `${darkMode ? 'bg-gray-700' : 'bg-gray-100'} cursor-not-allowed`
+          }
+        `}
+        disabled={!selectedGPU}
+      >
+        Continue
+      </button>
+    </div>
+  );
+};
+
+const GPUSelectionApp = ({ darkMode }) => {
+  const [selectedGPUId, setSelectedGPUId] = useState(null);
+  const [filter, setFilter] = useState('All');
+  const [isConnectivityScreen, setIsConnectivityScreen] = useState(false);
+
+  const handleSelectGPU = (id) => setSelectedGPUId(id);
+  const handleFilterChange = (newFilter) => setFilter(newFilter);
+  const handleContinue = () => setIsConnectivityScreen(true);
+
+  const selectedGPU = selectedGPUId === 'ownComputer' 
+    ? 'ownComputer' 
+    : gpuData.find((gpu) => gpu.id === selectedGPUId);
+    
+  const filteredGpuData = gpuData.filter(
+    gpu => filter === 'All' || gpu.type === filter || gpu.brand === filter
+  );
+
+  if (isConnectivityScreen) {
+    return <ChipSelection darkMode={darkMode} selectedGPU={selectedGPU} />;
+  }
+
+  return (
+    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      <div className="max-w-9xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-2">Select Hardware</h1>
+          <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            Choose the processing unit that best suits your needs
+          </p>
+        </div>
+
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap gap-2 justify-center mb-8">
+          {['All', 'Nvidia', 'Intel', 'CPU', 'GPU'].map((item) => (
+            <button
+              key={item}
+              onClick={() => handleFilterChange(item)}
+              className={`
+                px-4 py-2 rounded-lg font-medium transition-colors
+                ${filter === item 
+                  ? 'bg-blue-600 text-white' 
+                  : `${darkMode ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-700'} 
+                     hover:bg-gray-100 dark:hover:bg-gray-700`
+                }
+              `}
+            >
+              <div className="flex items-center space-x-2">
+                {item === 'Nvidia' && <SiNvidia />}
+                {item === 'Intel' && <SiAmd />}
+                <span>{item}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Main Content */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Cards Grid */}
+          <div className="flex-1">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {filteredGpuData.map((gpu) => (
+                <HardwareCard
+                  key={gpu.id}
+                  hardware={gpu}
+                  isSelected={gpu.id === selectedGPUId}
+                  onSelect={handleSelectGPU}
+                  darkMode={darkMode}
+                />
+              ))}
+              <OwnComputerCard
+                isSelected={selectedGPUId === 'ownComputer'}
+                onSelect={handleSelectGPU}
+                darkMode={darkMode}
+              />
+            </div>
+          </div>
+
+          {/* Selection Panel */}
+          <div className="lg:w-80">
+            <SelectionPanel
+              selectedGPU={selectedGPU}
+              darkMode={darkMode}
+              onContinue={handleContinue}
             />
           </div>
         </div>
-        <p className="mt-4 text-sm">
-          Connect and utilize your personal computing resources.
-        </p>
       </div>
-    );
-  };
-  
-const GPUCard = ({ gpu, isSelected, onSelect, darkMode }) => {
-    const segments = 10;
-    const busySegments = Math.round((gpu.usage / 100) * segments);
-    const freeSegments = segments - busySegments;
-
-    return (
-        <div
-            className={`border rounded-lg p-4 cursor-pointer ${isSelected ? 'border-blue-500' : `${darkMode ? 'border-gray-700' : 'border-gray-300'}`} 
-      ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}
-            onClick={() => onSelect(gpu.id)}
-            style={{ height: '150px' }}
-        >
-            <div className="flex items-center justify-between">
-                <h3 className="font-semibold">{gpu.name}</h3>
-                <p className="text-sm">{gpu.memory}</p>
-            </div>
-            <div className="mt-2 text-xs">
-                <span>{gpu.usage}% Busy / {100 - gpu.usage}% Free</span>
-            </div>
-            <div className="flex mt-1">
-                {[...Array(busySegments)].map((_, i) => (
-                    <div key={`busy-${i}`} className="w-4 h-2 bg-black mr-0.5 rounded-sm"></div>
-                ))}
-                {[...Array(freeSegments)].map((_, i) => (
-                    <div key={`free-${i}`} className={`w-4 h-2 ${darkMode ? 'bg-gray-600' : 'bg-gray-300'} mr-0.5 rounded-sm`}></div>
-                ))}
-            </div>
-            <div className="mt-2 flex justify-end">
-                <input type="radio" checked={isSelected} onChange={() => onSelect(gpu.id)} className="form-radio text-blue-500" />
-            </div>
-        </div>
-    );
-}
-
-const GPUSelectionApp = ({ darkMode }) => {
-    const [selectedGPUId, setSelectedGPUId] = useState(null);
-    const [filter, setFilter] = useState('All');
-    const [isConnectivityScreen, setIsConnectivityScreen] = useState(false);
-
-    const handleSelectGPU = (id) => setSelectedGPUId(id);
-
-    const handleFilterChange = (newFilter) => setFilter(newFilter);
-
-    const handleContinue = () => setIsConnectivityScreen(true);
-
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter' && selectedGPUId) {
-            handleContinue();
-        }
-    };
-
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyPress);
-        return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [selectedGPUId]);
-
-    const selectedGPU = gpuData.find((gpu) => gpu.id === selectedGPUId);
-    const filteredGpuData = gpuData.filter((gpu) => {
-        if (filter === 'All') return true;
-        if (filter === 'GPU' || filter === 'CPU' || filter === 'TPU') return gpu.type === filter;
-        return gpu.brand === filter;
-    });
-
-    return isConnectivityScreen ? (
-        <ChipSelection darkMode={darkMode} selectedGPU={selectedGPU} />
-    ) : (
-        <div className={`flex flex-col gap-6 p-4 sm:p-8 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
-            {/* Header Section */}
-            <div className="text-center mb-4">
-                <h2 className="text-2xl font-semibold">Select Processor Chip</h2>
-                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-700'} mt-2`}>
-                    Browse from a wide range of chips suitable for different use cases. You can either select a CPU-only chip or a GPU-only chip.
-                </p>
-            </div>
-
-            {/* Filter Buttons Row */}
-            <div className="flex flex-wrap gap-2 justify-center">
-                {['Apple', 'Nvidia', 'AMD', 'GPU', 'CPU', 'TPU'].map((item) => (
-                    <button
-                        key={item}
-                        onClick={() => handleFilterChange(item)}
-                        className={`px-3 py-1 rounded ${filter === item ? 'bg-blue-500 text-white' : `${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-200'}`}`}
-                    >
-                        {item === 'Apple' ? <FaApple /> : item === 'Nvidia' ? <SiNvidia /> : item === 'AMD' ? <SiAmd /> : item}
-                    </button>
-                ))}
-            </div>
-
-            {/* Main Content Row with GPU Cards and Summary */}
-            <div className="flex flex-col md:flex-row gap-4">
-                {/* GPU Cards Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-1">
-                    {filteredGpuData.map((gpu) => (
-                        <GPUCard key={gpu.id} gpu={gpu} isSelected={gpu.id === selectedGPUId} onSelect={handleSelectGPU} darkMode={darkMode} />
-                    ))}
-                    {/* Own Computer Card */}
-                    <OwnComputerCard isSelected={selectedGPUId === 'ownComputer'} onSelect={handleSelectGPU} darkMode={darkMode} />
-                </div>
-
-                {/* Summary Section */}
-                <div className="w-full md:w-1/3">
-                    <div className={`border rounded-lg p-4 shadow-md ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-300 text-gray-800'}`}>
-                        <h2 className="text-xl font-semibold">Selected Option</h2>
-                        {selectedGPUId === 'ownComputer' ? (
-                            <>
-                                <p className="mt-4 text-sm">You have selected to use your own computer. Ensure connectivity and compatibility with the application.</p>
-                                <button onClick={handleContinue} className={`mt-4 px-4 py-2 rounded ${darkMode ? 'bg-gray-700 text-white' : 'bg-black text-white'}`}>Continue</button>
-                            </>
-                        ) : selectedGPU ? (
-                            <>
-                                <ul className="mt-4 space-y-2 text-sm">
-                                    <li><strong>Name:</strong> {selectedGPU.name}</li>
-                                    <li><strong>Memory:</strong> {selectedGPU.memory}</li>
-                                    <li><strong>Usage:</strong> {selectedGPU.usage}% Busy / {100 - selectedGPU.usage}% Free</li>
-                                    <li><strong>Type:</strong> {selectedGPU.type}</li>
-                                    <li><strong>Brand:</strong> {selectedGPU.brand}</li>
-                                </ul>
-                                <div className="mt-4 flex items-center space-x-2">
-                                    <button onClick={handleContinue} className={`px-4 py-2 rounded ${darkMode ? 'bg-gray-700 text-white' : 'bg-black text-white'}`}>Continue</button>
-                                    <span className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>press <strong>Enter</strong> ↵</span>
-                                </div>
-                            </>
-                        ) : (
-                            <p className="mt-4 text-sm text-gray-500">No GPU selected.</p>
-                        )}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default GPUSelectionApp;
