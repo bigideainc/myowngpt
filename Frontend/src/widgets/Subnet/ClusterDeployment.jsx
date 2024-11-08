@@ -22,7 +22,7 @@ const HardwareCard = ({ hardware, isSelected, onSelect, darkMode }) => {
           ? 'ring-2 ring-blue-500 shadow-lg shadow-blue-500/20' 
           : `shadow-md ${darkMode ? 'shadow-gray-900/30' : 'shadow-gray-200/50'}`
         }
-        ${darkMode ? 'bg-gray-800' : 'bg-white'}
+      ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}
       `}
       onClick={() => onSelect(hardware.id)}
     >
@@ -72,7 +72,7 @@ const HardwareCard = ({ hardware, isSelected, onSelect, darkMode }) => {
         </div>
 
         {/* Details Section */}
-        <div className="mt-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+        <div className={`mt-3 p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
           <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Specifications</p>
           <p className="text-sm mt-1 leading-relaxed">{hardware.details}</p>
         </div>
